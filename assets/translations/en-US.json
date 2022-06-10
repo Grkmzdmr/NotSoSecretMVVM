@@ -1,0 +1,74 @@
+{
+     "skip" : "Skip",
+     "noRouteFound" : "No Route Found",
+     "onBoardingTitle1" : "Hello",
+     "onBoardingTitle2": "Know Us",
+     "onBoardingTitle3" : "Lets Start",
+     "onBoardingContent1" :
+      "Welcome to our world scroll forward to learn how to use.",
+     "onBoardingContent2" :
+      "Share your thoughts and experiences completely anonymously without prejudice, interact with people.",
+     "onBoardingContent3" :
+      "If you are a member before, you can log in or you can become a new member using just your username and password.",
+     "inputUsername" : "Username",
+     "inputPassword" : "Password",
+     "loginButton" : "Login",
+     "registerText" : "Not a member? Register",
+     "usernamError" : "Username cannot be empty !",
+     "passwordError" : "Password cannot be empty !",
+     "loginWelcome" : "Welcome to NotSoSecret",
+     "loginText" : "Sign in and continue where you left off.",
+
+     "loading" : "Loading...",
+
+     "retry_again" : "Try Again",
+     "secretcantsend" : "Post cant send",
+
+     "ok" : "Okey",
+
+     "noUserFound" : "Check Username or Password",
+     "invalidUserName" :
+      "Your username must be greater than 6 digits",
+
+     "invalidPassword" : "Your password must be greater than 8 digits",
+     "haveAccount" : "Do you have an account? Login",
+
+    "registerWelcome" : "Welcome to the registration screen",
+     "registerSubtext" :
+      "All you have to do is choose your username and password.",
+
+     "registerButton" : "Register",
+     "alreadyHaveUser" : "This User Exists",
+     "home" : "NotSoSecret",
+     "notification" : "Notifications",
+     "search" : "Search",
+     "person" : "My Profile",
+     "posts" : "Posts",
+
+     "changeLanguage" : "Change Language",
+
+     "contactUs" : "Contact Us",
+     "inviteFriends" : "Invite Your Friends",
+
+     "logOut": "Log Out",
+     "cancel": "Cancel",
+     "share" : "Share",
+     "title": "Briefly talk about...",
+     "text": "Write your Secret...",
+
+     "settings" : "Settings",
+     "yes" : "Yes",
+     "no" : "No",
+     "delete" : "Delete",
+     "sure" : "Are You Sure You Want To Delete The Post ?",
+     "surechangelanguage" : "Are You Sure You Want To Change Language ?",
+     "language" : "Language",
+     "logout" : "Log Out",
+     "surelogout" : "Are You Sure You Want To Log Out ?",
+     "comment" : "Write your comment...",
+     "commentError" : "Must be less than 70 characters",
+     "failed" : "Try Again",
+     "release" : "Release For More Secret",
+     "noMoreSecret" : "There is no more secret yet."
+
+}
