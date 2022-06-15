@@ -31,7 +31,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
         routes: {
-    '/comment': (context) => CommentPage(),
+    '/comment': (context) => CommentTest(),
   },
 
       localizationsDelegates: context.localizationDelegates,

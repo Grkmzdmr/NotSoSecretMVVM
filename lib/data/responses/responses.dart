@@ -87,9 +87,8 @@ class CommentResponse extends BaseResponse {
   @JsonKey(name: 'data')
   String? data;
 
- 
- 
-  CommentResponse(this.id, this.sign, this.secretId, this.userId, this.date,this.data);
+  CommentResponse(
+      this.id, this.sign, this.secretId, this.userId, this.date, this.data);
   factory CommentResponse.fromJson(Map<String, dynamic> json) =>
       _$CommentResponseFromJson(json);
 //to json
@@ -97,23 +96,35 @@ class CommentResponse extends BaseResponse {
 }
 
 @JsonSerializable()
+class UserInfoResponse extends BaseResponse {
+  @JsonKey(name: 'secretCount')
+  int? secretCount;
+  @JsonKey(name: 'commentCount')
+  int? commentCount;
+
+  UserInfoResponse(this.commentCount, this.secretCount);
+  factory UserInfoResponse.fromJson(Map<String, dynamic> json) =>
+      _$UserInfoResponseFromJson(json);
+//to json
+  Map<String, dynamic> toJson() => _$UserInfoResponseToJson(this);
+}
+
+@JsonSerializable()
 class CommentPageResponse extends BaseResponse {
-   @JsonKey(name: 'currentPage')
+  @JsonKey(name: 'currentPage')
   int currentPage;
   @JsonKey(name: 'totalPage')
   int totalPage;
   @JsonKey(name: 'comments')
   List<CommentResponse>? data;
 
-
- 
- 
   CommentPageResponse(this.currentPage, this.totalPage, this.data);
   factory CommentPageResponse.fromJson(Map<String, dynamic> json) =>
       _$CommentPageResponseFromJson(json);
 //to json
   Map<String, dynamic> toJson() => _$CommentPageResponseToJson(this);
 }
+
 @JsonSerializable()
 class CommentDataResponse extends BaseResponse {
   @JsonKey(name: 'data')
@@ -125,7 +136,6 @@ class CommentDataResponse extends BaseResponse {
 //to json
   Map<String, dynamic> toJson() => _$CommentDataResponseToJson(this);
 }
-
 
 @JsonSerializable()
 class HomeDataResponse extends BaseResponse {
@@ -156,15 +166,6 @@ class HomeResponse extends BaseResponse {
   Map<String, dynamic> toJson() => _$HomeResponseToJson(this);
 }
 
-/*@JsonSerializable()
-class ProfileDataResponse {
-  @JsonKey(name: '')
-  List<PostResponse>? posts;
-  @JsonKey(name : '')
-  UserData? user;
-  ProfileDataResponse(this.posts, this.user);
-}*/
-
 @JsonSerializable()
 class ProfileResponse extends BaseResponse {
   @JsonKey(name: 'data')
@@ -177,4 +178,16 @@ class ProfileResponse extends BaseResponse {
       _$ProfileResponseFromJson(json);
 //to json
   Map<String, dynamic> toJson() => _$ProfileResponseToJson(this);
+}
+@JsonSerializable()
+class ProfileUserInfoResponse extends BaseResponse {
+  @JsonKey(name: 'data')
+  UserInfoResponse? data;
+
+  ProfileUserInfoResponse(this.data);
+  //from json
+  factory ProfileUserInfoResponse.fromJson(Map<String, dynamic> json) =>
+      _$ProfileUserInfoResponseFromJson(json);
+//to json
+  Map<String, dynamic> toJson() => _$ProfileUserInfoResponseToJson(this);
 }

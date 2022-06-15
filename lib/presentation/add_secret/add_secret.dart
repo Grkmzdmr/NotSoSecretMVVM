@@ -118,7 +118,7 @@ class _AddSecretState extends State<AddSecret> {
                         controller: _titleController,
                         autofocus: true,
                         maxLines: 1,
-                        maxLength: 25,
+                        maxLength: 120,
                         decoration: InputDecoration(
                             hintStyle: Theme.of(context).textTheme.bodyText1,
                             hintText: AppStrings.title.tr(),
@@ -133,7 +133,7 @@ class _AddSecretState extends State<AddSecret> {
                     builder: (context, snapshot) {
                       return TextFormField(
                         controller: _textController,
-                        maxLength: 280,
+                        maxLength: 2000,
                         autofocus: true,
                         maxLines: 8,
                         decoration: InputDecoration(

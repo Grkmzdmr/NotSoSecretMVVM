@@ -237,4 +237,24 @@ class RepositoryImpl extends Repository {
       return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, ProfileUserInfoObject>> getUserInfo() async{
+   if (await _networkInfo.IsConnected) {
+      try {
+        final response =
+            await _remoteDataSource.getUserInfo();
+        if (response.success == ApiInternalStatus.SUCCESS) {
+          return Right(response.toDomain());
+        } else {
+          return Left(Failure(
+              409, response.exceptions?[0] ?? ResponseMessage.SEND_TIMEOUT));
+        }
+      } catch (error) {
+        return Left(ErrorHandler.handle(error).failure);
+      }
+    } else {
+      return Left(DataSource.NO_INTERNET_CONNECTION.getFailure());
+    }
+  }
 }

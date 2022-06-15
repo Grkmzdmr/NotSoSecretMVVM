@@ -1,6 +1,5 @@
 import 'dart:async';
 
-
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/data/data_source/local_data_source.dart';
@@ -20,9 +19,12 @@ class ProfileViewModel extends BaseViewModel
   StreamController _personspostStreamController = BehaviorSubject<List<Post>>();
   StreamController _personsnameStreamController = BehaviorSubject<String>();
   StreamController postsdeleteController = BehaviorSubject<int>();
+  StreamController _profileUserInfoStreamController =
+      BehaviorSubject<UserInfo>();
   StreamController pageController = BehaviorSubject<int>();
   AppPreferences _appPreferences = instance<AppPreferences>();
   var profileViewObject = ProfileDeleteObject(0);
+  
   LocalDataSource _localDataSource = instance<LocalDataSource>();
   var profilePostObject = ProfilePostsUseCaseInputs(1);
   int currentPage = 1;
@@ -34,6 +36,7 @@ class ProfileViewModel extends BaseViewModel
   void start() {
     getProfile();
     _getUsername();
+    getUserInfo();
   }
 
   getProfile() async {
@@ -90,6 +93,7 @@ class ProfileViewModel extends BaseViewModel
     _personsnameStreamController.close();
     postsdeleteController.close();
     pageController.close();
+    _profileUserInfoStreamController.close();
     super.dispose();
   }
 
@@ -118,6 +122,7 @@ class ProfileViewModel extends BaseViewModel
   @override
   setSecretId(int secretId) {
     inputPostId.add(secretId);
+    if(secretId != null)
     profileViewObject = profileViewObject.copyWith(secretId: secretId);
   }
 
@@ -129,19 +134,42 @@ class ProfileViewModel extends BaseViewModel
   @override
   // TODO: implement inputPage
   Sink get inputPage => pageController.sink;
+
+  @override
+  getUserInfo() async {
+    (await _profileUseCase
+            .getUserInfo())
+        .fold((failure) {}, (userInfo) {
+      inputUserInfo.add(userInfo.data.userInfo);
+     
+    });
+  }
+
+  @override
+  // TODO: implement outputUserInfo
+  Stream<UserInfo> get outputUserInfo =>
+      _profileUserInfoStreamController.stream.map((userInfo) => userInfo);
+
+  @override
+  // TODO: implement inputUserInfo
+  Sink get inputUserInfo => _profileUserInfoStreamController.sink;
 }
 
 abstract class ProfileViewModelInputs {
   refresh();
   deleteSecret();
   setSecretId(int id);
+  getUserInfo();
+
   Sink get inputPersonsPost;
   Sink get inputPersonsUsername;
   Sink get inputPostId;
   Sink get inputPage;
+  Sink get inputUserInfo;
 }
 
 abstract class ProfileViewModelOutputs {
   Stream<List<Post>> get outputPersonsPosts;
   Stream<String> get outputPersonsUsername;
+  Stream<UserInfo> get outputUserInfo;
 }

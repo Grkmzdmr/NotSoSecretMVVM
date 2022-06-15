@@ -11,7 +11,8 @@ abstract class RemoteDataSource {
   Future<CommentResponse> addComment(AddCommentRequest addCommentRequest);
   Future<ProfileResponse> deleteSecret(int id);
   Future<CommentDataResponse> getComments(CommentRequest commentRequest);
-  Future<CommentResponse> deleteComment(int secretId,int commentId);
+  Future<CommentResponse> deleteComment(int secretId, int commentId);
+  Future<ProfileUserInfoResponse> getUserInfo();
 }
 
 class RemoteDataSourceImplementer implements RemoteDataSource {
@@ -67,7 +68,12 @@ class RemoteDataSourceImplementer implements RemoteDataSource {
   }
 
   @override
-  Future<CommentResponse> deleteComment(int secretId,int commentId) async {
-    return await _appServiceClient.deleteComment(secretId,commentId);
+  Future<CommentResponse> deleteComment(int secretId, int commentId) async {
+    return await _appServiceClient.deleteComment(secretId, commentId);
+  }
+
+  @override
+  Future<ProfileUserInfoResponse> getUserInfo() async {
+    return await _appServiceClient.getUserInfo();
   }
 }

@@ -28,7 +28,6 @@ extension CommentDataResponseMapper on CommentDataResponse? {
                 Iterable.empty())
             .cast<Comment>()
             .toList();
-    
 
     var data = CommentData(mappedComments, this!.cpageResponse!.currentPage,
         this!.cpageResponse!.totalPage);
@@ -38,22 +37,26 @@ extension CommentDataResponseMapper on CommentDataResponse? {
 
 extension CommentResponseMapper on CommentResponse? {
   Comment toDomain() {
-    return Comment(this?.id?.orZero() ?? ZERO, 
-    this?.date?.orEmpty() ?? EMPTY, 
-    this?.sign?.orEmpty() ?? EMPTY, 
-    this?.data?.orEmpty() ?? EMPTY, 
-    this?.secretId?.orZero() ?? ZERO, 
-    this?.userId?.orZero() ?? ZERO);
+    return Comment(
+        this?.id?.orZero() ?? ZERO,
+        this?.date?.orEmpty() ?? EMPTY,
+        this?.sign?.orEmpty() ?? EMPTY,
+        this?.data?.orEmpty() ?? EMPTY,
+        this?.secretId?.orZero() ?? ZERO,
+        this?.userId?.orZero() ?? ZERO);
+  }
+}
+
+extension UserInfoResponseMapper on UserInfoResponse? {
+  UserInfo toDomain() {
+    return UserInfo(this?.secretCount?.orZero() ?? ZERO,
+        this?.commentCount?.orZero() ?? ZERO);
   }
 }
 
 extension PostResponseMapper on PostResponse? {
   Post toDomain() {
-    /*List<Comment> comments =
-        (this?.comments?.map((comment) => comment.toDomain()) ??
-                Iterable.empty())
-            .cast<Comment>()
-            .toList();*/
+   
     return Post(
         this?.content?.orEmpty() ?? EMPTY,
         this?.date?.orEmpty() ?? EMPTY,
@@ -66,17 +69,6 @@ extension PostResponseMapper on PostResponse? {
   }
 }
 
-/*extension HomeResponseMapper on HomeResponse? {
-  HomeObject toDomain() {
-    List<Post> mappedPosts =
-        (this?.data?.map((post) => post.toDomain()) ?? Iterable.empty())
-            .cast<Post>()
-            .toList();
-
-    var data = HomeData(mappedPosts, this!.currentPage, this!.totalPage);
-    return HomeObject(data);
-  }
-}*/
 extension HomeDataResponseMapper on HomeDataResponse? {
   HomeObject toDomain() {
     List<Post> mappedPosts =
@@ -105,5 +97,15 @@ extension ProfileResponseMapper on ProfileResponse? {
 
     var data = ProfileData(mappedPosts, user);
     return ProfileObject(data);
+  }
+}
+
+extension UserInfoObjectResponseMapper on ProfileUserInfoResponse? {
+  ProfileUserInfoObject toDomain() {
+    UserInfo userInfo = UserInfo(this?.data?.commentCount?.orZero() ?? ZERO,
+        this?.data?.secretCount?.orZero() ?? ZERO);
+
+    var data = ProfileUserInfo(userInfo);
+    return ProfileUserInfoObject(data);
   }
 }

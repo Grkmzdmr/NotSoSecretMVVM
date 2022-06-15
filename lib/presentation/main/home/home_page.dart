@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:like_button/like_button.dart';
+
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/data/data_source/local_data_source.dart';
@@ -11,6 +11,7 @@ import 'package:not_so_secret/presentation/common/state_renderer/state_render_im
 
 import 'package:not_so_secret/presentation/main/home/home_viewmodel.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
+import 'package:not_so_secret/presentation/resources/font_manager.dart';
 import 'package:not_so_secret/presentation/resources/routes_manager.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
 import 'package:not_so_secret/presentation/resources/values_manager.dart';
@@ -48,11 +49,7 @@ class _HomePageState extends State<HomePage> {
         totalPage = page;
       });
     });
-    /*_viewModel.isPostSuccessfullySendController.stream.listen((isPostSend) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
-        Navigator.of(context).pushNamed(Routes.commentRoute);
-      });
-    });*/
+
   }
 
   @override
@@ -80,19 +77,7 @@ class _HomePageState extends State<HomePage> {
     return _getPost();
   }
 
-  /*Widget _getPostsTitle(String title) {
-    return Padding(
-      padding: EdgeInsets.only(
-          top: AppPadding.p12,
-          right: AppPadding.p12,
-          left: AppPadding.p12,
-          bottom: AppPadding.p2),
-      child: Text(
-        title,
-        style: Theme.of(context).textTheme.headline2,
-      ),
-    );
-  }*/
+  
 
   Widget _getPost() {
     return StreamBuilder<List<Post>>(
@@ -172,6 +157,9 @@ class _HomePageState extends State<HomePage> {
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) {
                         return InkWell(
+                          onLongPress: (){
+                            
+                          },
                           onTap: () {
                             _appPreferences.setPost(posts[index].id);
 
@@ -186,132 +174,120 @@ class _HomePageState extends State<HomePage> {
                                 side: BorderSide(
                                     color: ColorManager.white,
                                     width: AppSize.s1_5)),
-                            child: Column(
+                           child: ListTile(
+                           
+                            
+                            horizontalTitleGap: 6,
+                            minVerticalPadding : 24,
+                            //trailing : IconButton(icon: Icon(Icons.more_vert),onPressed: (){},),
+                            title: 
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Row(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(
-                                              AppMargin.m8),
-                                          child: SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                AppSize.s2,
-                                            child: Container(
-                                              margin:
-                                                  EdgeInsets.all(AppMargin.m8),
-                                              child: Text(
-                                                  posts[index].title.toString(),
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .headline1),
-                                            ),
+                                    mainAxisAlignment : MainAxisAlignment.end,
+                                    children: [
+                                     PopupMenuButton(onSelected: (value) {
+                                          if (value.toString() == "/complaint") {
+                                            showAlertDialog(context);
+                                          } 
+                                        }, itemBuilder: (BuildContext bc) {
+                                          
+                                            return [
+                                              PopupMenuItem(
+                                                child: Text("Şikayet Et"),
+                                                value: "/complaint",
+                                              ),
+                                            ];
+                                          
+                                        })
+                                      ],
+                                  ),
+                                  Padding(
+                                     padding: const EdgeInsets.only(right: AppMargin.m12,bottom: AppMargin.m8),
+                                     child: Container(
+                                        
+                                        child :
+                                           Text(
+                                           posts[index].title,
+                                            style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s17)
                                           ),
+                                        
+                              ),)
+
+                            ],)
+                            
+                            
+                               
+                              ,
+                            
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top :8.0),
+                              child: Column(
+                                mainAxisAlignment : MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                       
+                       children: [
+                                  Text(posts[index].content,
+                                  style: Theme.of(context).textTheme.subtitle1,
+                                  textAlign: TextAlign.left,
+                                  ),
+                                  SizedBox(height: MediaQuery.of(context).size.width/ 10),
+
+                                  Padding(
+                                    padding: const EdgeInsets.only(top :0.0),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                          width: MediaQuery.of(context).size.width / 2.5,
+                                          child: Row(
+                                            
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                            
+                                              Icon(Icons.visibility,size: AppSize.s30,color: ColorManager.darkGrey,),
+                                              Text(posts[index].viewCount.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s15,),),
+                                              Icon(Icons.comment,size: AppSize.s30,color: ColorManager.darkGrey),
+                                              Text(posts[index].commentCount.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s15,))
+
+                                            
+                                          ],),
+                                        ),
+                                        SizedBox(width: MediaQuery.of(context).size.width / 13.8,
+
                                         ),
                                         Container(
-                                            child: Text(
-                                          posts[index].date.substring(8, 10) +
-                                              '-' +
-                                              posts[index]
-                                                  .date
-                                                  .substring(5, 7) +
-                                              '-' +
-                                              posts[index]
-                                                  .date
-                                                  .substring(0, 4) +
-                                              ' ' +
-                                              posts[index]
-                                                  .date
-                                                  .substring(11, 16),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodyText2,
-                                        ))
+                                          width: MediaQuery.of(context).size.width / 3.1,
+                                          child : Column(
+                                            
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children : [
+                                              
+                                              Text("@" + posts[index].sign),
+                                              Text(posts[index].date.substring(8, 10) +
+                                                '-' +
+                                                posts[index]
+                                                    .date
+                                                    .substring(5, 7) +
+                                                '-' +
+                                                posts[index]
+                                                    .date
+                                                    .substring(2, 4) 
+                                                
+                                                )
+
+
+                                            ]
+                                          )
+                                        )
                                       ],
                                     ),
-                                  ],
-                                ),
-                                Container(
-                                    margin: EdgeInsets.all(AppMargin.m8),
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.all(AppMargin.m10),
-                                      child: Text(
-                                        posts[index].content,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2,
-                                      ),
-                                    )),
-                                SizedBox(
-                                  height: AppSize.s10,
-                                ),
-                                Row(
-                                  children: [
-                                    Padding(
-                                      padding:
-                                          const EdgeInsets.all(AppMargin.m8),
-                                      child: SizedBox(
-                                        child: Row(
-                                          children: [
-                                            Container(
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    AppSize.s8,
-                                                child: Icon(Icons.visibility)),
-                                            Container(
-                                              child: Text(posts[index]
-                                                  .viewCount
-                                                  .toString()),
-                                            ),
-                                            Container(
-                                              child: IconButton(
-                                                icon: Icon(Icons.comment),
-                                                onPressed: () {
-                                                  _appPreferences
-                                                      .setPost(posts[index].id);
-
-                                                  Navigator.pushNamed(
-                                                      context, "/comment",
-                                                      arguments: posts[index]);
-                                                },
-                                              ),
-                                            ),
-                                            Container(
-                                              child: Text(posts[index]
-                                                  .commentCount
-                                                  .toString()),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: AppSize.s130,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        child: Center(
-                                          child: Text(
-                                            "@" + posts[index].sign,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                )
-                              ],
+                                  ),
+                                ],
+                              ),
                             ),
+                           )
                           ),
                         );
                       })),
@@ -322,5 +298,22 @@ class _HomePageState extends State<HomePage> {
     } else {
       return Container();
     }
+  }
+  showAlertDialog(BuildContext context) {
+    Widget okButton = TextButton(
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+        child: Text("Tamam"));
+
+    AlertDialog alert = AlertDialog(
+      content: Text("Şikayetiniz incelenecektir."),
+      actions: [okButton],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
   }
 }

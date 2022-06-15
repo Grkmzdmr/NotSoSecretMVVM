@@ -109,6 +109,24 @@ Map<String, dynamic> _$CommentResponseToJson(CommentResponse instance) =>
       'data': instance.data,
     };
 
+UserInfoResponse _$UserInfoResponseFromJson(Map<String, dynamic> json) {
+  return UserInfoResponse(
+    json['commentCount'] as int?,
+    json['secretCount'] as int?,
+  )
+    ..exceptions =
+        (json['exceptions'] as List<dynamic>?)?.map((e) => e as String).toList()
+    ..success = json['success'] as bool?;
+}
+
+Map<String, dynamic> _$UserInfoResponseToJson(UserInfoResponse instance) =>
+    <String, dynamic>{
+      'exceptions': instance.exceptions,
+      'success': instance.success,
+      'secretCount': instance.secretCount,
+      'commentCount': instance.commentCount,
+    };
+
 CommentPageResponse _$CommentPageResponseFromJson(Map<String, dynamic> json) {
   return CommentPageResponse(
     json['currentPage'] as int,
@@ -211,4 +229,24 @@ Map<String, dynamic> _$ProfileResponseToJson(ProfileResponse instance) =>
       'success': instance.success,
       'data': instance.data,
       '': instance.user,
+    };
+
+ProfileUserInfoResponse _$ProfileUserInfoResponseFromJson(
+    Map<String, dynamic> json) {
+  return ProfileUserInfoResponse(
+    json['data'] == null
+        ? null
+        : UserInfoResponse.fromJson(json['data'] as Map<String, dynamic>),
+  )
+    ..exceptions =
+        (json['exceptions'] as List<dynamic>?)?.map((e) => e as String).toList()
+    ..success = json['success'] as bool?;
+}
+
+Map<String, dynamic> _$ProfileUserInfoResponseToJson(
+        ProfileUserInfoResponse instance) =>
+    <String, dynamic>{
+      'exceptions': instance.exceptions,
+      'success': instance.success,
+      'data': instance.data,
     };

@@ -33,14 +33,17 @@ abstract class AppServiceClient {
   @POST("/secret/remove/{secretId}")
   Future<ProfileResponse> deleteSecret(@Field("secretId") int secretId);
 
-  @POST("secret/comment/add")
+  @POST("/secret/comment/add")
   Future<CommentResponse> addComment(
       @Field("secretId") int secretId, @Field("data") String data);
 
-  @GET("secret/receive/comments/{secretId}/{language}/{page}")
+  @GET("/secret/receive/comments/{secretId}/{language}/{page}")
   Future<CommentDataResponse> getComments(@Path("secretId") int secretId,
       @Path("language") String language, @Path("page") int page);
 
   @GET("/secret/comment/remove/{secretId}/{commentId}")
   Future<CommentResponse> deleteComment(@Path("secretId") int secretId,@Path("commentId") int commentId);
+
+  @GET("/account/info/")
+  Future<ProfileUserInfoResponse> getUserInfo();
 }

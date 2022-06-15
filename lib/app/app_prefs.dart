@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:not_so_secret/data/mapper/mapper.dart';
 import 'package:not_so_secret/presentation/resources/language_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,6 +10,7 @@ const String PREFS_KEY_TOKEN = "PREFS_KEY_TOKEN";
 const String PREFS_KEY_USERNAME = "PREFS_KEY_USERNAME";
 const String PREFS_KEY_POST = "PREFS_KEY_POST";
 const String PREFS_KEY_PAGE = "PREFS_KEY_PAGE";
+const String PREFS_KEY_USERID = "PREFS_KEY_USERID";
 
 class AppPreferences {
   SharedPreferences _sharedPreferences;
@@ -71,6 +73,7 @@ class AppPreferences {
   Future<void> setPage(int page) async {
     _sharedPreferences.setInt(PREFS_KEY_PAGE, page);
   }
+
   Future<int> getPage() async {
     return _sharedPreferences.getInt(PREFS_KEY_PAGE) ?? 0;
   }
@@ -82,6 +85,14 @@ class AppPreferences {
   Future<String> getUsername() async {
     return _sharedPreferences.getString(PREFS_KEY_USERNAME) ??
         "No Username Saved";
+  }
+  Future<void> setUserId(int userId) async {
+    _sharedPreferences.setInt(PREFS_KEY_USERID, userId);
+  }
+
+  Future<int> getUserId() async {
+    return _sharedPreferences.getInt(PREFS_KEY_USERID) ??
+        ZERO;
   }
 
   Future<void> setIsUserLoggedIn() async {

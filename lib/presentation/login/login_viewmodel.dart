@@ -19,6 +19,7 @@ class LoginViewModel extends BaseViewModel
   StreamController isUserLoggedInSuccessfullyStreamController =
       StreamController<String>();
   StreamController isUserNameSuccessfullyTaken = StreamController<String>();
+  StreamController isUserIdSuccessfullyTaken = StreamController<int>();
 
   var loginObject = LoginObject("", "");
 
@@ -32,6 +33,7 @@ class LoginViewModel extends BaseViewModel
     _isAllInputsValidStreamController.close();
     isUserLoggedInSuccessfullyStreamController.close();
     isUserNameSuccessfullyTaken.close();
+    isUserIdSuccessfullyTaken.close();
   }
 
   @override
@@ -69,6 +71,7 @@ class LoginViewModel extends BaseViewModel
       isUserLoggedInSuccessfullyStreamController
           .add(data.userData?.token.toString());
       isUserNameSuccessfullyTaken.add(data.userData?.sign.toString());
+     
     });
   }
 

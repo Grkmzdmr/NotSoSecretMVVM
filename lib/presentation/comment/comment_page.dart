@@ -6,44 +6,35 @@ import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/domain/model/model.dart';
 import 'package:not_so_secret/presentation/comment/comment_viewmodel.dart';
 import 'package:not_so_secret/presentation/common/state_renderer/state_render_impl.dart';
-
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
 import 'package:not_so_secret/presentation/resources/font_manager.dart';
-import 'package:not_so_secret/presentation/resources/routes_manager.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
 import 'package:not_so_secret/presentation/resources/values_manager.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-class CommentPage extends StatefulWidget {
-  const CommentPage({Key? key}) : super(key: key);
+class CommentTest extends StatefulWidget {
+  const CommentTest({Key? key}) : super(key: key);
 
   @override
-  State<CommentPage> createState() => _CommentPageState();
+  State<CommentTest> createState() => _CommentTestState();
 }
 
-class _CommentPageState extends State<CommentPage> {
+class _CommentTestState extends State<CommentTest> {
   CommentViewModel _viewModel = instance<CommentViewModel>();
+  late List<Comment>? comments = [];
   AppPreferences appPreferences = instance<AppPreferences>();
   TextEditingController _commentController = TextEditingController();
-  int currentPage = 1;
-  late List<Comment>? comment = [];
   late int totalPage;
   String sign = "";
-  static const routeName = '/extractArguments';
-  
 
+  int currentPage = 1;
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-  final _formKey = GlobalKey<FormState>();
-  String title1 = "";
   @override
   void initState() {
     _bind();
-    
-    
-
     super.initState();
   }
 
@@ -65,190 +56,28 @@ class _CommentPageState extends State<CommentPage> {
   }
 
   @override
-  void dispose() {
-    _viewModel.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final args = ModalRoute.of(context)!.settings.arguments as Post;
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          toolbarHeight: MediaQuery.of(context).size.height / AppSize.s2_5,
-          flexibleSpace: Column(
-            children: [
-              Stack(children: [
-                Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(AppSize.s12),
-                      gradient: LinearGradient(
-                        colors: [
-                          Colors.white,
-                          Colors.grey.shade300,
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      )),
-                  height: MediaQuery.of(context).size.height / AppSize.s2_4,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Card(
-                        elevation: AppSize.s4,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(AppSize.s12),
-                            side: BorderSide(
-                                color: ColorManager.white,
-                                width: AppSize.s1_5)),
-                        child: Container(
-                          height:
-                              MediaQuery.of(context).size.height / AppSize.s2_6,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                height: AppSize.s12,
-                              ),
-                              Row(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.all(AppMargin.m8),
-                                        child: SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              AppSize.s2,
-                                          child: Container(
-                                            margin:
-                                                EdgeInsets.all(AppMargin.m8),
-                                            child: Text(args.title.toString(),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headline1),
-                                          ),
-                                        ),
-                                      ),
-                                      Container(
-                                          child: Text(
-                                        args.date.substring(8, 10) +
-                                              '-' +
-                                              args
-                                                  .date
-                                                  .substring(5, 7) +
-                                              '-' +
-                                              args
-                                                  .date
-                                                  .substring(0, 4) +
-                                              ' ' +
-                                              args
-                                                  .date
-                                                  .substring(11, 16),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2,
-                                      ))
-                                    ],
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                  margin: EdgeInsets.all(AppMargin.m8),
-                                  width: MediaQuery.of(context).size.width,
-                                  height: MediaQuery.of(context).size.height /
-                                      AppSize.s6_8,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(AppMargin.m8),
-                                    child: Text(
-                                      args.content,
-                                      style: TextStyle(fontSize: FontSize.s14),
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: AppSize.s40,
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(AppMargin.m8),
-                                    child: SizedBox(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  AppSize.s8,
-                                              child: Icon(
-                                                Icons.visibility,
-                                                size: AppSize.s28,
-                                              )),
-                                          Container(
-                                            child: Text(
-                                              args.viewCount.toString(),
-                                              style: TextStyle(
-                                                  fontSize: FontSize.s16),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: AppSize.s160,
-                                  ),
-                                  Expanded(
-                                    child: Container(
-                                      child: Center(
-                                        child: Text(
-                                          args.sign,
-                                          style:
-                                              TextStyle(fontSize: FontSize.s15),
-                                        ),
-                                      ),
-                                    ),
-                                  )
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ]),
-              /*SizedBox(
-                height: 18,
-              ),*/
-              /*Text(
-                "Önceki Paylaşımlarım",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-              SizedBox(
-                height: 10,
-              ),*/
-            ],
-          ),
+      
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          "Yorumlar",
+          style: Theme.of(context).textTheme.headline2,
         ),
-        body: Container(
-          child: StreamBuilder<FlowState>(
-            stream: _viewModel.outputState,
-            builder: (context, snapshot) {
-              return snapshot.data
-                      ?.getScreenWidget(context, _getContentWidget(), () {
-                    _viewModel.start();
-                  }) ??
-                  Container();
-            },
-          ),
-        ));
+      ),
+      body: Container(
+        child: StreamBuilder<FlowState>(
+          stream: _viewModel.outputState,
+          builder: (context, snapshot) {
+            return snapshot.data
+                    ?.getScreenWidget(context, _getContentWidget(), () {}) ??
+                Container();
+          },
+        ),
+      ),
+    );
   }
 
   Widget _getContentWidget() {
@@ -260,7 +89,7 @@ class _CommentPageState extends State<CommentPage> {
         stream: _viewModel.outputComments,
         builder: (context, snapshot) {
           if (snapshot.data != null) {
-            comment?.addAll(snapshot.data!);
+            comments?.addAll(snapshot.data!);
           } else {}
           return _getCommentWidget(snapshot.data);
         });
@@ -273,138 +102,9 @@ class _CommentPageState extends State<CommentPage> {
         child: Column(
           children: [
             Expanded(
-              //height: MediaQuery.of(context).size.height,
-              //margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
-              child: SmartRefresher(
-                controller: _refreshController,
-                header: WaterDropHeader(),
-                footer: CustomFooter(
-                    builder: (BuildContext context, LoadStatus? mode) {
-                  Widget body;
-                  if (mode == LoadStatus.idle) {
-                    body = Text(AppStrings.loading.tr());
-                  } else if (mode == LoadStatus.loading) {
-                    body = CupertinoActivityIndicator();
-                  } else if (mode == LoadStatus.failed) {
-                    body = Text(AppStrings.failed.tr());
-                  } else if (mode == LoadStatus.canLoading) {
-                    body = Text(AppStrings.release.tr());
-                  } else {
-                    body = Text(AppStrings.noMoreSecret.tr());
-                  }
-                  return Container(
-                    height: 55.0,
-                    child: Center(child: body),
-                  );
-                }),
-                enablePullDown: true,
-                enablePullUp: true,
-                onRefresh: () {
-                  comment = [];
-                  currentPage = 1;
-                  resetHomeModule();
-                  _viewModel.refresh();
-                  initHomeModule();
-                  initProfileModule();
-                  initCommentModule();
-                  _refreshController.refreshCompleted();
-                },
-                onLoading: () async {
-                  await Future.delayed(Duration(seconds: 1));
-                  if (currentPage < totalPage) {
-                    currentPage++;
-
-                    appPreferences.setPage(currentPage);
-                    _viewModel.getOtherPages();
-
-                    _refreshController.loadComplete();
-                  } else if (currentPage == totalPage) {
-                    _refreshController.loadNoData();
-                  }
-                },
-                child: ListView(
-                  reverse: false,
-                  scrollDirection: Axis.vertical,
-                  children: data
-                      .map((comment) => Card(
-                            elevation: AppSize.s4,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(AppSize.s12),
-                                side: BorderSide(
-                                    color: ColorManager.white,
-                                    width: AppSize.s1_5)),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height /
-                                  AppSize.s6,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        width: MediaQuery.of(context).size.width / AppSize.s1_4,
-                                          margin: EdgeInsets.all(AppMargin.m8),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(
-                                                AppMargin.m10),
-                                            child: Text(
-                                              comment.data,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText2,
-                                            ),
-                                          )),
-                                      PopupMenuButton(onSelected: (value) {
-                                        if (value.toString() == "/complaint") {
-                                          showAlertDialog(context);
-                                        } else if (value.toString() ==
-                                            "/delete") {
-                                          showDeleteAlertDialog(context,
-                                              comment.secretId, comment.id);
-                                        }
-                                      }, itemBuilder: (BuildContext bc) {
-                                        if (comment.sign == sign) {
-                                          return [
-                                            PopupMenuItem(
-                                              child: Text("Sil"),
-                                              value: "/delete",
-                                            )
-                                          ];
-                                        } else {
-                                          return [
-                                            PopupMenuItem(
-                                              child: Text("Şikayet Et"),
-                                              value: "/complaint",
-                                            ),
-                                          ];
-                                        }
-                                      })
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: AppSize.s10,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.all(AppMargin.m12),
-                                        child: Text(comment.sign),
-                                      )
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ))
-                      .toList(),
-                ),
-              ),
-            ),
+                //height: MediaQuery.of(context).size.height,
+                //margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
+                child: commentSmartRefresher(data)),
             Align(
                 alignment: Alignment.bottomLeft,
                 child: Container(
@@ -421,10 +121,12 @@ class _CommentPageState extends State<CommentPage> {
                               stream: _viewModel.outputIsCommentValid,
                               builder: (context, snapshot) {
                                 return TextFormField(
-                                  autofocus: true,
+                                  autofocus: false,
                                   controller: _commentController,
                                   style: Theme.of(context).textTheme.bodyText2,
+                                  maxLength: 500,
                                   decoration: InputDecoration(
+
                                       hintText: AppStrings.comment.tr(),
                                       hintStyle:
                                           Theme.of(context).textTheme.bodyText1,
@@ -433,9 +135,10 @@ class _CommentPageState extends State<CommentPage> {
                                               color: ColorManager.primary),
                                           borderRadius: BorderRadius.circular(
                                               AppSize.s24)),
-                                      errorText: (snapshot.data ?? false)
-                                          ? null
-                                          : AppStrings.commentError.tr()),
+                                      //errorText: (snapshot.data ?? false)
+                                        //  ? null
+                                          //: AppStrings.commentError.tr()
+                                          ),
                                 );
                               })),
                       SizedBox(
@@ -498,8 +201,9 @@ class _CommentPageState extends State<CommentPage> {
             foregroundColor: MaterialStateProperty.resolveWith(
                 (state) => ColorManager.primary)),
         onPressed: () {
-          _viewModel.commentDeleteController
-              .add(_viewModel.setCommentId(secretId, commentId));
+          _viewModel.setCommentId(secretId, commentId);
+         // _viewModel.commentDeleteController
+            //  .add(_viewModel.setCommentId(secretId, commentId));
 
           _viewModel.deleteComment();
         },
@@ -537,5 +241,269 @@ class _CommentPageState extends State<CommentPage> {
         builder: (BuildContext context) {
           return alertDialog;
         });
+  }
+
+  Widget commentSmartRefresher(List<Comment>? data) {
+    return SmartRefresher(
+      controller: _refreshController,
+      header: WaterDropHeader(),
+      footer: CustomFooter(builder: (BuildContext context, LoadStatus? mode) {
+        Widget body;
+        if (mode == LoadStatus.idle) {
+          body = Text(AppStrings.loading.tr());
+        } else if (mode == LoadStatus.loading) {
+          body = CupertinoActivityIndicator();
+        } else if (mode == LoadStatus.failed) {
+          body = Text(AppStrings.failed.tr());
+        } else if (mode == LoadStatus.canLoading) {
+          body = Text(AppStrings.release.tr());
+        } else {
+          body = Text(AppStrings.noMoreSecret.tr());
+        }
+        return Container(
+          height: 55.0,
+          child: Center(child: body),
+        );
+      }),
+      enablePullDown: true,
+      enablePullUp: true,
+      onRefresh: () {
+        comments = [];
+        currentPage = 1;
+        resetHomeModule();
+        _viewModel.refresh();
+        initHomeModule();
+        initProfileModule();
+        initCommentModule();
+        _refreshController.refreshCompleted();
+      },
+      onLoading: () async {
+        await Future.delayed(Duration(seconds: 1));
+        if (currentPage < totalPage) {
+          currentPage++;
+
+          appPreferences.setPage(currentPage);
+          _viewModel.getOtherPages();
+
+          _refreshController.loadComplete();
+        } else if (currentPage == totalPage) {
+          _refreshController.loadNoData();
+        }
+      },
+      child: ListView(
+        reverse: false,
+        scrollDirection: Axis.vertical,
+        children: data!.map((comment) => commentCard(comment)).toList(),
+      ),
+    );
+  }
+
+  Widget commentCard(Comment comment) {
+    return Card(
+      elevation: AppSize.s4,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppSize.s12),
+          side: BorderSide(color: ColorManager.white, width: AppSize.s1_5)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              PopupMenuButton(onSelected: (value) {
+                if (value.toString() == "/complaint") {
+                  showAlertDialog(context);
+                } else if (value.toString() == "/delete") {
+                  showDeleteAlertDialog(context, comment.secretId, comment.id);
+                }
+              }, itemBuilder: (BuildContext bc) {
+                if (comment.sign == sign) {
+                  return [
+                    PopupMenuItem(
+                      child: Text("Sil"),
+                      value: "/delete",
+                    )
+                  ];
+                } else {
+                  return [
+                    PopupMenuItem(
+                      child: Text("Şikayet Et"),
+                      value: "/complaint",
+                    ),
+                  ];
+                }
+              })
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                top: 2,
+                left: AppMargin.m12,
+                right: AppMargin.m12,
+                bottom: AppMargin.m8),
+            child: Container(
+              child: Text(comment.data,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyText2!
+                      .copyWith(fontSize: FontSize.s15)),
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.width / 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: AppMargin.m10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Column(
+                  children: [
+                    Text("@" + comment.sign,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(fontSize: FontSize.s14)),
+                    Text(
+                        comment.date.substring(8, 10) +
+                            '-' +
+                            comment.date.substring(5, 7) +
+                            '-' +
+                            comment.date.substring(2, 4) +
+                            ' ' +
+                            comment.date.substring(11, 16),
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText2!
+                            .copyWith(fontSize: FontSize.s12)),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).size.width / 20,
+          ),
+
+          /* Expanded(
+                                           child: Container(
+                                              child: Text(
+                                            posts[index].date.substring(8, 10) +
+                                                '-' +
+                                                posts[index]
+                                                    .date
+                                                    .substring(5, 7) +
+                                                '-' +
+                                                posts[index]
+                                                    .date
+                                                    .substring(2, 4) +
+                                                ' ' +
+                                                posts[index]
+                                                    .date
+                                                    .substring(11, 16),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText2!.copyWith(color: ColorManager.darkGrey),
+                                                                                 )),
+                                         ),*/
+        ],
+      ), /*Card(
+            elevation: AppSize.s4,
+                    shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(AppSize.s12),
+                                side: BorderSide(
+                                    color: ColorManager.white,
+                                    width: AppSize.s1_5)),
+                            
+                              
+                              child: Container(
+                                
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Spacer(),
+                                    Expanded(flex : 60,child : Row(
+                                      children: [
+                                        Spacer(),
+                                        Expanded(flex:40,child: Text("abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh  aabcedfgh  abcedfgh abcedfgha")),
+                                        Spacer()
+                                      ],
+                                    )),
+                                    Expanded(
+                                      child: Row(
+                                        mainAxisAlignment : MainAxisAlignment.end,
+                                        children: [
+                                        Expanded(child:Column(
+                                          children: [
+                                          Text("grkmzdmr"),
+                                          Text("25-05-44"),
+
+                                        ],))
+                                      ],),
+                                    ),
+                                    Spacer(flex :20),*/
+
+      /*Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                AppSize.s1_4,
+                                            margin: EdgeInsets.all(AppMargin.m8),
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(
+                                                  AppMargin.m10),
+                                              child: Text(
+                                                comment.data,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText2,
+                                              ),
+                                            )),
+                                        PopupMenuButton(onSelected: (value) {
+                                          if (value.toString() == "/complaint") {
+                                            showAlertDialog(context);
+                                          } else if (value.toString() ==
+                                              "/delete") {
+                                            showDeleteAlertDialog(context,
+                                                comment.secretId, comment.id);
+                                          }
+                                        }, itemBuilder: (BuildContext bc) {
+                                          if (comment.sign == sign) {
+                                            return [
+                                              PopupMenuItem(
+                                                child: Text("Sil"),
+                                                value: "/delete",
+                                              )
+                                            ];
+                                          } else {
+                                            return [
+                                              PopupMenuItem(
+                                                child: Text("Şikayet Et"),
+                                                value: "/complaint",
+                                              ),
+                                            ];
+                                          }
+                                        })
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: AppSize.s10,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.all(AppMargin.m12),
+                                          child: Text(comment.sign),
+                                        )
+                                      ],
+                                    )*/
+    );
   }
 }

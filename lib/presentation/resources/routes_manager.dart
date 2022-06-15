@@ -1,7 +1,9 @@
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/presentation/add_secret/add_secret.dart';
 import 'package:not_so_secret/presentation/comment/comment_page.dart';
+import 'package:not_so_secret/presentation/comment/comment_page.dart';
 import 'package:not_so_secret/presentation/login/login.dart';
+import 'package:not_so_secret/presentation/main/home/contactus_page.dart';
 
 import 'package:not_so_secret/presentation/main/home/settings_page.dart';
 import 'package:not_so_secret/presentation/main/main_view.dart';
@@ -23,6 +25,7 @@ class Routes {
   static const String settingsRoute = "/settings";
   static const String addSecretRoute = "/addSecret";
   static const String commentRoute = "/comment";
+  static const String aboutusRoute = "/aboutUs";
 }
 
 class RouteGenerator {
@@ -32,6 +35,7 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SplashView());
       case Routes.loginRoute:
         initLoginModule();
+        initProfileModule();
         return MaterialPageRoute(builder: (_) => LoginView());
       case Routes.onBoardingRoute:
         return MaterialPageRoute(builder: (_) => OnBoardingView());
@@ -52,9 +56,13 @@ class RouteGenerator {
         initSendSecretModule();
 
         return MaterialPageRoute(builder: (_) => AddSecret());
+       case Routes.aboutusRoute:
+        
+
+        return MaterialPageRoute(builder: (_) => ContactUs());  
       case Routes.commentRoute:
         initCommentModule();
-        return MaterialPageRoute(builder: (_) => CommentPage());
+        return MaterialPageRoute(builder: (_) => CommentTest());
       default:
         return unDefinedRoute();
     }

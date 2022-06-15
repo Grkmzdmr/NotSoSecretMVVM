@@ -111,11 +111,11 @@ class AddSecretViewModel extends BaseViewModel
   }
 
   _isTextValid(String text) {
-    return text.isNotEmpty && text.length <= 280;
+    return text.isNotEmpty && text.length <= 2000;
   }
 
   _isTitleValid(String title) {
-    return title.isNotEmpty && title.length <= 20;
+    return title.isNotEmpty && title.length <= 128;
   }
 
   _isAllInputsValid() {

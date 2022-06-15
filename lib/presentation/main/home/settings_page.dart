@@ -27,6 +27,7 @@ class _SettingsPageState extends State<SettingsPage> {
     String _title = AppStrings.settings.tr();
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -72,11 +73,18 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
           ListTile(
             title: Text(AppStrings.logOut.tr(),
-                style: Theme.of(context).textTheme.headline3),
-            leading: Icon(Icons.logout),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline3!
+                    .copyWith(color: Colors.red)),
+            leading: Icon(
+              Icons.logout,
+              color: Colors.red,
+            ),
             trailing: Icon(
               Icons.arrow_forward_ios,
               size: AppSize.s20,
+              color: Colors.red,
             ),
             onTap: () {
               showAlertDialogLogOut(context);
@@ -92,18 +100,17 @@ class _SettingsPageState extends State<SettingsPage> {
     Phoenix.rebirth(context); //restart to apply language changes
   }
 
-  void _contactUs() {}
+  void _contactUs() {
+    Navigator.pushNamed(context, Routes.aboutusRoute);
+  }
+
   void _inviteFriends() {}
   void _logOut() {
     _appPreferences.logout();
 
     _localDataSource.clearCache();
-    
 
-Navigator.of(context).pushReplacementNamed(
-        Routes.loginRoute);
-    
-    
+    Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
   }
 
   showAlertDialog(BuildContext context) {

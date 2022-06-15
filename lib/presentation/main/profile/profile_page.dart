@@ -3,33 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
-import 'package:not_so_secret/data/network/dio_factory.dart';
 import 'package:not_so_secret/domain/model/model.dart';
 import 'package:not_so_secret/presentation/common/state_renderer/state_render_impl.dart';
+
 import 'package:not_so_secret/presentation/main/profile/profile_viewmodel.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
+import 'package:not_so_secret/presentation/resources/font_manager.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:not_so_secret/presentation/resources/values_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:easy_localization/easy_localization.dart';
 
-class PersonPage extends StatefulWidget {
-  const PersonPage({Key? key}) : super(key: key);
+class ProfilePageTest extends StatefulWidget {
+  const ProfilePageTest({Key? key}) : super(key: key);
 
   @override
-  State<PersonPage> createState() => _PersonPageState();
+  State<ProfilePageTest> createState() => _ProfilePageTestState();
 }
 
-class _PersonPageState extends State<PersonPage> {
+class _ProfilePageTestState extends State<ProfilePageTest> {
   ProfileViewModel _viewModel = instance<ProfileViewModel>();
   AppPreferences _appPreferences = instance<AppPreferences>();
-
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
   int currentPage = 1;
   late List<Post>? post = [];
   late int totalPage;
-
   @override
   void initState() {
     _bind();
@@ -51,117 +50,20 @@ class _PersonPageState extends State<PersonPage> {
     super.dispose();
   }
 
-  showAlertDialog(BuildContext context, int secretId) {
-    Widget sureButton = new TextButton(
-        style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.resolveWith(
-                (state) => ColorManager.primary)),
-        onPressed: () {
-          _viewModel.postsdeleteController
-              .add(_viewModel.setSecretId(secretId));
-          _viewModel.deleteSecret();
-        },
-        child: Text(AppStrings.yes.tr(),
-            style: Theme.of(context).textTheme.bodyText2));
-    Widget notsureButton = new TextButton(
-        style: ButtonStyle(
-            foregroundColor: MaterialStateProperty.resolveWith(
-                (state) => ColorManager.primary)),
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        child: Text(
-          AppStrings.no.tr(),
-          style: Theme.of(context).textTheme.bodyText2,
-        ));
-
-    AlertDialog alertDialog = AlertDialog(
-      titlePadding: EdgeInsets.only(left: AppSize.s30, top: AppSize.s20),
-      scrollable: true,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(AppSize.s24))),
-      title: Text(
-        AppStrings.delete.tr(),
-        style: Theme.of(context).textTheme.headline1,
-      ),
-      content: Text(
-        AppStrings.sure.tr(),
-        style: Theme.of(context).textTheme.bodyText2,
-      ),
-      actions: [sureButton, notsureButton],
-    );
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alertDialog;
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          toolbarHeight: MediaQuery.of(context).size.height / AppSize.s3_5,
-          flexibleSpace: Column(
-            children: [
-              Stack(children: [
-                Container(
-                  decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                    colors: [
-                      Colors.white,
-                      Colors.grey.shade300,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  )),
-                  height: MediaQuery.of(context).size.height / AppSize.s3_6,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipRRect(
-                              borderRadius: BorderRadius.circular(AppSize.s48),
-                              child: Text(
-                                "?",
-                                style: TextStyle(
-                                    color: ColorManager.primary,
-                                    fontSize: AppSize.s60),
-                              )),
-                        ],
-                      ),
-                      StreamBuilder<String>(
-                          stream: _viewModel.outputPersonsUsername,
-                          builder: (context, snapshot) {
-                            return Container(
-                                width: MediaQuery.of(context).size.width /
-                                    AppSize.s2,
-                                child: Center(
-                                    child: Text(
-                                  "@" + snapshot.data.toString(),
-                                  style: Theme.of(context).textTheme.bodyText2,
-                                )));
-                          })
-                    ],
-                  ),
-                ),
-              ]),
-              /*SizedBox(
-                height: 18,
-              ),*/
-              /*Text(
-                "Önceki Paylaşımlarım",
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-              SizedBox(
-                height: 10,
-              ),*/
-            ],
-          ),
-        ),
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [
+            SliverAppBar(
+                floating: true,
+                snap: true,
+                expandedHeight: MediaQuery.of(context).size.height / 3.1,
+                flexibleSpace: Container(
+                    color: ColorManager.white, child: _getUpContentWidget()))
+          ];
+        },
         body: Container(
             child: StreamBuilder<FlowState>(
           stream: _viewModel.outputState,
@@ -172,7 +74,98 @@ class _PersonPageState extends State<PersonPage> {
                 }) ??
                 Container();
           },
-        )));
+        )),
+      ),
+    );
+  }
+
+  Widget _getUpContentWidget() {
+    return _getUserInfo();
+  }
+
+  Widget _getUserInfo() {
+    return StreamBuilder<UserInfo>(
+        stream: _viewModel.outputUserInfo,
+        builder: (context, snapshot) {
+          return _getUserInfoWidget(snapshot.data);
+        });
+  }
+
+  Widget _getUserInfoWidget(UserInfo? user) {
+    if (user != null) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Spacer(flex: 3),
+          Expanded(
+            flex: 24,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(AppSize.s48),
+                child: Text(
+                  "?",
+                  style: TextStyle(
+                      color: ColorManager.primary, fontSize: AppSize.s60),
+                )),
+          ),
+          Spacer(),
+          StreamBuilder<String>(
+              stream: _viewModel.outputPersonsUsername,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Expanded(
+                      flex: 8,
+                      child: Text("@" + snapshot.data.toString(),
+                          style: Theme.of(context).textTheme.bodyText2));
+                } else {
+                  return Container();
+                }
+              }),
+          Spacer(flex: 2),
+          Expanded(
+            flex: 25,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Expanded(
+                  flex: 10,
+                  child: Column(children: [
+                    Expanded(
+                        child: Text("Secret Sayısı",
+                            style: Theme.of(context).textTheme.headline4)),
+                    Expanded(
+                        child: Text(user.secretCount.toString(),
+                            style: Theme.of(context).textTheme.bodyText2)),
+                    Spacer(),
+                  ]),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Column(
+                    children: [
+                      Expanded(
+                          child: Text("Yapılan Yorum",
+                              style: Theme.of(context).textTheme.headline4)),
+                      Expanded(
+                          child: Text(user.commentCount.toString(),
+                              style: Theme.of(context).textTheme.bodyText2)),
+                      Spacer()
+                    ],
+                  ),
+                ),
+                Spacer()
+              ],
+            ),
+          ),
+          Expanded(
+            flex: 8,
+            child: Text("Paylaştığım Secretlar"),
+          ),
+          Spacer(flex: 3)
+        ],
+      );
+    } else {
+      return Container();
+    }
   }
 
   Widget _getContentWidget() {
@@ -239,7 +232,7 @@ class _PersonPageState extends State<PersonPage> {
 
                     _appPreferences.setPage(currentPage);
                     _viewModel.getOtherPages();
-                    
+
                     _refreshController.loadComplete();
                   } else if (currentPage == totalPage) {
                     _refreshController.loadNoData();
@@ -252,128 +245,106 @@ class _PersonPageState extends State<PersonPage> {
                     scrollDirection: Axis.vertical,
                     itemBuilder: (context, index) {
                       return InkWell(
-                        onTap : () {
+                          onTap: () {
                             _appPreferences.setPost(posts[index].id);
-                            
 
-                            Navigator.pushNamed(context, "/comment",arguments: posts[index]);
+                            Navigator.pushNamed(context, "/comment",
+                                arguments: posts[index]);
                           },
-                        child: Card(
-                          elevation: AppSize.s4,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(AppSize.s12),
-                              side: BorderSide(
-                                  color: ColorManager.white,
-                                  width: AppSize.s1_5)),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(AppMargin.m8),
-                                    child: SizedBox(
-                                      width: MediaQuery.of(context).size.width /
-                                          AppSize.s2_2,
-                                      child: Container(
-                                        margin: EdgeInsets.all(AppMargin.m8),
-                                        child: Text(posts[index].title.toString(),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline1),
+                          child: Card(
+                              elevation: AppSize.s4,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(AppSize.s12),
+                                  side: BorderSide(
+                                      color: ColorManager.white,
+                                      width: AppSize.s1_5)),
+                              child: ListTile(
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    showAlertDialog(context, posts[index].id);
+                                  },
+                                ),
+                                horizontalTitleGap: 6,
+                                minVerticalPadding: 24,
+                                //trailing : IconButton(icon: Icon(Icons.more_vert),onPressed: (){},),
+                                title: Text(posts[index].title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle2!
+                                        .copyWith(fontSize: FontSize.s17)),
+
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        posts[index].content,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .subtitle1,
+                                        textAlign: TextAlign.left,
                                       ),
-                                    ),
+                                      Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 16.0),
+                                          child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      2.5,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.visibility,
+                                                        size: AppSize.s30,
+                                                      ),
+                                                      Text(
+                                                        posts[index]
+                                                            .viewCount
+                                                            .toString(),
+                                                        style: Theme.of(context)
+                                                            .textTheme
+                                                            .subtitle2!
+                                                            .copyWith(
+                                                              fontSize:
+                                                                  FontSize.s15,
+                                                            ),
+                                                      ),
+                                                      Icon(Icons.comment,
+                                                          size: AppSize.s30),
+                                                      Text(
+                                                          posts[index]
+                                                              .commentCount
+                                                              .toString(),
+                                                          style:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .subtitle2!
+                                                                  .copyWith(
+                                                                    fontSize:
+                                                                        FontSize
+                                                                            .s15,
+                                                                  ))
+                                                    ],
+                                                  ),
+                                                ),
+                                              ])),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(AppMargin.m8),
-                                    child: StreamBuilder<Object>(
-                                        builder: (context, snapshot) {
-                                      return Container(
-                                          width: AppSize.s40,
-                                          child: IconButton(
-                                              onPressed: () {
-                                                /*_viewModel
-                                                        .postsdeleteController
-                                                        .add(_viewModel
-                                                            .setSecretId(
-                                                                post.id));
-                                                    
-                                                    _viewModel.deleteSecret();*/
-                                                showAlertDialog(context, posts[index].id);
-                                              },
-                                              icon: Icon(
-                                                Icons.delete,
-                                              )));
-                                    }),
-                                  )
-                                ],
-                              ),
-                              Container(
-                                  margin: EdgeInsets.all(AppMargin.m8),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(AppMargin.m10),
-                                    child: Text(
-                                      posts[index].content,
-                                      style:
-                                          Theme.of(context).textTheme.bodyText2,
-                                    ),
-                                  )),
-                              SizedBox(
-                                height: AppSize.s10,
-                              ),
-                              Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(AppMargin.m8),
-                                    child: SizedBox(
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  AppSize.s8,
-                                              child: Icon(Icons.visibility)),
-                                          Container(
-                                            child:
-                                                Text(posts[index].viewCount.toString()),
-                                          ),
-                                          Container(
-                                            child: IconButton(
-                                              icon: Icon(Icons.comment),
-                                              onPressed: () {},
-                                            ),
-                                          ),
-                                          Container(
-                                            child: Text(
-                                                posts[index].commentCount.toString()),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: AppSize.s160,
-                                  ),
-                                  /*Expanded(
-                                        child: Container(
-                                          child: Center(
-                                            child: Text("@"+
-                                              post.sign,
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyText1,
-                                            ),
-                                          ),
-                                        ),
-                                      )*/
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                      );
+                                ),
+                              )));
                     }),
               ),
             ),
@@ -384,4 +355,150 @@ class _PersonPageState extends State<PersonPage> {
       return Container();
     }
   }
+
+  showAlertDialog(BuildContext context, int secretId) {
+    Widget sureButton = new TextButton(
+        style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.resolveWith(
+                (state) => ColorManager.primary)),
+        onPressed: () {
+          _viewModel.setSecretId(secretId);
+          _viewModel.deleteSecret();
+        },
+        child: Text(AppStrings.yes.tr(),
+            style: Theme.of(context).textTheme.bodyText2));
+    Widget notsureButton = new TextButton(
+        style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.resolveWith(
+                (state) => ColorManager.primary)),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text(
+          AppStrings.no.tr(),
+          style: Theme.of(context).textTheme.bodyText2,
+        ));
+
+    AlertDialog alertDialog = AlertDialog(
+      titlePadding: EdgeInsets.only(left: AppSize.s30, top: AppSize.s20),
+      scrollable: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s24))),
+      title: Text(
+        AppStrings.delete.tr(),
+        style: Theme.of(context).textTheme.headline1,
+      ),
+      content: Text(
+        AppStrings.sure.tr(),
+        style: Theme.of(context).textTheme.bodyText2,
+      ),
+      actions: [sureButton, notsureButton],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
+  }
 }
+
+
+
+
+
+
+   /* return Container(
+      color: ColorManager.white,
+      child: StreamBuilder<FlowState>(
+          stream: _viewModel.outputState,
+          builder: (context, snapshot) {
+            return snapshot.data?.getScreenWidget(context,_getContentWidget(),
+            (){
+              _viewModel.start();
+            }) ?? 
+            Container();
+            
+          }),
+    );
+  }
+  Widget _getContentWidget(){
+    return _getUserInfo();
+
+  }
+  Widget _getUserInfo(){
+    return StreamBuilder<UserInfo>(
+      stream : 
+    )
+      Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Spacer(flex: 3),
+                Expanded(
+                  flex: 20,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(AppSize.s48),
+                      child: Text(
+                        "?",
+                        style: TextStyle(
+                            color: ColorManager.primary, fontSize: AppSize.s60),
+                      )),
+                ),
+                Spacer(),
+                Expanded(
+                    flex: 10,
+                    child: Text("@Grkmzdmr",
+                        style: Theme.of(context).textTheme.bodyText2)),
+                Spacer(flex: 2),
+                Expanded(
+                  flex: 25,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex: 10,
+                        child: Column(children: [
+                          Expanded(
+                              child: Text("Secret Sayısı",
+                                  style:
+                                      Theme.of(context).textTheme.headline4)),
+                          Expanded(
+                              child: Text("3",
+                                  style:
+                                      Theme.of(context).textTheme.bodyText2)),
+                          Spacer(),
+                        ]),
+                      ),
+                      Spacer(),
+                      Expanded(
+                        flex: 10,
+                        child: Column(
+                          children: [
+                            Expanded(
+                                child: Text("Gelen Yorum Sayısı",
+                                    style:
+                                        Theme.of(context).textTheme.headline4)),
+                            Expanded(
+                                child: Text(
+                                   "3",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2)),
+                            Spacer()
+                          ],
+                        ),
+                      ),
+                      Spacer()
+                    ],
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Text("Paylaştığım Secretlar"),
+                ),
+                Spacer()
+              ],
+            );
+    
+  }
+  }
+}*/
+

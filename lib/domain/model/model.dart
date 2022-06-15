@@ -85,9 +85,28 @@ class HomeObject {
   HomeObject(this.data);
 }
 
+class UserInfo {
+  int secretCount;
+  int commentCount;
+  UserInfo(this.commentCount, this.secretCount);
+}
+
+class ProfileUserInfo {
+  UserInfo userInfo;
+
+  ProfileUserInfo(this.userInfo);
+}
+
+class ProfileUserInfoObject {
+  ProfileUserInfo data;
+
+  ProfileUserInfoObject(this.data);
+}
+
 class ProfileData {
   List<Post> posts;
   UserData userData;
+
   ProfileData(this.posts, this.userData);
 }
 

@@ -182,7 +182,7 @@ void start() {
   // TODO: implement start
 }
 _isCommentValid(String comment) {
-  return comment.length <= 70;
+  return comment.length <= 500;
 }
 
 abstract class CommentViewModelInput {

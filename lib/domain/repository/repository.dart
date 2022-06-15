@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:not_so_secret/data/network/failure.dart';
 import 'package:not_so_secret/data/request/request.dart';
+import 'package:not_so_secret/presentation/common/freezed_data_classes.dart';
 
 
 import '../model/model.dart';
@@ -16,5 +17,6 @@ abstract class Repository {
   Future<Either<Failure, ProfileObject>> deleteSecret(int id);
   Future<Either<Failure, Comment>> sendComment(AddCommentRequest addCommentRequest);
   Future<Either<Failure, Comment>> deleteComment(int secretId,int commentId);
+  Future<Either<Failure,ProfileUserInfoObject>> getUserInfo();
  
 }

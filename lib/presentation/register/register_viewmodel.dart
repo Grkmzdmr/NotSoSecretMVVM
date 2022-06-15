@@ -82,7 +82,7 @@ class RegisterViewModel extends BaseViewModel
                 }, (data) {
       inputState.add(ContentState()); // navigate to main screen after the login
       //succes
-      isUserLoggedInSuccessfullyStreamController.add(data.userData?.token.toString());
+     
     });
   }
 

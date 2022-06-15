@@ -1,4 +1,5 @@
-import 'package:data_connection_checker/data_connection_checker.dart';
+
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/data/data_source/local_data_source.dart';
 import 'package:not_so_secret/data/data_source/remote_data_source.dart';
@@ -36,7 +37,7 @@ Future<void> initAppModule() async {
 
   //network info
   instance.registerLazySingleton<NetworkInfo>(
-      () => NetworkInfoImplementer(DataConnectionChecker()));
+      () => NetworkInfoImplementer(InternetConnectionChecker()));
 
   //dio factory
   instance.registerLazySingleton<DioFactory>(() => DioFactory(instance()));

@@ -8,7 +8,7 @@ part of 'app_api.dart';
 
 class _AppServiceClient implements AppServiceClient {
   _AppServiceClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://localhost:5201/';
+    baseUrl ??= 'http://192.168.0.12:5201';
   }
 
   final Dio _dio;
@@ -118,7 +118,7 @@ class _AppServiceClient implements AppServiceClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<CommentResponse>(
             Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-                .compose(_dio.options, 'secret/comment/add',
+                .compose(_dio.options, '/secret/comment/add',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CommentResponse.fromJson(_result.data!);
@@ -134,7 +134,7 @@ class _AppServiceClient implements AppServiceClient {
         _setStreamType<CommentDataResponse>(
             Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
                 .compose(_dio.options,
-                    'secret/receive/comments/$secretId/$language/$page',
+                    '/secret/receive/comments/$secretId/$language/$page',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CommentDataResponse.fromJson(_result.data!);
@@ -154,6 +154,21 @@ class _AppServiceClient implements AppServiceClient {
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = CommentResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<ProfileUserInfoResponse> getUserInfo() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<ProfileUserInfoResponse>(
+            Options(method: 'GET', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/account/info/',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ProfileUserInfoResponse.fromJson(_result.data!);
     return value;
   }
 
