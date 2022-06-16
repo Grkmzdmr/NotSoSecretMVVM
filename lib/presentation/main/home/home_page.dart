@@ -6,13 +6,13 @@ import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/data/data_source/local_data_source.dart';
 import 'package:not_so_secret/domain/model/model.dart';
-import 'package:not_so_secret/presentation/comment/comment_viewmodel.dart';
+
 import 'package:not_so_secret/presentation/common/state_renderer/state_render_impl.dart';
 
 import 'package:not_so_secret/presentation/main/home/home_viewmodel.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
 import 'package:not_so_secret/presentation/resources/font_manager.dart';
-import 'package:not_so_secret/presentation/resources/routes_manager.dart';
+
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
 import 'package:not_so_secret/presentation/resources/values_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -195,7 +195,7 @@ class _HomePageState extends State<HomePage> {
                                           
                                             return [
                                               PopupMenuItem(
-                                                child: Text("Şikayet Et"),
+                                                child: Text(AppStrings.complaint.tr(),style: Theme.of(context).textTheme.subtitle1?.copyWith(fontSize: FontSize.s14)),
                                                 value: "/complaint",
                                               ),
                                             ];
@@ -300,14 +300,18 @@ class _HomePageState extends State<HomePage> {
     }
   }
   showAlertDialog(BuildContext context) {
+    
     Widget okButton = TextButton(
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("Tamam"));
+        child: Text(AppStrings.ok.tr(),style: Theme.of(context).textTheme.subtitle1?.copyWith(color: ColorManager.primary)));
 
     AlertDialog alert = AlertDialog(
-      content: Text("Şikayetiniz incelenecektir."),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))
+      ),
+      content: Text(AppStrings.complaintText.tr(),style: Theme.of(context).textTheme.subtitle1),
       actions: [okButton],
     );
     showDialog(

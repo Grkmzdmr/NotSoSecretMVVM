@@ -69,5 +69,12 @@
      "commentError" : "70 karakterden küçük olmalı",
      "failed" : "Yeniden deneyiniz",
      "release" : "Daha fazlası için kaydır",
-     "noMoreSecret" : "Henüz daha fazla Secret yok."
+     "noMoreSecret" : "Henüz daha fazla Secret yok.",
+     "countSecret" : "Secret Sayısı",
+     "countComment" : "Yorum Sayısı",
+     "sharedSecrets" : "Paylaştığım Secretlar",
+     "commentAppBar" : "Yorumlar",
+     "complaint" : "Şikayet Et",
+     "complaintText" : "Şikayetiniz İncelenecektir, teşekkür ederiz."
+
 }

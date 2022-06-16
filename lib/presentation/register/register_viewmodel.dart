@@ -16,11 +16,13 @@ class RegisterViewModel extends BaseViewModel
       StreamController<String>.broadcast();
   StreamController _isAllInputsValidStreamController =
       StreamController<void>.broadcast();
-  StreamController isUserLoggedInSuccessfullyStreamController =
-      StreamController<String>();
+  StreamController isUserRegisterInSuccessfullyStreamController =
+      StreamController<bool>();
+  StreamController _isAgreeStreamController =
+      StreamController<bool>.broadcast();
   RegisterUseCase _registerUseCase;
 
-  var registerViewObject = RegisterObject("", "");
+  var registerViewObject = RegisterObject("", "", false);
 
   RegisterViewModel(this._registerUseCase);
 
@@ -34,7 +36,8 @@ class RegisterViewModel extends BaseViewModel
     _userNameStreamController.close();
     _passwordStreamController.close();
     _isAllInputsValidStreamController.close();
-    isUserLoggedInSuccessfullyStreamController.close();
+    isUserRegisterInSuccessfullyStreamController.close();
+    _isAgreeStreamController.close();
     super.dispose();
   }
 
@@ -47,15 +50,20 @@ class RegisterViewModel extends BaseViewModel
 
   @override
   Sink get inputAllInputsValid => _isAllInputsValidStreamController.sink;
+
+  @override
+  Sink get inputCheckBox => _isAgreeStreamController.sink;
 // -- outputs
 
   @override
-  Stream<String?> get outputErrorPassword => outputIsPasswordValid.map(
-      (isPasswordValid) => isPasswordValid ? null : AppStrings.invalidPassword.tr());
+  Stream<String?> get outputErrorPassword =>
+      outputIsPasswordValid.map((isPasswordValid) =>
+          isPasswordValid ? null : AppStrings.invalidPassword.tr());
 
   @override
-  Stream<String?> get outputErrorUserName => outputIsUserNameValid.map(
-      (isUserNameValid) => isUserNameValid ? null : AppStrings.invalidUserName.tr());
+  Stream<String?> get outputErrorUserName =>
+      outputIsUserNameValid.map((isUserNameValid) =>
+          isUserNameValid ? null : AppStrings.invalidUserName.tr());
 
   @override
   Stream<bool> get outputIsPasswordValid => _passwordStreamController.stream
@@ -77,12 +85,12 @@ class RegisterViewModel extends BaseViewModel
         .fold(
             (failure) => {
                   //left -> failure
-                  inputState.add(ErrorState(
-                      StateRendererType.POPUP_ERROR_STATE, AppStrings.alreadyHaveUser.tr()))
+                  inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE,
+                      AppStrings.alreadyHaveUser.tr()))
                 }, (data) {
       inputState.add(ContentState()); // navigate to main screen after the login
       //succes
-     
+      isUserRegisterInSuccessfullyStreamController.add(true);
     });
   }
 
@@ -95,9 +103,16 @@ class RegisterViewModel extends BaseViewModel
     return password.length >= 8;
   }
 
+  _isCheckBoxValid(bool value) {
+    if (value) {
+      return value;
+    }
+  }
+
   bool _validateAllInputs() {
     return registerViewObject.userName.isNotEmpty &&
-        registerViewObject.password.isNotEmpty;
+        registerViewObject.password.isNotEmpty &&
+        registerViewObject.value;
   }
 
   _validate() {
@@ -118,6 +133,15 @@ class RegisterViewModel extends BaseViewModel
   }
 
   @override
+  setCheckBox(bool value) {
+    inputCheckBox.add(value);
+   
+    registerViewObject = registerViewObject.copyWith(value: value);
+   
+    _validate();
+  }
+
+  @override
   setUserName(String userName) {
     inputUserName.add(userName);
     if (_isUserNameValid(userName)) {
@@ -129,16 +153,23 @@ class RegisterViewModel extends BaseViewModel
     }
     _validate();
   }
+
+  @override
+  // TODO: implement _chechBoxStream
+  Stream<bool> get checkBoxStream =>
+      _isAgreeStreamController.stream.map((value) => value);
 }
 
 abstract class RegisterViewModelInput {
   register();
+  setCheckBox(bool value);
   setUserName(String userName);
   setPassword(String password);
 
   Sink get inputUserName;
   Sink get inputPassword;
   Sink get inputAllInputsValid;
+  Sink get inputCheckBox;
 }
 
 abstract class RegisterViewModelOutput {
@@ -146,5 +177,7 @@ abstract class RegisterViewModelOutput {
   Stream<String?> get outputErrorUserName;
   Stream<bool> get outputIsPasswordValid;
   Stream<String?> get outputErrorPassword;
+  Stream<bool> get checkBoxStream;
+
   Stream<bool> get outputIsAllValid;
 }

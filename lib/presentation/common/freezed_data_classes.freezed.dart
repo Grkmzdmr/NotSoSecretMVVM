@@ -165,10 +165,11 @@ abstract class _LoginObject implements LoginObject {
 class _$RegisterObjectTearOff {
   const _$RegisterObjectTearOff();
 
-  _RegisterObject call(String userName, String password) {
+  _RegisterObject call(String userName, String password, bool value) {
     return _RegisterObject(
       userName,
       password,
+      value,
     );
   }
 }
@@ -180,6 +181,7 @@ const $RegisterObject = _$RegisterObjectTearOff();
 mixin _$RegisterObject {
   String get userName => throw _privateConstructorUsedError;
   String get password => throw _privateConstructorUsedError;
+  bool get value => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $RegisterObjectCopyWith<RegisterObject> get copyWith =>
@@ -191,7 +193,7 @@ abstract class $RegisterObjectCopyWith<$Res> {
   factory $RegisterObjectCopyWith(
           RegisterObject value, $Res Function(RegisterObject) then) =
       _$RegisterObjectCopyWithImpl<$Res>;
-  $Res call({String userName, String password});
+  $Res call({String userName, String password, bool value});
 }
 
 /// @nodoc
@@ -207,6 +209,7 @@ class _$RegisterObjectCopyWithImpl<$Res>
   $Res call({
     Object? userName = freezed,
     Object? password = freezed,
+    Object? value = freezed,
   }) {
     return _then(_value.copyWith(
       userName: userName == freezed
@@ -217,6 +220,10 @@ class _$RegisterObjectCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      value: value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -228,7 +235,7 @@ abstract class _$RegisterObjectCopyWith<$Res>
           _RegisterObject value, $Res Function(_RegisterObject) then) =
       __$RegisterObjectCopyWithImpl<$Res>;
   @override
-  $Res call({String userName, String password});
+  $Res call({String userName, String password, bool value});
 }
 
 /// @nodoc
@@ -246,6 +253,7 @@ class __$RegisterObjectCopyWithImpl<$Res>
   $Res call({
     Object? userName = freezed,
     Object? password = freezed,
+    Object? value = freezed,
   }) {
     return _then(_RegisterObject(
       userName == freezed
@@ -256,6 +264,10 @@ class __$RegisterObjectCopyWithImpl<$Res>
           ? _value.password
           : password // ignore: cast_nullable_to_non_nullable
               as String,
+      value == freezed
+          ? _value.value
+          : value // ignore: cast_nullable_to_non_nullable
+              as bool,
     ));
   }
 }
@@ -263,16 +275,18 @@ class __$RegisterObjectCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_RegisterObject implements _RegisterObject {
-  _$_RegisterObject(this.userName, this.password);
+  _$_RegisterObject(this.userName, this.password, this.value);
 
   @override
   final String userName;
   @override
   final String password;
+  @override
+  final bool value;
 
   @override
   String toString() {
-    return 'RegisterObject(userName: $userName, password: $password)';
+    return 'RegisterObject(userName: $userName, password: $password, value: $value)';
   }
 
   @override
@@ -284,14 +298,17 @@ class _$_RegisterObject implements _RegisterObject {
                     .equals(other.userName, userName)) &&
             (identical(other.password, password) ||
                 const DeepCollectionEquality()
-                    .equals(other.password, password)));
+                    .equals(other.password, password)) &&
+            (identical(other.value, value) ||
+                const DeepCollectionEquality().equals(other.value, value)));
   }
 
   @override
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(userName) ^
-      const DeepCollectionEquality().hash(password);
+      const DeepCollectionEquality().hash(password) ^
+      const DeepCollectionEquality().hash(value);
 
   @JsonKey(ignore: true)
   @override
@@ -300,12 +317,15 @@ class _$_RegisterObject implements _RegisterObject {
 }
 
 abstract class _RegisterObject implements RegisterObject {
-  factory _RegisterObject(String userName, String password) = _$_RegisterObject;
+  factory _RegisterObject(String userName, String password, bool value) =
+      _$_RegisterObject;
 
   @override
   String get userName => throw _privateConstructorUsedError;
   @override
   String get password => throw _privateConstructorUsedError;
+  @override
+  bool get value => throw _privateConstructorUsedError;
   @override
   @JsonKey(ignore: true)
   _$RegisterObjectCopyWith<_RegisterObject> get copyWith =>

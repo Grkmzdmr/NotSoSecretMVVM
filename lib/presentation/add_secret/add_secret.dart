@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:not_so_secret/app/app_prefs.dart';
+
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/presentation/add_secret/add_secret_viewmodel.dart';
 import 'package:not_so_secret/presentation/common/state_renderer/state_render_impl.dart';
@@ -19,7 +19,6 @@ class AddSecret extends StatefulWidget {
 
 class _AddSecretState extends State<AddSecret> {
   AddSecretViewModel _viewModel = instance<AddSecretViewModel>();
-  AppPreferences _appPreferences = instance<AppPreferences>();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _textController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
@@ -36,7 +35,6 @@ class _AddSecretState extends State<AddSecret> {
     _viewModel.isSecretSharedSuccessfullyStreamController.stream
         .listen((isPostShared) {
       SchedulerBinding.instance?.addPostFrameCallback((_) {
-        resetHomeModule();
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
       });
     });
@@ -51,6 +49,9 @@ class _AddSecretState extends State<AddSecret> {
   @override
   void dispose() {
     _viewModel.dispose();
+    _textController.dispose();
+    _titleController.dispose();
+    
     super.dispose();
   }
 

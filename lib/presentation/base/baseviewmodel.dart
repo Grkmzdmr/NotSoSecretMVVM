@@ -13,7 +13,6 @@ abstract class BaseViewModel extends BaseViewModelInputs
   Sink get inputState => _inputStateStreamController.sink;
 
   @override
-  // TODO: implement outputState
   Stream<FlowState> get outputState =>
       _inputStateStreamController.stream.map((flowState) => flowState);
 

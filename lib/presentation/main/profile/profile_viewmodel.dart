@@ -24,7 +24,7 @@ class ProfileViewModel extends BaseViewModel
   StreamController pageController = BehaviorSubject<int>();
   AppPreferences _appPreferences = instance<AppPreferences>();
   var profileViewObject = ProfileDeleteObject(0);
-  
+
   LocalDataSource _localDataSource = instance<LocalDataSource>();
   var profilePostObject = ProfilePostsUseCaseInputs(1);
   int currentPage = 1;
@@ -71,7 +71,8 @@ class ProfileViewModel extends BaseViewModel
                       AppStrings.secretcantsend.tr()))
                 }, (data) {
       inputState.add(ContentState());
-      getProfile(); // navigate to main screen after the login
+      getUserInfo();
+      getProfile();
 
       _localDataSource.clearCache();
 
@@ -122,8 +123,8 @@ class ProfileViewModel extends BaseViewModel
   @override
   setSecretId(int secretId) {
     inputPostId.add(secretId);
-    if(secretId != null)
-    profileViewObject = profileViewObject.copyWith(secretId: secretId);
+    if (secretId != null)
+      profileViewObject = profileViewObject.copyWith(secretId: secretId);
   }
 
   @override
@@ -137,11 +138,8 @@ class ProfileViewModel extends BaseViewModel
 
   @override
   getUserInfo() async {
-    (await _profileUseCase
-            .getUserInfo())
-        .fold((failure) {}, (userInfo) {
+    (await _profileUseCase.getUserInfo()).fold((failure) {}, (userInfo) {
       inputUserInfo.add(userInfo.data.userInfo);
-     
     });
   }
 

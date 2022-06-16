@@ -29,7 +29,7 @@ class CommentViewModel extends BaseViewModel
   int postId = 1;
 
   AppPreferences _appPreferences = instance<AppPreferences>();
-  HomeUseCase _homeUseCase = instance<HomeUseCase>();
+  
   CommentUseCase _commentUseCase;
   CommentViewModel(this._commentUseCase);
   @override
@@ -61,34 +61,35 @@ class CommentViewModel extends BaseViewModel
       inputPage.add(commentObject.data.totalPage);
     });
   }
-
+  //inputs
   @override
-  // TODO: implement inputCommentId
   Sink get inputCommentId => commentIdStreamController.sink;
 
   @override
-  // TODO: implement inputCommentText
   Sink get inputCommentText => _commentAddController.sink;
 
   @override
-  // TODO: implement inputPostsComments
   Sink get inputPostsComments => _commentStreamController.sink;
 
   @override
-  // TODO: implement outputCommentId
+  Sink get inputDelete => commentDeleteController.sink;
+
+  @override
+  Sink get inputPage => pageController.sink;
+
+  //outputs
+  @override
   Stream<int> get outputCommentId =>
       commentIdStreamController.stream.map((id) => id);
 
   @override
-  // TODO: implement outputComments
   Stream<List<Comment>> get outputComments =>
       _commentStreamController.stream.map((comment) => comment);
 
   @override
-  // TODO: implement outputIsCommentValid
   Stream<bool> get outputIsCommentValid =>
       _commentAddController.stream.map((comment) => _isCommentValid(comment));
-
+  //functions
   @override
   sendComment() async {
     int id = await _appPreferences.getPost();
@@ -113,7 +114,7 @@ class CommentViewModel extends BaseViewModel
     getComments();
   }
 
-  getPostInfo() {}
+  
 
   @override
   setCommentText(String text) {
@@ -145,9 +146,7 @@ class CommentViewModel extends BaseViewModel
     getComments();
   }
 
-  @override
-  // TODO: implement inputPage
-  Sink get inputPage => pageController.sink;
+  
 
   @override
   deleteComment() async {
@@ -172,15 +171,10 @@ class CommentViewModel extends BaseViewModel
         commentDeleteObject.copyWith(secretId: secretId, commentId: commentId);
   }
 
-  @override
-  // TODO: implement inputDelete
-  Sink get inputDelete => commentDeleteController.sink;
+  
 }
 
-@override
-void start() {
-  // TODO: implement start
-}
+
 _isCommentValid(String comment) {
   return comment.length <= 500;
 }

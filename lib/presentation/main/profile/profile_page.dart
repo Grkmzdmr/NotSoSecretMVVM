@@ -130,7 +130,7 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
                   flex: 10,
                   child: Column(children: [
                     Expanded(
-                        child: Text("Secret Sayısı",
+                        child: Text(AppStrings.countSecret.tr(),
                             style: Theme.of(context).textTheme.headline4)),
                     Expanded(
                         child: Text(user.secretCount.toString(),
@@ -143,7 +143,7 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
                   child: Column(
                     children: [
                       Expanded(
-                          child: Text("Yapılan Yorum",
+                          child: Text(AppStrings.countComment.tr(),
                               style: Theme.of(context).textTheme.headline4)),
                       Expanded(
                           child: Text(user.commentCount.toString(),
@@ -158,7 +158,7 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
           ),
           Expanded(
             flex: 8,
-            child: Text("Paylaştığım Secretlar"),
+            child: Text(AppStrings.sharedSecrets.tr()),
           ),
           Spacer(flex: 3)
         ],

@@ -69,6 +69,13 @@
      "commentError" : "Must be less than 70 characters",
      "failed" : "Try Again",
      "release" : "Release For More Secret",
-     "noMoreSecret" : "There is no more secret yet."
+     "noMoreSecret" : "There is no more secret yet.",
+     "countSecret" : "Secret Count",
+     "countComment" : "Comment Count",
+     "sharedSecrets" : "Secrets I've Shared",
+     "commentAppBar" : "Comments",
+     "complaint" : "Complain",
+     "complaintText" : "Your complaint will be investigated, thank you."
+    
 
 }

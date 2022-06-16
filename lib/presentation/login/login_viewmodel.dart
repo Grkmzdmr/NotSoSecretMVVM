@@ -43,15 +43,12 @@ class LoginViewModel extends BaseViewModel
   }
 
   @override
-  // TODO: implement inputPassword
   Sink get inputPassword => _passwordstreamController.sink;
 
   @override
-  // TODO: implement inputUserName
   Sink get inputUserName => _userNamestreamController.sink;
 
   @override
-  // TODO: implement inputIsAllInput
   Sink get inputIsAllInputValid => _isAllInputsValidStreamController.sink;
 
   @override
@@ -90,17 +87,14 @@ class LoginViewModel extends BaseViewModel
   }
 
   @override
-  // TODO: implement outputIsPasswordValid
   Stream<bool> get outputIsPasswordValid => _passwordstreamController.stream
       .map((password) => _isPasswordValid(password));
 
   @override
-  // TODO: implement outputIsUserNameValid
   Stream<bool> get outputIsUserNameValid => _userNamestreamController.stream
       .map((userName) => _isUserNameValid(userName));
 
   @override
-  // TODO: implement outputIsAllInputsValid
   Stream<bool> get outputIsAllInputsValid =>
       _isAllInputsValidStreamController.stream.map((_) => _isAllInputsValid());
 

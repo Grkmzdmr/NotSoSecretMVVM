@@ -68,7 +68,13 @@ class AppStrings {
 
   static const String failed = "failed";
 
-  static const String release= "release";
+  static const String release = "release";
 
-  static const String noMoreSecret= "noMoreSecret";
+  static const String noMoreSecret = "noMoreSecret";
+  static const String countSecret = "countSecret";
+  static const String countComment = "countComment";
+  static const String sharedSecrets = "sharedSecrets";
+  static const String commentAppBar = "commentAppBar";
+  static const String complaint = "complaint";
+  static const String complaintText = "complaintText";
 }

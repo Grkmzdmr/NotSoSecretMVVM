@@ -7,6 +7,7 @@ import 'package:not_so_secret/presentation/common/state_renderer/state_render_im
 import 'package:not_so_secret/presentation/register/register_viewmodel.dart';
 import 'package:not_so_secret/presentation/resources/assets_manager.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
+import 'package:not_so_secret/presentation/resources/font_manager.dart';
 import 'package:not_so_secret/presentation/resources/routes_manager.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
 import 'package:not_so_secret/presentation/resources/values_manager.dart';
@@ -27,7 +28,7 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController _passwordTextEditingController =
       TextEditingController();
   AppPreferences _appPreferences = instance<AppPreferences>();
-
+  bool _chechboxValue = false;
   @override
   void initState() {
     _bind();
@@ -42,13 +43,28 @@ class _RegisterViewState extends State<RegisterView> {
     _passwordTextEditingController.addListener(() {
       _viewModel.setPassword(_passwordTextEditingController.text);
     });
-    _viewModel.isUserLoggedInSuccessfullyStreamController.stream
-        .listen((token) {
+
+    _viewModel.isUserRegisterInSuccessfullyStreamController.stream
+        .listen((value) {
       SchedulerBinding.instance?.addPostFrameCallback((_) {
-        
-        resetAllModule();
-        
-        Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+        if (value) {
+          showDialog(
+              context: context,
+              builder: (context) {
+                Future.delayed(Duration(seconds: 3), () {
+                  Navigator.of(context).pop(true);
+                  Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+                });
+                return AlertDialog(
+                  title: Text(
+                    "Başarıyla kayıt oldunuz. Girişe yönlendiriliyorsunuz...",
+                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                        color: ColorManager.black, fontSize: FontSize.s14),
+                  ),
+                );
+              });
+          //
+        }
       });
     });
   }
@@ -68,8 +84,8 @@ class _RegisterViewState extends State<RegisterView> {
           body: StreamBuilder<FlowState>(
             stream: _viewModel.outputState,
             builder: (context, snapshot) {
-              return snapshot.data?.getScreenWidget(context, _getContentWidget(),
-                      () {
+              return snapshot.data
+                      ?.getScreenWidget(context, _getContentWidget(), () {
                     _viewModel.register();
                   }) ??
                   _getContentWidget();
@@ -80,20 +96,23 @@ class _RegisterViewState extends State<RegisterView> {
 
   Widget _getContentWidget() {
     return Container(
-      
       color: ColorManager.white,
       child: Container(
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              Spacer(flex: 5,),
+              Spacer(
+                flex: 5,
+              ),
               Expanded(
-                flex : 20,
+                flex: 20,
                 child: SizedBox(
                   height: AppSize.s200,
                   width: AppSize.s200,
-                  child: Image(image: AssetImage(ImageAssets.splashLogo),), //json image
+                  child: Image(
+                    image: AssetImage(ImageAssets.splashLogo),
+                  ), //json image
                 ),
               ),
               /*Image(
@@ -101,42 +120,44 @@ class _RegisterViewState extends State<RegisterView> {
                 height: AppSize.s140,
                 width: AppSize.s140,
               ),*/
-            
-              Spacer(flex : 2),
-               Expanded(
-                flex : 10,
-                 child: Row(
-                  
-                   children: [
-                    Spacer(),
-                     Expanded(
-                      flex: 10,
-                       child: Text(
-                           AppStrings.registerWelcome.tr(),
-                           textAlign: TextAlign.center,
-                            style: Theme.of(context).textTheme.headline1,
-                          
-                                   ),
-                     ),
-                     Spacer(),
 
-                   ],
-                 ),
-               ),
-             
+              Spacer(flex: 2),
               Expanded(
-                flex : 10,
+                flex: 10,
                 child: Row(
                   children: [
                     Spacer(),
-                    Expanded(flex:10,child: Text(AppStrings.registerSubtext.tr(),textAlign: TextAlign.center,)),
-                    Spacer()
+                    Expanded(
+                      flex: 10,
+                      child: Text(
+                        AppStrings.registerWelcome.tr(),
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headline1,
+                      ),
+                    ),
+                    Spacer(),
                   ],
-                )),
-                Spacer(flex: 3,),
-              
+                ),
+              ),
               Expanded(
-                flex : 12,
+                  flex: 10,
+                  child: Row(
+                    children: [
+                      Spacer(),
+                      Expanded(
+                          flex: 10,
+                          child: Text(
+                            AppStrings.registerSubtext.tr(),
+                            textAlign: TextAlign.center,
+                          )),
+                      Spacer()
+                    ],
+                  )),
+              Spacer(
+                flex: 3,
+              ),
+              Expanded(
+                flex: 12,
                 child: Padding(
                   padding: EdgeInsets.only(
                       left: AppPadding.p28, right: AppPadding.p28),
@@ -157,7 +178,7 @@ class _RegisterViewState extends State<RegisterView> {
               ),
               Spacer(),
               Expanded(
-                flex : 12,
+                flex: 10,
                 child: Padding(
                   padding: EdgeInsets.only(
                       left: AppPadding.p28, right: AppPadding.p28),
@@ -177,10 +198,48 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                 ),
               ),
-              Spacer(),
-              
               Expanded(
-                flex :6,
+                  flex: 8,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Spacer(),
+                      Expanded(
+                        flex: 5,
+                        child: StreamBuilder<bool>(
+                            stream: _viewModel.checkBoxStream,
+                            initialData: false,
+                            builder: (context, snapshot) {
+                              return Checkbox(
+                                checkColor: ColorManager.white,
+                                fillColor: MaterialStateProperty.resolveWith(
+                                    (states) => ColorManager.primary),
+                                value: snapshot.data ,
+                                onChanged: (value) {
+                                  // _viewModel.inputCheckBox.add(value!);
+                                  _viewModel.setCheckBox(value!);
+                                },
+                              );
+                            }),
+                      ),
+                      Expanded(
+                          flex: 20,
+                          child: TextButton(
+                              onPressed: () {},
+                              child: Text(
+                                  "Kullanım şartlarını okudum ve kabul ediyorum.",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline1!
+                                      .copyWith(
+                                        fontSize: FontSize.s14,
+                                      )))),
+                      Spacer(),
+                    ],
+                  )),
+              Spacer(),
+              Expanded(
+                flex: 6,
                 child: Padding(
                     padding: EdgeInsets.only(
                         left: AppPadding.p28, right: AppPadding.p28),
@@ -193,8 +252,8 @@ class _RegisterViewState extends State<RegisterView> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                                 shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(AppSize.s12))),
+                                    borderRadius: new BorderRadius.circular(
+                                        AppSize.s12))),
                             onPressed: (snapshot.data ?? false)
                                 ? () {
                                     _viewModel.register();
@@ -212,7 +271,7 @@ class _RegisterViewState extends State<RegisterView> {
                     )),
               ),
               Expanded(
-                flex :10,
+                flex: 10,
                 child: Padding(
                   padding: EdgeInsets.only(
                       top: AppPadding.p8,

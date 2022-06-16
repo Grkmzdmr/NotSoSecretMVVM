@@ -1,4 +1,3 @@
-
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/data/data_source/local_data_source.dart';
@@ -122,4 +121,5 @@ resetHomeModule() {
   initAppModule();
   initHomeModule();
   initCommentModule();
+  initProfileModule();
 }

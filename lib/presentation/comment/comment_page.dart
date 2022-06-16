@@ -56,14 +56,21 @@ class _CommentTestState extends State<CommentTest> {
   }
 
   @override
+  void dispose() {
+    _viewModel.dispose();
+    _commentController.dispose();
+    _refreshController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final args = ModalRoute.of(context)!.settings.arguments as Post;
+    //final args = ModalRoute.of(context)!.settings.arguments as Post;
     return Scaffold(
-      
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          "Yorumlar",
+          AppStrings.commentAppBar.tr(),
           style: Theme.of(context).textTheme.headline2,
         ),
       ),
@@ -102,19 +109,17 @@ class _CommentTestState extends State<CommentTest> {
         child: Column(
           children: [
             Expanded(
-                //height: MediaQuery.of(context).size.height,
-                //margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
                 child: commentSmartRefresher(data)),
             Align(
                 alignment: Alignment.bottomLeft,
                 child: Container(
                   padding: EdgeInsets.only(left: 5, bottom: 10, top: 10),
-                  height: 70,
+                  height: MediaQuery.of(context).size.height / 10.5,
                   width: double.infinity,
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 15,
+                        width: MediaQuery.of(context).size.width / 27.6,
                       ),
                       Expanded(
                           child: StreamBuilder<bool>(
@@ -126,19 +131,18 @@ class _CommentTestState extends State<CommentTest> {
                                   style: Theme.of(context).textTheme.bodyText2,
                                   maxLength: 500,
                                   decoration: InputDecoration(
-
-                                      hintText: AppStrings.comment.tr(),
-                                      hintStyle:
-                                          Theme.of(context).textTheme.bodyText1,
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: ColorManager.primary),
-                                          borderRadius: BorderRadius.circular(
-                                              AppSize.s24)),
-                                      //errorText: (snapshot.data ?? false)
-                                        //  ? null
-                                          //: AppStrings.commentError.tr()
-                                          ),
+                                    hintText: AppStrings.comment.tr(),
+                                    hintStyle:
+                                        Theme.of(context).textTheme.bodyText1,
+                                    border: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                            color: ColorManager.primary),
+                                        borderRadius:
+                                            BorderRadius.circular(AppSize.s24)),
+                                    //errorText: (snapshot.data ?? false)
+                                    //  ? null
+                                    //: AppStrings.commentError.tr()
+                                  ),
                                 );
                               })),
                       SizedBox(
@@ -182,10 +186,17 @@ class _CommentTestState extends State<CommentTest> {
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text("Tamam"));
+        child: Text(AppStrings.ok.tr(),
+            style: Theme.of(context)
+                .textTheme
+                .subtitle1
+                ?.copyWith(color: ColorManager.primary)));
 
     AlertDialog alert = AlertDialog(
-      content: Text("Şikayetiniz incelenecektir."),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
+      content: Text(AppStrings.complaintText.tr(),
+          style: Theme.of(context).textTheme.subtitle1),
       actions: [okButton],
     );
     showDialog(
@@ -201,10 +212,7 @@ class _CommentTestState extends State<CommentTest> {
             foregroundColor: MaterialStateProperty.resolveWith(
                 (state) => ColorManager.primary)),
         onPressed: () {
-          _viewModel.setCommentId(secretId, commentId);
-         // _viewModel.commentDeleteController
-            //  .add(_viewModel.setCommentId(secretId, commentId));
-
+          _viewModel.setCommentId(secretId, commentId);   
           _viewModel.deleteComment();
         },
         child: Text(AppStrings.yes.tr(),
@@ -320,14 +328,24 @@ class _CommentTestState extends State<CommentTest> {
                 if (comment.sign == sign) {
                   return [
                     PopupMenuItem(
-                      child: Text("Sil"),
+                      child: Text(
+                        AppStrings.delete.tr(),
+                        style: Theme.of(context)
+                            .textTheme
+                            .subtitle1
+                            ?.copyWith(fontSize: FontSize.s14),
+                      ),
                       value: "/delete",
                     )
                   ];
                 } else {
                   return [
                     PopupMenuItem(
-                      child: Text("Şikayet Et"),
+                      child: Text(AppStrings.complaint.tr(),
+                          style: Theme.of(context)
+                              .textTheme
+                              .subtitle1
+                              ?.copyWith(fontSize: FontSize.s14)),
                       value: "/complaint",
                     ),
                   ];
@@ -384,126 +402,8 @@ class _CommentTestState extends State<CommentTest> {
           SizedBox(
             height: MediaQuery.of(context).size.width / 20,
           ),
-
-          /* Expanded(
-                                           child: Container(
-                                              child: Text(
-                                            posts[index].date.substring(8, 10) +
-                                                '-' +
-                                                posts[index]
-                                                    .date
-                                                    .substring(5, 7) +
-                                                '-' +
-                                                posts[index]
-                                                    .date
-                                                    .substring(2, 4) +
-                                                ' ' +
-                                                posts[index]
-                                                    .date
-                                                    .substring(11, 16),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText2!.copyWith(color: ColorManager.darkGrey),
-                                                                                 )),
-                                         ),*/
         ],
-      ), /*Card(
-            elevation: AppSize.s4,
-                    shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(AppSize.s12),
-                                side: BorderSide(
-                                    color: ColorManager.white,
-                                    width: AppSize.s1_5)),
-                            
-                              
-                              child: Container(
-                                
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Spacer(),
-                                    Expanded(flex : 60,child : Row(
-                                      children: [
-                                        Spacer(),
-                                        Expanded(flex:40,child: Text("abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh abcedfgh  aabcedfgh  abcedfgh abcedfgha")),
-                                        Spacer()
-                                      ],
-                                    )),
-                                    Expanded(
-                                      child: Row(
-                                        mainAxisAlignment : MainAxisAlignment.end,
-                                        children: [
-                                        Expanded(child:Column(
-                                          children: [
-                                          Text("grkmzdmr"),
-                                          Text("25-05-44"),
-
-                                        ],))
-                                      ],),
-                                    ),
-                                    Spacer(flex :20),*/
-
-      /*Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                AppSize.s1_4,
-                                            margin: EdgeInsets.all(AppMargin.m8),
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(
-                                                  AppMargin.m10),
-                                              child: Text(
-                                                comment.data,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText2,
-                                              ),
-                                            )),
-                                        PopupMenuButton(onSelected: (value) {
-                                          if (value.toString() == "/complaint") {
-                                            showAlertDialog(context);
-                                          } else if (value.toString() ==
-                                              "/delete") {
-                                            showDeleteAlertDialog(context,
-                                                comment.secretId, comment.id);
-                                          }
-                                        }, itemBuilder: (BuildContext bc) {
-                                          if (comment.sign == sign) {
-                                            return [
-                                              PopupMenuItem(
-                                                child: Text("Sil"),
-                                                value: "/delete",
-                                              )
-                                            ];
-                                          } else {
-                                            return [
-                                              PopupMenuItem(
-                                                child: Text("Şikayet Et"),
-                                                value: "/complaint",
-                                              ),
-                                            ];
-                                          }
-                                        })
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: AppSize.s10,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.all(AppMargin.m12),
-                                          child: Text(comment.sign),
-                                        )
-                                      ],
-                                    )*/
+      ),
     );
   }
 }

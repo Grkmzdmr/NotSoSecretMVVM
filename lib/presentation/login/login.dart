@@ -1,12 +1,11 @@
 import 'package:flutter/scheduler.dart';
-import 'package:lottie/lottie.dart';
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/presentation/common/state_renderer/state_render_impl.dart';
 import 'package:not_so_secret/presentation/login/login_viewmodel.dart';
-import 'package:not_so_secret/presentation/main/profile/profile_viewmodel.dart';
 import 'package:not_so_secret/presentation/resources/assets_manager.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
+import 'package:not_so_secret/presentation/resources/font_manager.dart';
 import 'package:not_so_secret/presentation/resources/routes_manager.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
 import 'package:not_so_secret/presentation/resources/values_manager.dart';
@@ -41,9 +40,21 @@ class _LoginViewState extends State<LoginView> {
       SchedulerBinding.instance?.addPostFrameCallback((_) {
         _appPreferences.setIsUserLoggedIn();
         _appPreferences.setToken(token);
+        showDialog(
+              context: context,
+              builder: (context) {
+                Future.delayed(Duration(seconds: 3), () {
+                  Navigator.of(context).pop(true);
+                  Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+                });
+                return AlertDialog(
+                  
+                  title: Text("Başarıyla giriş yaptınız.Ana sayfaya yönlendiriliyorsunuz...",style: Theme.of(context).textTheme.bodyText1!.copyWith(color: ColorManager.black,fontSize: FontSize.s14),),
+                );
+              });
 
         resetAllModule();
-        Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+        
       });
       _viewModel.isUserNameSuccessfullyTaken.stream.listen((username) {
         SchedulerBinding.instance?.addPostFrameCallback((_) {

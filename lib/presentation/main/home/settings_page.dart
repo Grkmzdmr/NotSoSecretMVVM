@@ -110,7 +110,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
     _localDataSource.clearCache();
 
-    Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+    Navigator.of(context).pop();
+    Navigator.pushNamedAndRemoveUntil(
+        context, Routes.loginRoute, (route) => false);
   }
 
   showAlertDialog(BuildContext context) {

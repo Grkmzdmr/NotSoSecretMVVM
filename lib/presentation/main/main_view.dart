@@ -133,7 +133,7 @@ class _MainViewState extends State<MainView> {
 
 PreferredSizeWidget homeAppBar(BuildContext context, String _title) {
   return AppBar(
-    
+    automaticallyImplyLeading: false,
     title: Text(
       _title,
       style: Theme.of(context).textTheme.headline2,
