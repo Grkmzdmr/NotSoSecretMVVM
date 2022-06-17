@@ -9,7 +9,7 @@
     "onBoardingContent2" :
      "Düşüncelerinizi ve deneyimlerinizi önyargısız olarak tamamen anonim olarak paylaşın, insanlarla etkileşim kurun.",
     "onBoardingContent3" :
-     "Daha önce üye olduysanız giriş yapabilir veya sadece kullanıcı adı ve şifrenizi kullanarak yeni üye olabilirsiniz.     .",
+     "Daha önce üye olduysanız giriş yapabilir veya sadece kullanıcı adı ve şifrenizi kullanarak yeni üye olabilirsiniz.",
     "inputUsername" : "Kullanıcı Adı",
     "inputPassword" : "Şifre",
     "loginButton" : "Giriş Yap",
@@ -75,6 +75,8 @@
      "sharedSecrets" : "Paylaştığım Secretlar",
      "commentAppBar" : "Yorumlar",
      "complaint" : "Şikayet Et",
-     "complaintText" : "Şikayetiniz İncelenecektir, teşekkür ederiz."
+     "complaintText" : "Şikayetiniz İncelenecektir, teşekkür ederiz.",
+     "acceptTerms" : "Kullanım şartlarını okudum ve kabul ediyorum.",
+     "terms" : "Kullanım Şartları"
 
 }

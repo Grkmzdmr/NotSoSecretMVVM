@@ -77,4 +77,6 @@ class AppStrings {
   static const String commentAppBar = "commentAppBar";
   static const String complaint = "complaint";
   static const String complaintText = "complaintText";
+  static const String acceptTerms = "acceptTerms";
+  static const String terms = "terms";
 }

@@ -27,8 +27,7 @@ class _RegisterViewState extends State<RegisterView> {
       TextEditingController();
   TextEditingController _passwordTextEditingController =
       TextEditingController();
-  AppPreferences _appPreferences = instance<AppPreferences>();
-  bool _chechboxValue = false;
+
   @override
   void initState() {
     _bind();
@@ -214,7 +213,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 checkColor: ColorManager.white,
                                 fillColor: MaterialStateProperty.resolveWith(
                                     (states) => ColorManager.primary),
-                                value: snapshot.data ,
+                                value: snapshot.data,
                                 onChanged: (value) {
                                   // _viewModel.inputCheckBox.add(value!);
                                   _viewModel.setCheckBox(value!);
@@ -225,9 +224,10 @@ class _RegisterViewState extends State<RegisterView> {
                       Expanded(
                           flex: 20,
                           child: TextButton(
-                              onPressed: () {},
-                              child: Text(
-                                  "Kullanım şartlarını okudum ve kabul ediyorum.",
+                              onPressed: () {
+                                showAlertDialog(context);
+                              },
+                              child: Text(AppStrings.acceptTerms.tr(),
                                   style: Theme.of(context)
                                       .textTheme
                                       .headline1!
@@ -300,5 +300,49 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
+  }
+
+  showAlertDialog(BuildContext context) {
+    Widget notsureButton = new TextButton(
+        style: ButtonStyle(
+            foregroundColor: MaterialStateProperty.resolveWith(
+                (state) => ColorManager.primary)),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text(
+          AppStrings.ok.tr(),
+          style: Theme.of(context).textTheme.bodyText2,
+        ));
+
+    AlertDialog alertDialog = AlertDialog(
+      titlePadding: EdgeInsets.only(left: AppSize.s30, top: AppSize.s20),
+      scrollable: true,
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s24))),
+      title: Text(
+        AppStrings.terms.tr(),
+        style: Theme.of(context).textTheme.headline1,
+      ),
+      content: RichText(
+        text: TextSpan(
+          style: Theme.of(context).textTheme.bodyText1,
+          children: [
+          
+          TextSpan(
+              text:
+                  "NotSoSecret Uygulaması Kullanıcı Sözleşmesi ve Gizlilik Politikası Taraflar İşbu Hizmet Kullanımı Sözleşmesi (“Sözleşme”),NotSoSecret mobil uygulamasını (“Uygulama”) indiren ve kullanan gerçek veya tüzel kişi (“Kullanıcı”) ile Nispetiye Mahallesi Engin Sitesi Yolu Sk. Engin Sitesi Yasemin Apartmanı no:173 D:5 Beşiktaş /İstanbul adresinde mukim “Erhan Ali Yılmaz”(“Şirket”) arasında gerçekleşmiş olup, sözleşme maddeleri Kullanıcı’nın Uygulama’yı mobil cihazına indirmesi ve/veya İnternet Sitesi’ni kullanmaya başlaması ile birlikte, Kullanıcı tarafından kabul görmüş ve yürürlüğe girmiş sayılacaktır.İşbu sözleşmede Kullanıcı ve Şirket gerektiğinde tek olarak “Taraf” ve birlikte “Taraflar” olarak anılacaktır.Hizmetin Tanımı – Sözleşme Konus“Mola” Uygulaması Kullanıcı’ların stresini yönetmelerine, konsantrasyonlarını arttırmalarına, zihinlerini boşaltmalarına yardımcı olacak “Mindfulness” bilgi ve egzersizlerini görsel, işitsel ya da yazılı olarak tavsiye niteliğinde sunan bir uygulamadır.İşbu sözleşme Uygulama ve İnternet Sitesi’nin kullanım koşulları ve Kullanıcı ile Şirket’in hak ve yükümlülüklerini düzenler."),
+          TextSpan(
+            text: "Kullanıcının hak ve yükümlülükleri Kullanıcı, Uygulama ve İnternet Sitesi’ndeki ücretsiz içerik ve egzersizleri Uygulamayı indirip üyeliğini tamamlamasını müteakiben, ücretli içerik ve egzersizleri ise Uygulamaya abone olarak kullanma hakkına sahip olacaktırKullanıcı, kendisinden istenilen bilgileri tam ve gerçeğe uygun olarak bildireceğini beyan ve taahhüt eder.Kullanıcı, bilgilerin eksik veya gerçeğe aykırı olarak bildirilmesinden ve bu eksik veya gerçeğe aykırı bildirimden kaynaklanabilecek sonuçlardan sorumludur.Kullanıcı, Uygulama’yı indirerek 18 yaşının üzerinde olduğunu beyan ve kabul eder. 18 yaşını doldurmamış olan Kullanıcı’nın veli veya vasisinin bu sözleşmeye açık onayını almış olduğu kabul edilir.Uygulama ve İnternet sitesi içindeki her türlü bilgi, egzersiz ve içerik Kullanıcının ortalama olarak herhangi bir tıbbi rahatsızlığı olmadığı varsayılaraktavsiye niteliğinde hazırlanmıştır ve kişiye özel değildir. Kullanıcı, bu durumu bilerek Uygulamayı kullanmakla ve kullanım öncesi gerek görüyorsa doktorunun onayını almakla yükümlüdür. Şirket, Kullanıcı’nın tıbbi rahatsızlığı nedeni ile ortaya çıkacak herhangi bir sonuçtan sorumlu tutulamaz.Kullanıcıegzersizleri kendisine tavsiye edildiği şekilde uygulamakla yükümlüdür.Kullanıcı’nın sisteme girdiği bilgiler, sadece Kullanıcı’nın talebi ile değiştirilebilir.Kullanıcı bu sözleşmeye istediği anda erişme, kayıt etme ve uyuşmazlık durumunda kullanma hakkına sahiptir."
+          )
+        ]),
+      ),
+      actions: [notsureButton],
+    );
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alertDialog;
+        });
   }
 }

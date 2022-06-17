@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
+
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:language_picker/language_picker_dropdown.dart';
+import 'package:language_picker/languages.dart';
+import 'package:language_picker/languages.g.dart';
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/data/data_source/local_data_source.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
+import 'package:not_so_secret/presentation/resources/language_manager.dart';
 import 'package:not_so_secret/presentation/resources/routes_manager.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
 import 'package:not_so_secret/presentation/resources/values_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -95,8 +98,8 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _changeLanguage() {
-    _appPreferences.setLanguageChanged();
+  void _changeLanguage(LanguageType languageType) {
+    _appPreferences.setLanguageChanged(languageType);
     Phoenix.rebirth(context); //restart to apply language changes
   }
 
@@ -121,7 +124,7 @@ class _SettingsPageState extends State<SettingsPage> {
             foregroundColor: MaterialStateProperty.resolveWith(
                 (state) => ColorManager.primary)),
         onPressed: () {
-          _changeLanguage();
+          //_changeLanguage();
         },
         child: Text(AppStrings.yes.tr(),
             style: Theme.of(context).textTheme.bodyText2));
@@ -146,10 +149,30 @@ class _SettingsPageState extends State<SettingsPage> {
         AppStrings.language.tr(),
         style: Theme.of(context).textTheme.headline1,
       ),
-      content: Text(
-        AppStrings.surechangelanguage.tr(),
-        style: Theme.of(context).textTheme.bodyText2,
-      ),
+      content: LanguagePickerDropdown(
+        languages: [
+          Languages.english,
+          Languages.french,
+          Languages.albanian,
+          Languages.turkish,
+        ],
+        initialValue: Languages.turkish,
+        itemBuilder: _buildDropdownItem,
+        onValuePicked: (Language language) {
+          print(language.name);
+          if (language.name == "Albanian") {
+            return _changeLanguage(LanguageType.Albanian);
+          } else if (language.name == "Turkish") {
+            return _changeLanguage(LanguageType.Turkish);
+          } else if (language.name == "English") {
+            return _changeLanguage(LanguageType.English);
+          }
+        },
+      ) //Text(
+      //AppStrings.surechangelanguage.tr(),
+      //style: Theme.of(context).textTheme.bodyText2,
+      //),/
+      ,
       actions: [sureButton, notsureButton],
     );
     showDialog(
@@ -201,5 +224,16 @@ class _SettingsPageState extends State<SettingsPage> {
         builder: (BuildContext context) {
           return alertDialog;
         });
+  }
+
+  Widget _buildDropdownItem(Language language) {
+    return Row(
+      children: <Widget>[
+        SizedBox(
+          width: 8.0,
+        ),
+        Text("${language.name} (${language.isoCode})"),
+      ],
+    );
   }
 }

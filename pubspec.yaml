@@ -35,6 +35,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   cupertino_icons: ^1.0.2
   dartz: ^0.10.1
+  language_picker: ^0.4.1
   
   pretty_dio_logger: ^1.2.0-beta-1
   shared_preferences: ^2.0.7

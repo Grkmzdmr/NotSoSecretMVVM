@@ -1,0 +1,79 @@
+{
+    "skip" : "Kalo",
+     "noRouteFound" : "Nuk u gjet asnjë faqe",
+     "onBoardingTitle1" : "Përshëndetje",
+     "onBoardingTitle2": "Ne Jemi",
+     "onBoardingTitle3" : "Le të fillojmë",
+     "onBoardingContent1" :
+      "Mirë se erdhët në botën tonë,lëvizni përpara për të mësuar se si ta përdorni.",
+     "onBoardingContent2" :
+      "Ndani mendimet dhe përvojat tuaja plotësisht në mënyrë anonime pa paragjykime,ndërveproni me njerëz.",
+     "onBoardingContent3" :
+      "Nëse jeni bërë anëtar më herët,mund të identifikoheni ose mund të bëheni një anëtar i ri duke përdorur vetëm emrin e përdoruesit dhe fjalëkalimin.",
+     "inputUsername" : "Emri i përdoruesit",
+     "inputPassword" : "Fjalëkalimi",
+     "loginButton" : "Hyr",
+     "registerText" : "Nuk je anëtar? Regjistrohu",
+     "usernamError" : "Emri i përdoruesit nuk mund të jetë i zbrazët !",
+     "passwordError" : "Fjalëkalimi nuk mund të jetë i zbrazët !",
+     "loginWelcome" : "Mirë se vini në NotSoSecret",
+     "loginText" : "Identifikohu dhe vazhdo aty ku e ke lënë.",
+
+     "loading" : "Ngarkohet...",
+
+     "retry_again" : "Provo përsëri",
+     "secretcantsend" : "Postimi nuk mund të dërgohet",
+
+     "ok" : "Në rregull",
+
+     "noUserFound" : "Kontrollo emrin e përdoruesit ose fjalëkalimin",
+     "invalidUserName" :
+      "Emri i përdoruesit duhet të jetë më i madhë se 6 shifra",
+
+     "invalidPassword" : "Fjalëkalimi duhet të jetë më i madhë se 8 shifra",
+     "haveAccount" : "A je i anëtarsuar? Hyr",
+
+    "registerWelcome" : "Mirë se vini në ekranin e regjistrimit.",
+     "registerSubtext" :
+      "Gjitçka që duhet të bëni është të zgjidhni emrin e përdoruesit dhe fjalëkalimin tuaj.",
+
+     "registerButton" : "Regjistrohu",
+     "alreadyHaveUser" : "Ky përdorues ekziston",
+     "home" : "NotSoSecret",
+     "notification" : "Njoftimet",
+     "search" : "Kërko",
+     "person" : "Profili Im",
+     "posts" : "Postimet",
+
+     "changeLanguage" : "Ndrysho gjuhën",
+
+     "contactUs" : "Na Kontaktoni",
+     "inviteFriends" : "Ftoni miqtë tuaj",
+
+     "logOut": "Dil",
+     "cancel": "Anulo",
+     "share" : "Publiko",
+     "title": "Flisni shkurtimisht për...",
+     "text": "Shkruaj sekretin tënd...",
+
+     "settings" : "Cilësimet",
+     "yes" : "Po",
+     "no" : "Jo",
+     "delete" : "Fshij",
+     "sure" : "A je i sigurt që kërkon ta fshish këtë postim ?",
+     "surechangelanguage" : "A je i sigurt që kërkon ta ndryshosh gjuhën e programit ?",
+     "language" : "Gjuhët",
+     "logout" : "Dil",
+     "surelogout" : "A je i sigurt që kërkon të largohesh nga programi?",
+     "comment" : "Shkruaj komentin tënd...",
+     "commentError" : "Duhet të jetë më i vogel se 70 karaktere",
+     "failed" : "Provo përsëri",
+     "release" : "Shkarko për më shumë sekrete",
+     "noMoreSecret" : "Nuk ka më shumë sekrete.",
+     "countSecret" : "Numri i sekretëve",
+     "countComment" : "Numri i komentëve",
+     "sharedSecrets" : "Sekretet që i kam postuar",
+     "commentAppBar" : "Komentet",
+     "complaint" : "Ankohu",
+     "complaintText" : "Ankimi juaj do të kontrollohet,faleminderit."
+}

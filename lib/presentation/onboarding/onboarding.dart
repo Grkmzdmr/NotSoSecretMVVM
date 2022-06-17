@@ -184,25 +184,35 @@ class OnBoardingPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(height: AppSize.s18),
-        Padding(
-          padding: const EdgeInsets.all(AppPadding.p8),
-          child: Text(_sliderObject.title.tr(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline1),
+       
+        Expanded(
+          flex:2,
+          child: Padding(
+            padding: const EdgeInsets.all(AppPadding.p8),
+            child: Text(_sliderObject.title.tr(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline1),
+          ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(AppPadding.p8),
-          child: Text(_sliderObject.subTitle.tr(),
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.subtitle1),
+        Expanded(
+          flex: 6,
+          child: Padding(
+            padding: const EdgeInsets.all(AppPadding.p8),
+            child: Text(_sliderObject.subTitle.tr(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.subtitle1),
+          ),
         ),
-        SizedBox(height: AppSize.s60),
-        SvgPicture.asset(
-          _sliderObject.image,
-          height: AppSize.s275,
-          width: AppSize.s275,
-        )
+       
+        Expanded(
+          flex: 15,
+          child: SvgPicture.asset(
+            _sliderObject.image,
+            height: MediaQuery.of(context).size.height/2.5,
+            width: MediaQuery.of(context).size.width / 1/15,
+          ),
+        ),
+        Spacer(flex: 7,),
       ],
     );
   }

@@ -75,7 +75,9 @@
      "sharedSecrets" : "Secrets I've Shared",
      "commentAppBar" : "Comments",
      "complaint" : "Complain",
-     "complaintText" : "Your complaint will be investigated, thank you."
+     "complaintText" : "Your complaint will be investigated, thank you.",
+     "acceptTerms" : "I have read and accept the terms of use.",
+     "terms" : "Terms"
     
 
 }

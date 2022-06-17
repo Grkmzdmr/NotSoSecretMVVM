@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:language_picker/languages.dart';
 import 'package:not_so_secret/data/mapper/mapper.dart';
 import 'package:not_so_secret/presentation/resources/language_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,23 +27,30 @@ class AppPreferences {
     }
   }
 
-  Future<void> setLanguageChanged() async {
+  Future<void> setLanguageChanged(LanguageType language) async {
     String currentLanguage = await getAppLanguage();
-    if (currentLanguage == LanguageType.Turkish.getValue()) {
+
+    _sharedPreferences.setString(PREFS_KEY_LANG, language.getValue());
+
+    /*if (currentLanguage == LanguageType.Turkish.getValue()) {
       _sharedPreferences.setString(
           PREFS_KEY_LANG, LanguageType.English.getValue());
-    } else {
+    }else if(currentLanguage == LanguageType.Turkish.getValue()){
       _sharedPreferences.setString(
           PREFS_KEY_LANG, LanguageType.Turkish.getValue());
-    }
+    }else if(currentLanguage == LanguageType.Albanian.getValue()){
+      _sharedPreferences.setString(PREFS_KEY_LANG, value)
+    }*/
   }
 
   Future<Locale> getLocal() async {
     String currentLanguage = await getAppLanguage();
     if (currentLanguage == LanguageType.Turkish.getValue()) {
       return Turkish_LOCAL;
-    } else {
+    } else if (currentLanguage == LanguageType.English.getValue()) {
       return English_LOCAL;
+    } else {
+      return Albanian_LOCAL;
     }
   }
 
@@ -86,13 +94,13 @@ class AppPreferences {
     return _sharedPreferences.getString(PREFS_KEY_USERNAME) ??
         "No Username Saved";
   }
+
   Future<void> setUserId(int userId) async {
     _sharedPreferences.setInt(PREFS_KEY_USERID, userId);
   }
 
   Future<int> getUserId() async {
-    return _sharedPreferences.getInt(PREFS_KEY_USERID) ??
-        ZERO;
+    return _sharedPreferences.getInt(PREFS_KEY_USERID) ?? ZERO;
   }
 
   Future<void> setIsUserLoggedIn() async {
