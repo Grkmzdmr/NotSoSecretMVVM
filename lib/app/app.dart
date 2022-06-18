@@ -33,7 +33,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
     '/comment': (context) => CommentTest(),
   },
-
+      
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       locale: context.locale,
@@ -41,6 +41,7 @@ class _MyAppState extends State<MyApp> {
       onGenerateRoute: RouteGenerator.getRoute,
       initialRoute: Routes.splashRoute,
       theme: getApplicationTheme(),
+      
     );
   }
 }

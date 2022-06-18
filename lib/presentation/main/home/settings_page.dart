@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:language_picker/language_picker_dropdown.dart';
@@ -7,6 +8,7 @@ import 'package:language_picker/languages.g.dart';
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/data/data_source/local_data_source.dart';
+import 'package:not_so_secret/presentation/main/main_view.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
 import 'package:not_so_secret/presentation/resources/language_manager.dart';
 import 'package:not_so_secret/presentation/resources/routes_manager.dart';
@@ -24,17 +26,21 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   AppPreferences _appPreferences = instance<AppPreferences>();
   LocalDataSource _localDataSource = instance<LocalDataSource>();
+  Language _value = Languages.english;
+  LanguageType _languageType = LanguageType.English;
 
   @override
   Widget build(BuildContext context) {
     String _title = AppStrings.settings.tr();
     return Scaffold(
       appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle.light,
         automaticallyImplyLeading: false,
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios),
           onPressed: () {
-            Navigator.pop(context);
+            
+            Navigator.pushReplacementNamed(context, Routes.mainRoute);
           },
         ),
         title: Text(
@@ -109,11 +115,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _inviteFriends() {}
   void _logOut() {
+    Navigator.of(context).pop();
+
     _appPreferences.logout();
 
     _localDataSource.clearCache();
-
-    Navigator.of(context).pop();
     Navigator.pushNamedAndRemoveUntil(
         context, Routes.loginRoute, (route) => false);
   }
@@ -124,7 +130,7 @@ class _SettingsPageState extends State<SettingsPage> {
             foregroundColor: MaterialStateProperty.resolveWith(
                 (state) => ColorManager.primary)),
         onPressed: () {
-          //_changeLanguage();
+          _changeLanguage(_languageType);
         },
         child: Text(AppStrings.yes.tr(),
             style: Theme.of(context).textTheme.bodyText2));
@@ -156,16 +162,19 @@ class _SettingsPageState extends State<SettingsPage> {
           Languages.albanian,
           Languages.turkish,
         ],
-        initialValue: Languages.turkish,
+        initialValue: _value,
         itemBuilder: _buildDropdownItem,
         onValuePicked: (Language language) {
           print(language.name);
           if (language.name == "Albanian") {
-            return _changeLanguage(LanguageType.Albanian);
+            _value = Languages.albanian;
+            _languageType = LanguageType.Albanian;
           } else if (language.name == "Turkish") {
-            return _changeLanguage(LanguageType.Turkish);
+            _value = Languages.turkish;
+            _languageType = LanguageType.Turkish;
           } else if (language.name == "English") {
-            return _changeLanguage(LanguageType.English);
+            _value = Languages.english;
+            _languageType = LanguageType.English;
           }
         },
       ) //Text(
@@ -188,6 +197,7 @@ class _SettingsPageState extends State<SettingsPage> {
             foregroundColor: MaterialStateProperty.resolveWith(
                 (state) => ColorManager.primary)),
         onPressed: () {
+          //Navigator.of(context).pop();
           _logOut();
         },
         child: Text(AppStrings.yes.tr(),
@@ -232,7 +242,7 @@ class _SettingsPageState extends State<SettingsPage> {
         SizedBox(
           width: 8.0,
         ),
-        Text("${language.name} (${language.isoCode})"),
+        Text("${language.name}"),
       ],
     );
   }

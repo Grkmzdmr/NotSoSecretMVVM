@@ -5,8 +5,8 @@ import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/domain/model/model.dart';
 import 'package:not_so_secret/presentation/common/state_renderer/state_render_impl.dart';
-
 import 'package:not_so_secret/presentation/main/profile/profile_viewmodel.dart';
+import 'package:not_so_secret/presentation/main/widgets/smart_refresher_footer.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
 import 'package:not_so_secret/presentation/resources/font_manager.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
@@ -56,12 +56,7 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
       body: NestedScrollView(
         headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return [
-            SliverAppBar(
-                floating: true,
-                snap: true,
-                expandedHeight: MediaQuery.of(context).size.height / 3.1,
-                flexibleSpace: Container(
-                    color: ColorManager.white, child: _getUpContentWidget()))
+            profileSliverAppBar(context)
           ];
         },
         body: Container(
@@ -77,6 +72,15 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
         )),
       ),
     );
+  }
+
+  SliverAppBar profileSliverAppBar(BuildContext context) {
+    return SliverAppBar(
+              floating: true,
+              snap: true,
+              expandedHeight: MediaQuery.of(context).size.height / 3.1,
+              flexibleSpace: Container(
+                  color: ColorManager.white, child: _getUpContentWidget()));
   }
 
   Widget _getUpContentWidget() {
@@ -99,62 +103,14 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
           Spacer(flex: 3),
           Expanded(
             flex: 24,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(AppSize.s48),
-                child: Text(
-                  "?",
-                  style: TextStyle(
-                      color: ColorManager.primary, fontSize: AppSize.s60),
-                )),
+            child: profileAvatar(),
           ),
           Spacer(),
-          StreamBuilder<String>(
-              stream: _viewModel.outputPersonsUsername,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return Expanded(
-                      flex: 8,
-                      child: Text("@" + snapshot.data.toString(),
-                          style: Theme.of(context).textTheme.bodyText2));
-                } else {
-                  return Container();
-                }
-              }),
+          personsUsernameStream(),
           Spacer(flex: 2),
           Expanded(
             flex: 25,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Expanded(
-                  flex: 10,
-                  child: Column(children: [
-                    Expanded(
-                        child: Text(AppStrings.countSecret.tr(),
-                            style: Theme.of(context).textTheme.headline4)),
-                    Expanded(
-                        child: Text(user.secretCount.toString(),
-                            style: Theme.of(context).textTheme.bodyText2)),
-                    Spacer(),
-                  ]),
-                ),
-                Expanded(
-                  flex: 10,
-                  child: Column(
-                    children: [
-                      Expanded(
-                          child: Text(AppStrings.countComment.tr(),
-                              style: Theme.of(context).textTheme.headline4)),
-                      Expanded(
-                          child: Text(user.commentCount.toString(),
-                              style: Theme.of(context).textTheme.bodyText2)),
-                      Spacer()
-                    ],
-                  ),
-                ),
-                Spacer()
-              ],
-            ),
+            child: accountInfo(user),
           ),
           Expanded(
             flex: 8,
@@ -166,6 +122,66 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
     } else {
       return Container();
     }
+  }
+
+  Row accountInfo(UserInfo user) {
+    return Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Expanded(
+                flex: 10,
+                child: Column(children: [
+                  Expanded(
+                      child: Text(AppStrings.countSecret.tr(),
+                          style: Theme.of(context).textTheme.headline4)),
+                  Expanded(
+                      child: Text(user.secretCount.toString(),
+                          style: Theme.of(context).textTheme.bodyText2)),
+                  Spacer(),
+                ]),
+              ),
+              Expanded(
+                flex: 10,
+                child: Column(
+                  children: [
+                    Expanded(
+                        child: Text(AppStrings.countComment.tr(),
+                            style: Theme.of(context).textTheme.headline4)),
+                    Expanded(
+                        child: Text(user.commentCount.toString(),
+                            style: Theme.of(context).textTheme.bodyText2)),
+                    Spacer()
+                  ],
+                ),
+              ),
+              Spacer()
+            ],
+          );
+  }
+
+  ClipRRect profileAvatar() {
+    return ClipRRect(
+              borderRadius: BorderRadius.circular(AppSize.s48),
+              child: Text(
+                "?",
+                style: TextStyle(
+                    color: ColorManager.primary, fontSize: AppSize.s60),
+              ));
+  }
+
+  StreamBuilder<String> personsUsernameStream() {
+    return StreamBuilder<String>(
+            stream: _viewModel.outputPersonsUsername,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return Expanded(
+                    flex: 8,
+                    child: Text("@" + snapshot.data.toString(),
+                        style: Theme.of(context).textTheme.bodyText2));
+              } else {
+                return Container();
+              }
+            });
   }
 
   Widget _getContentWidget() {
@@ -188,31 +204,12 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
         child: Column(
           children: [
             Expanded(
-              //height: MediaQuery.of(context).size.height,
-              //margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
+              
 
               child: SmartRefresher(
                 controller: _refreshController,
                 header: WaterDropHeader(),
-                footer: CustomFooter(
-                    builder: (BuildContext context, LoadStatus? mode) {
-                  Widget body;
-                  if (mode == LoadStatus.idle) {
-                    body = Text(AppStrings.loading.tr());
-                  } else if (mode == LoadStatus.loading) {
-                    body = CupertinoActivityIndicator();
-                  } else if (mode == LoadStatus.failed) {
-                    body = Text(AppStrings.failed.tr());
-                  } else if (mode == LoadStatus.canLoading) {
-                    body = Text(AppStrings.release.tr());
-                  } else {
-                    body = Text(AppStrings.noMoreSecret.tr());
-                  }
-                  return Container(
-                    height: 55.0,
-                    child: Center(child: body),
-                  );
-                }),
+                footer: SmartRefresherWidget(),
                 enablePullDown: true,
                 enablePullUp: true,
                 onRefresh: () {
@@ -238,114 +235,7 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
                     _refreshController.loadNoData();
                   }
                 },
-                child: ListView.builder(
-                    itemCount: posts.length,
-                    reverse: false,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                          onTap: () {
-                            _appPreferences.setPost(posts[index].id);
-
-                            Navigator.pushNamed(context, "/comment",
-                                arguments: posts[index]);
-                          },
-                          child: Card(
-                              elevation: AppSize.s4,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(AppSize.s12),
-                                  side: BorderSide(
-                                      color: ColorManager.white,
-                                      width: AppSize.s1_5)),
-                              child: ListTile(
-                                trailing: IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    showAlertDialog(context, posts[index].id);
-                                  },
-                                ),
-                                horizontalTitleGap: 6,
-                                minVerticalPadding: 24,
-                                //trailing : IconButton(icon: Icon(Icons.more_vert),onPressed: (){},),
-                                title: Text(posts[index].title,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .subtitle2!
-                                        .copyWith(fontSize: FontSize.s17)),
-
-                                subtitle: Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        posts[index].content,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .subtitle1,
-                                        textAlign: TextAlign.left,
-                                      ),
-                                      Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 16.0),
-                                          child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              children: [
-                                                Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      2.5,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Icon(
-                                                        Icons.visibility,
-                                                        size: AppSize.s30,
-                                                      ),
-                                                      Text(
-                                                        posts[index]
-                                                            .viewCount
-                                                            .toString(),
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .subtitle2!
-                                                            .copyWith(
-                                                              fontSize:
-                                                                  FontSize.s15,
-                                                            ),
-                                                      ),
-                                                      Icon(Icons.comment,
-                                                          size: AppSize.s30),
-                                                      Text(
-                                                          posts[index]
-                                                              .commentCount
-                                                              .toString(),
-                                                          style:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .subtitle2!
-                                                                  .copyWith(
-                                                                    fontSize:
-                                                                        FontSize
-                                                                            .s15,
-                                                                  ))
-                                                    ],
-                                                  ),
-                                                ),
-                                              ])),
-                                    ],
-                                  ),
-                                ),
-                              )));
-                    }),
+                child: profilePageListview(posts),
               ),
             ),
           ],
@@ -354,6 +244,117 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
     } else {
       return Container();
     }
+  }
+
+  ListView profilePageListview(List<Post> posts) {
+    return ListView.builder(
+                  itemCount: posts.length,
+                  reverse: false,
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    return InkWell(
+                        onTap: () {
+                          _appPreferences.setPost(posts[index].id);
+
+                          Navigator.pushNamed(context, "/comment",
+                              arguments: posts[index]);
+                        },
+                        child: Card(
+                            elevation: AppSize.s4,
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.circular(AppSize.s12),
+                                side: BorderSide(
+                                    color: ColorManager.white,
+                                    width: AppSize.s1_5)),
+                            child: ListTile(
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () {
+                                  showAlertDialog(context, posts[index].id);
+                                },
+                              ),
+                              horizontalTitleGap: 6,
+                              minVerticalPadding: 24,
+                              //trailing : IconButton(icon: Icon(Icons.more_vert),onPressed: (){},),
+                              title: Text(posts[index].title,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .subtitle2!
+                                      .copyWith(fontSize: FontSize.s17)),
+
+                              subtitle: Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      posts[index].content,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .subtitle1,
+                                      textAlign: TextAlign.left,
+                                    ),
+                                    Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 16.0),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              Container(
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    2.5,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Icon(
+                                                      Icons.visibility,
+                                                      size: AppSize.s30,
+                                                    ),
+                                                    Text(
+                                                      posts[index]
+                                                          .viewCount
+                                                          .toString(),
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .subtitle2!
+                                                          .copyWith(
+                                                            fontSize:
+                                                                FontSize.s15,
+                                                          ),
+                                                    ),
+                                                    Icon(Icons.comment,
+                                                        size: AppSize.s30),
+                                                    Text(
+                                                        posts[index]
+                                                            .commentCount
+                                                            .toString(),
+                                                        style:
+                                                            Theme.of(context)
+                                                                .textTheme
+                                                                .subtitle2!
+                                                                .copyWith(
+                                                                  fontSize:
+                                                                      FontSize
+                                                                          .s15,
+                                                                ))
+                                                  ],
+                                                ),
+                                              ),
+                                            ])),
+                                  ],
+                                ),
+                              ),
+                            )));
+                  });
   }
 
   showAlertDialog(BuildContext context, int secretId) {
@@ -401,6 +402,7 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
         });
   }
 }
+
 
 
 

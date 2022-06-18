@@ -23,7 +23,6 @@ class _LoginViewState extends State<LoginView> {
   LoginViewModel _viewModel =
       instance<LoginViewModel>(); //todo pass here login usecase
   AppPreferences _appPreferences = instance<AppPreferences>();
-  
 
   TextEditingController _userNameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
@@ -41,20 +40,22 @@ class _LoginViewState extends State<LoginView> {
         _appPreferences.setIsUserLoggedIn();
         _appPreferences.setToken(token);
         showDialog(
-              context: context,
-              builder: (context) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context).pop(true);
-                  Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
-                });
-                return AlertDialog(
-                  
-                  title: Text("Başarıyla giriş yaptınız.Ana sayfaya yönlendiriliyorsunuz...",style: Theme.of(context).textTheme.bodyText1!.copyWith(color: ColorManager.black,fontSize: FontSize.s14),),
-                );
+            context: context,
+            builder: (context) {
+              Future.delayed(Duration(seconds: 3), () {
+                Navigator.of(context).pop(true);
+                Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
               });
+              return AlertDialog(
+                title: Text(
+                  "Başarıyla giriş yaptınız.Ana sayfaya yönlendiriliyorsunuz...",
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      color: ColorManager.black, fontSize: FontSize.s14),
+                ),
+              );
+            });
 
         resetAllModule();
-        
       });
       _viewModel.isUserNameSuccessfullyTaken.stream.listen((username) {
         SchedulerBinding.instance?.addPostFrameCallback((_) {
@@ -64,7 +65,6 @@ class _LoginViewState extends State<LoginView> {
       _viewModel.isUserIdSuccessfullyTaken.stream.listen((id) {
         SchedulerBinding.instance?.addPostFrameCallback((_) {
           _appPreferences.setUserId(id);
-          
         });
       });
     });
@@ -79,6 +79,8 @@ class _LoginViewState extends State<LoginView> {
   @override
   void dispose() {
     _viewModel.dispose();
+    _userNameController.dispose();
+    _passwordController.dispose();
     super.dispose();
   }
 
@@ -87,6 +89,7 @@ class _LoginViewState extends State<LoginView> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: ColorManager.white,
         body: StreamBuilder<FlowState>(
           stream: _viewModel.outputState,
@@ -104,152 +107,168 @@ class _LoginViewState extends State<LoginView> {
 
   Widget _getContentWidget() {
     return Container(
-      
       color: ColorManager.white,
       child: Container(
         height: MediaQuery.of(context).size.height,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              Spacer(flex: 5,),
-              Expanded(
-                flex: 15,
-                child: SizedBox(
-                  height: AppSize.s200,
-                  width: AppSize.s200,
-                  child: Image(image: AssetImage(ImageAssets.splashLogo),) ,
-                  //Lottie.asset(JsonAssets.login), //json image
-                ),
-              ),
-              /*Image(
-                image: AssetImage(ImageAssets.splashLogo),
-                height: AppSize.s140,
-                width: AppSize.s140,
-              ),*/
-              Spacer(flex: 2,),
-              Expanded(
-                flex: 5,
-                child: Text(
-                  AppStrings.loginWelcome.tr(),
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-              ),
-              
-              Expanded(
-                flex: 5,
-                child: Text(AppStrings.loginText.tr())),
-              
-              Expanded(
-                flex: 9,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: AppPadding.p28, right: AppPadding.p28),
-                  child: StreamBuilder<bool>(
-                    stream: _viewModel.outputIsUserNameValid,
-                    builder: (context, snapshot) {
-                      return TextFormField(
-                        controller: _userNameController,
-                        keyboardType: TextInputType.name,
-                        decoration: InputDecoration(
-                            hintText: AppStrings.inputUsername.tr(),
-                            labelText: AppStrings.inputUsername.tr(),
-                            errorText: (snapshot.data ?? true)
-                                ? null
-                                : AppStrings.usernamError.tr()),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Spacer(),
-              
-              Expanded(
-                flex: 9,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      left: AppPadding.p28, right: AppPadding.p28),
-                  child: StreamBuilder<bool>(
-                    stream: _viewModel.outputIsPasswordValid,
-                    builder: (context, snapshot) {
-                      return TextFormField(
-                        controller: _passwordController,
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            hintText: AppStrings.inputPassword.tr(),
-                            labelText: AppStrings.inputPassword.tr(),
-                            errorText: (snapshot.data ?? true)
-                                ? null
-                                : AppStrings.passwordError.tr()),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Spacer(),
-              
-              Expanded(
-                flex: 4,
-                child: Padding(
-                    padding: EdgeInsets.only(
-                        left: AppPadding.p28, right: AppPadding.p28),
-                    child: StreamBuilder<bool>(
-                      stream: _viewModel.outputIsAllInputsValid,
-                      builder: (context, snapshot) {
-                        return SizedBox(
-                          width: double.infinity,
-                          height: AppSize.s40,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: new RoundedRectangleBorder(
-                                    borderRadius:
-                                        new BorderRadius.circular(AppSize.s12))),
-                            onPressed: (snapshot.data ?? false)
-                                ? () {
-                                    _viewModel.login();
-                                  }
-                                : null,
-                            child: Text(
-                              AppStrings.loginButton.tr(),
-                              style: TextStyle(
-                                  color: ColorManager.white,
-                                  fontSize: AppSize.s16),
-                            ),
-                          ),
-                        );
-                      },
-                    )),
-              ),
-              Expanded(
-                flex : 10,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: AppPadding.p8,
-                      left: AppPadding.p28,
-                      right: AppPadding.p28),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushReplacementNamed(
-                                context, Routes.registerRoute);
-                          },
-                          child: Text(
-                            AppStrings.registerText.tr(),
-                            style: Theme.of(context).textTheme.subtitle2,
-                            textAlign: TextAlign.end,
-                          ))
-                    ],
-                  ),
-                ),
-              ),
-              Spacer()
-            ],
-          ),
-        ),
+        child: loginForm(),
       ),
+    );
+  }
+
+  Form loginForm() {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          Spacer(
+            flex: 5,
+          ),
+          Expanded(
+            flex: 15,
+            child: SizedBox(
+              height: AppSize.s200,
+              width: AppSize.s200,
+              child: Image(
+                image: AssetImage(ImageAssets.notsosecretLogo),
+              ),
+              //Lottie.asset(JsonAssets.login), //json image
+            ),
+          ),
+          /*Image(
+              image: AssetImage(ImageAssets.splashLogo),
+              height: AppSize.s140,
+              width: AppSize.s140,
+            ),*/
+          Spacer(
+            flex: 2,
+          ),
+          Expanded(
+            flex: 5,
+            child: Text(
+              AppStrings.loginWelcome.tr(),
+              style: Theme.of(context).textTheme.headline1,
+            ),
+          ),
+          Expanded(flex: 5, child: Text(AppStrings.loginText.tr())),
+          Expanded(
+            flex: 9,
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: AppPadding.p28, right: AppPadding.p28),
+              child: usernameStream(),
+            ),
+          ),
+          Spacer(),
+          Expanded(
+            flex: 9,
+            child: Padding(
+              padding:
+                  EdgeInsets.only(left: AppPadding.p28, right: AppPadding.p28),
+              child: passwordStream(),
+            ),
+          ),
+          Spacer(),
+          Expanded(
+            flex: 4,
+            child: Padding(
+                padding: EdgeInsets.only(
+                    left: AppPadding.p28, right: AppPadding.p28),
+                child: buttonStream()),
+          ),
+          Expanded(
+            flex: 10,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: AppPadding.p8,
+                  left: AppPadding.p28,
+                  right: AppPadding.p28),
+              child: goRegisterButton(),
+            ),
+          ),
+          Spacer()
+        ],
+      ),
+    );
+  }
+
+  Row goRegisterButton() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextButton(
+            onPressed: () {
+              Navigator.pushReplacementNamed(context, Routes.registerRoute);
+            },
+            child: Text(
+              AppStrings.registerText.tr(),
+              style: Theme.of(context).textTheme.subtitle2,
+              textAlign: TextAlign.end,
+            ))
+      ],
+    );
+  }
+
+  StreamBuilder<bool> buttonStream() {
+    return StreamBuilder<bool>(
+      stream: _viewModel.outputIsAllInputsValid,
+      builder: (context, snapshot) {
+        return SizedBox(
+          width: double.infinity,
+          height: AppSize.s40,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(AppSize.s12))),
+            onPressed: (snapshot.data ?? false)
+                ? () {
+                    _viewModel.login();
+                  }
+                : null,
+            child: Text(
+              AppStrings.loginButton.tr(),
+              style:
+                  TextStyle(color: ColorManager.white, fontSize: AppSize.s16),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  StreamBuilder<bool> passwordStream() {
+    return StreamBuilder<bool>(
+      stream: _viewModel.outputIsPasswordValid,
+      builder: (context, snapshot) {
+        return TextFormField(
+          controller: _passwordController,
+          keyboardType: TextInputType.visiblePassword,
+          obscureText: true,
+          decoration: InputDecoration(
+              hintText: AppStrings.inputPassword.tr(),
+              labelText: AppStrings.inputPassword.tr(),
+              errorText: (snapshot.data ?? true)
+                  ? null
+                  : AppStrings.passwordError.tr()),
+        );
+      },
+    );
+  }
+
+  StreamBuilder<bool> usernameStream() {
+    return StreamBuilder<bool>(
+      stream: _viewModel.outputIsUserNameValid,
+      builder: (context, snapshot) {
+        return TextFormField(
+          controller: _userNameController,
+          keyboardType: TextInputType.name,
+          decoration: InputDecoration(
+              hintText: AppStrings.inputUsername.tr(),
+              labelText: AppStrings.inputUsername.tr(),
+              errorText: (snapshot.data ?? true)
+                  ? null
+                  : AppStrings.usernamError.tr()),
+        );
+      },
     );
   }
 }

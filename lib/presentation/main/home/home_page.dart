@@ -98,31 +98,10 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           children: [
             Expanded(
-              //height: MediaQuery.of(context).size.height,
-              //margin: EdgeInsets.symmetric(vertical: AppMargin.m12),
-
               child: SmartRefresher(
                   controller: _refreshController,
                   header: WaterDropHeader(),
-                  footer: CustomFooter(
-                      builder: (BuildContext context, LoadStatus? mode) {
-                    Widget body;
-                    if (mode == LoadStatus.idle) {
-                      body = Text(AppStrings.loading.tr());
-                    } else if (mode == LoadStatus.loading) {
-                      body = CupertinoActivityIndicator();
-                    } else if (mode == LoadStatus.failed) {
-                      body = Text(AppStrings.failed.tr());
-                    } else if (mode == LoadStatus.canLoading) {
-                      body = Text(AppStrings.release.tr());
-                    } else {
-                      body = Text(AppStrings.noMoreSecret.tr());
-                    }
-                    return Container(
-                      height: 55.0,
-                      child: Center(child: body),
-                    );
-                  }),
+                  footer: homePageRefresherFooter(),
                   enablePullDown: true,
                   enablePullUp: true,
                   onRefresh: () {
@@ -150,147 +129,7 @@ class _HomePageState extends State<HomePage> {
                     }
                     _localDataSource.clearCache();
                   },
-                  child: ListView.builder(
-                      itemCount: posts.length,
-                      reverse: false,
-                      shrinkWrap: true,
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onLongPress: (){
-                            
-                          },
-                          onTap: () {
-                            _appPreferences.setPost(posts[index].id);
-
-                            Navigator.pushNamed(context, "/comment",
-                                arguments: posts[index]);
-                          },
-                          child: Card(
-                            elevation: AppSize.s4,
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(AppSize.s12),
-                                side: BorderSide(
-                                    color: ColorManager.white,
-                                    width: AppSize.s1_5)),
-                           child: ListTile(
-                           
-                            
-                            horizontalTitleGap: 6,
-                            minVerticalPadding : 24,
-                            //trailing : IconButton(icon: Icon(Icons.more_vert),onPressed: (){},),
-                            title: 
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                    mainAxisAlignment : MainAxisAlignment.end,
-                                    children: [
-                                     PopupMenuButton(onSelected: (value) {
-                                          if (value.toString() == "/complaint") {
-                                            showAlertDialog(context);
-                                          } 
-                                        }, itemBuilder: (BuildContext bc) {
-                                          
-                                            return [
-                                              PopupMenuItem(
-                                                child: Text(AppStrings.complaint.tr(),style: Theme.of(context).textTheme.subtitle1?.copyWith(fontSize: FontSize.s14)),
-                                                value: "/complaint",
-                                              ),
-                                            ];
-                                          
-                                        })
-                                      ],
-                                  ),
-                                  Padding(
-                                     padding: const EdgeInsets.only(right: AppMargin.m12,bottom: AppMargin.m8),
-                                     child: Container(
-                                        
-                                        child :
-                                           Text(
-                                           posts[index].title,
-                                            style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s17)
-                                          ),
-                                        
-                              ),)
-
-                            ],)
-                            
-                            
-                               
-                              ,
-                            
-                            subtitle: Padding(
-                              padding: const EdgeInsets.only(top :8.0),
-                              child: Column(
-                                mainAxisAlignment : MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                       
-                       children: [
-                                  Text(posts[index].content,
-                                  style: Theme.of(context).textTheme.subtitle1,
-                                  textAlign: TextAlign.left,
-                                  ),
-                                  SizedBox(height: MediaQuery.of(context).size.width/ 10),
-
-                                  Padding(
-                                    padding: const EdgeInsets.only(top :0.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context).size.width / 2.5,
-                                          child: Row(
-                                            
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                            
-                                              Icon(Icons.visibility,size: AppSize.s30,color: ColorManager.darkGrey,),
-                                              Text(posts[index].viewCount.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s15,),),
-                                              Icon(Icons.comment,size: AppSize.s30,color: ColorManager.darkGrey),
-                                              Text(posts[index].commentCount.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s15,))
-
-                                            
-                                          ],),
-                                        ),
-                                        SizedBox(width: MediaQuery.of(context).size.width / 13.8,
-
-                                        ),
-                                        Container(
-                                          width: MediaQuery.of(context).size.width / 3.1,
-                                          child : Column(
-                                            
-                                            crossAxisAlignment: CrossAxisAlignment.end,
-                                            children : [
-                                              
-                                              Text("@" + posts[index].sign),
-                                              Text(posts[index].date.substring(8, 10) +
-                                                '-' +
-                                                posts[index]
-                                                    .date
-                                                    .substring(5, 7) +
-                                                '-' +
-                                                posts[index]
-                                                    .date
-                                                    .substring(2, 4) 
-                                                
-                                                )
-
-
-                                            ]
-                                          )
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                           )
-                          ),
-                        );
-                      })),
+                  child: homePageListView(posts)),
             ),
           ],
         ),
@@ -299,6 +138,182 @@ class _HomePageState extends State<HomePage> {
       return Container();
     }
   }
+
+  CustomFooter homePageRefresherFooter() {
+    return CustomFooter(
+                    builder: (BuildContext context, LoadStatus? mode) {
+                  Widget body;
+                  if (mode == LoadStatus.idle) {
+                    body = Text(AppStrings.loading.tr());
+                  } else if (mode == LoadStatus.loading) {
+                    body = CupertinoActivityIndicator();
+                  } else if (mode == LoadStatus.failed) {
+                    body = Text(AppStrings.failed.tr());
+                  } else if (mode == LoadStatus.canLoading) {
+                    body = Text(AppStrings.release.tr());
+                  } else {
+                    body = Text(AppStrings.noMoreSecret.tr());
+                  }
+                  return Container(
+                    height: 55.0,
+                    child: Center(child: body),
+                  );
+                });
+  }
+
+  ListView homePageListView(List<Post> posts) {
+    return ListView.builder(
+                    itemCount: posts.length,
+                    reverse: false,
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (context, index) {
+                      return InkWell(
+                        onLongPress: (){
+                          
+                        },
+                        onTap: () {
+                          _appPreferences.setPost(posts[index].id);
+
+                          Navigator.pushNamed(context, "/comment",
+                              arguments: posts[index]);
+                        },
+                        child: homePageCard(context, posts, index),
+                      );
+                    });
+  }
+
+  Card homePageCard(BuildContext context, List<Post> posts, int index) {
+    return Card(
+                          elevation: AppSize.s4,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.circular(AppSize.s12),
+                              side: BorderSide(
+                                  color: ColorManager.white,
+                                  width: AppSize.s1_5)),
+                         child: homePageListTile(context, posts, index)
+                        );
+  }
+
+  ListTile homePageListTile(BuildContext context, List<Post> posts, int index) {
+    return ListTile(
+                       
+                        
+                        horizontalTitleGap: AppSize.s6,
+                        minVerticalPadding : AppSize.s24,
+                        title: listTileTitle(context, posts, index),
+                        subtitle: listTileSubtitle(posts, index, context),
+                       );
+  }
+
+  Padding listTileSubtitle(List<Post> posts, int index, BuildContext context) {
+    return Padding(
+                        padding: const EdgeInsets.only(top :8.0),
+                        child: Column(
+                          mainAxisAlignment : MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                 
+                 children: [
+                            Text(posts[index].content,
+                            style: Theme.of(context).textTheme.subtitle1,
+                            textAlign: TextAlign.left,
+                            ),
+                            SizedBox(height: MediaQuery.of(context).size.width/ 10),
+
+                            Padding(
+                              padding: const EdgeInsets.only(top :0.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 2.5,
+                                    child: Row(
+                                      
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                      
+                                        Icon(Icons.visibility,size: AppSize.s30,color: ColorManager.darkGrey,),
+                                        Text(posts[index].viewCount.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s15,),),
+                                        Icon(Icons.comment,size: AppSize.s30,color: ColorManager.darkGrey),
+                                        Text(posts[index].commentCount.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s15,))
+
+                                      
+                                    ],),
+                                  ),
+                                  SizedBox(width: MediaQuery.of(context).size.width / 13.8,
+
+                                  ),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 3.1,
+                                    child : Column(
+                                      
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children : [
+                                        
+                                        Text("@" + posts[index].sign),
+                                        Text(posts[index].date.substring(8, 10) +
+                                          '-' +
+                                          posts[index]
+                                              .date
+                                              .substring(5, 7) +
+                                          '-' +
+                                          posts[index]
+                                              .date
+                                              .substring(2, 4) 
+                                          
+                                          )
+
+
+                                      ]
+                                    )
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+  }
+
+  Column listTileTitle(BuildContext context, List<Post> posts, int index) {
+    return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                              mainAxisAlignment : MainAxisAlignment.end,
+                              children: [
+                               PopupMenuButton(onSelected: (value) {
+                                    if (value.toString() == "/complaint") {
+                                      showAlertDialog(context);
+                                    } 
+                                  }, itemBuilder: (BuildContext bc) {
+                                    
+                                      return [
+                                        PopupMenuItem(
+                                          child: Text(AppStrings.complaint.tr(),style: Theme.of(context).textTheme.subtitle1?.copyWith(fontSize: FontSize.s14)),
+                                          value: "/complaint",
+                                        ),
+                                      ];
+                                    
+                                  })
+                                ],
+                            ),
+                            Padding(
+                               padding: const EdgeInsets.only(right: AppMargin.m12,bottom: AppMargin.m8),
+                               child: Container(
+                                  
+                                  child :
+                                     Text(
+                                     posts[index].title,
+                                      style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s17)
+                                    ),
+                                  
+                        ),)
+
+                      ],);
+  }
+ 
   showAlertDialog(BuildContext context) {
     
     Widget okButton = TextButton(

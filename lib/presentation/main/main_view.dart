@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:not_so_secret/presentation/main/home/home_page.dart';
-
-import 'package:not_so_secret/presentation/main/notifications_page.dart';
-
 import 'package:not_so_secret/presentation/main/profile/profile_page.dart';
-import 'package:not_so_secret/presentation/main/profile/profile_page.dart';
-import 'package:not_so_secret/presentation/resources/assets_manager.dart';
 import 'package:not_so_secret/presentation/resources/color_manager.dart';
 import 'package:not_so_secret/presentation/resources/routes_manager.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
@@ -38,7 +33,7 @@ class _MainViewState extends State<MainView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: homeAppBar(context, _title),
+      appBar: _homeAppBar(context, _title),
       body: pages[_currentIndex],
       floatingActionButton: FloatingActionButton(
         backgroundColor: ColorManager.primary,
@@ -56,7 +51,7 @@ class _MainViewState extends State<MainView> {
         shape: CircularNotchedRectangle(),
         notchMargin: AppSize.s6,
         child: Container(
-            height: 60,
+            height: AppSize.s60,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -110,16 +105,6 @@ class _MainViewState extends State<MainView> {
             )),
       ),
 
-      /*unselectedItemColor: ColorManager.grey,
-          currentIndex: _currentIndex,
-          onTap: onTap,
-          items: [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.home), label: AppStrings.home.tr()),
-            //BottomNavigationBarItem(icon: Icon(Icons.notifications),label: AppStrings.notification),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.person), label: AppStrings.person.tr()),
-          ],*/
     );
   }
 
@@ -131,7 +116,7 @@ class _MainViewState extends State<MainView> {
   }
 }
 
-PreferredSizeWidget homeAppBar(BuildContext context, String _title) {
+PreferredSizeWidget _homeAppBar(BuildContext context, String _title) {
   return AppBar(
     automaticallyImplyLeading: false,
     title: Text(
@@ -142,7 +127,7 @@ PreferredSizeWidget homeAppBar(BuildContext context, String _title) {
       IconButton(
         icon: Icon(Icons.settings),
         onPressed: () {
-          Navigator.pushNamed(context, Routes.settingsRoute);
+          Navigator.pushReplacementNamed(context, Routes.settingsRoute);
         },
       ),
     ],

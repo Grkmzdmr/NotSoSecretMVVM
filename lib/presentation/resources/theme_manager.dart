@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 ThemeData getApplicationTheme() {
   return ThemeData(
+    
+
       primaryColor: ColorManager.primary,
       primaryColorLight: ColorManager.primaryOpacity70,
       primaryColorDark: ColorManager.darkPrimary,
@@ -24,6 +26,7 @@ ThemeData getApplicationTheme() {
         titleTextStyle:
             getRegularStyle(color: ColorManager.white, fontSize: FontSize.s16),
       ),
+      
       buttonTheme: ButtonThemeData(
         shape: StadiumBorder(),
         disabledColor: ColorManager.grey1,

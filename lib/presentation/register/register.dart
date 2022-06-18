@@ -47,21 +47,14 @@ class _RegisterViewState extends State<RegisterView> {
         .listen((value) {
       SchedulerBinding.instance?.addPostFrameCallback((_) {
         if (value) {
-          showDialog(
-              context: context,
-              builder: (context) {
-                Future.delayed(Duration(seconds: 3), () {
-                  Navigator.of(context).pop(true);
-                  Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
-                });
-                return AlertDialog(
-                  title: Text(
-                    "Başarıyla kayıt oldunuz. Girişe yönlendiriliyorsunuz...",
-                    style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                        color: ColorManager.black, fontSize: FontSize.s14),
-                  ),
-                );
-              });
+          const snackBar =
+                SnackBar(content: Text("Kullanıcı başarı ile kayıt oldu"),duration: Duration(seconds: 1,milliseconds: 500),);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Future.delayed(Duration(seconds: 2), () {
+            
+            Navigator.of(context).pushReplacementNamed(Routes.loginRoute);
+          });
+
           //
         }
       });
@@ -71,6 +64,8 @@ class _RegisterViewState extends State<RegisterView> {
   @override
   void dispose() {
     _viewModel.dispose();
+    _passwordTextEditingController.dispose();
+    _userNameTextEditingController.dispose();
     super.dispose();
   }
 
@@ -79,6 +74,7 @@ class _RegisterViewState extends State<RegisterView> {
     return WillPopScope(
       onWillPop: () async => false,
       child: Scaffold(
+          resizeToAvoidBottomInset: false,
           backgroundColor: ColorManager.white,
           body: StreamBuilder<FlowState>(
             stream: _viewModel.outputState,
@@ -110,16 +106,10 @@ class _RegisterViewState extends State<RegisterView> {
                   height: AppSize.s200,
                   width: AppSize.s200,
                   child: Image(
-                    image: AssetImage(ImageAssets.splashLogo),
+                    image: AssetImage(ImageAssets.notsosecretLogo),
                   ), //json image
                 ),
               ),
-              /*Image(
-                image: AssetImage(ImageAssets.splashLogo),
-                height: AppSize.s140,
-                width: AppSize.s140,
-              ),*/
-
               Spacer(flex: 2),
               Expanded(
                 flex: 10,
@@ -325,16 +315,13 @@ class _RegisterViewState extends State<RegisterView> {
         style: Theme.of(context).textTheme.headline1,
       ),
       content: RichText(
-        text: TextSpan(
-          style: Theme.of(context).textTheme.bodyText1,
-          children: [
-          
+        text: TextSpan(style: Theme.of(context).textTheme.bodyText1, children: [
           TextSpan(
               text:
                   "NotSoSecret Uygulaması Kullanıcı Sözleşmesi ve Gizlilik Politikası Taraflar İşbu Hizmet Kullanımı Sözleşmesi (“Sözleşme”),NotSoSecret mobil uygulamasını (“Uygulama”) indiren ve kullanan gerçek veya tüzel kişi (“Kullanıcı”) ile Nispetiye Mahallesi Engin Sitesi Yolu Sk. Engin Sitesi Yasemin Apartmanı no:173 D:5 Beşiktaş /İstanbul adresinde mukim “Erhan Ali Yılmaz”(“Şirket”) arasında gerçekleşmiş olup, sözleşme maddeleri Kullanıcı’nın Uygulama’yı mobil cihazına indirmesi ve/veya İnternet Sitesi’ni kullanmaya başlaması ile birlikte, Kullanıcı tarafından kabul görmüş ve yürürlüğe girmiş sayılacaktır.İşbu sözleşmede Kullanıcı ve Şirket gerektiğinde tek olarak “Taraf” ve birlikte “Taraflar” olarak anılacaktır.Hizmetin Tanımı – Sözleşme Konus“Mola” Uygulaması Kullanıcı’ların stresini yönetmelerine, konsantrasyonlarını arttırmalarına, zihinlerini boşaltmalarına yardımcı olacak “Mindfulness” bilgi ve egzersizlerini görsel, işitsel ya da yazılı olarak tavsiye niteliğinde sunan bir uygulamadır.İşbu sözleşme Uygulama ve İnternet Sitesi’nin kullanım koşulları ve Kullanıcı ile Şirket’in hak ve yükümlülüklerini düzenler."),
           TextSpan(
-            text: "Kullanıcının hak ve yükümlülükleri Kullanıcı, Uygulama ve İnternet Sitesi’ndeki ücretsiz içerik ve egzersizleri Uygulamayı indirip üyeliğini tamamlamasını müteakiben, ücretli içerik ve egzersizleri ise Uygulamaya abone olarak kullanma hakkına sahip olacaktırKullanıcı, kendisinden istenilen bilgileri tam ve gerçeğe uygun olarak bildireceğini beyan ve taahhüt eder.Kullanıcı, bilgilerin eksik veya gerçeğe aykırı olarak bildirilmesinden ve bu eksik veya gerçeğe aykırı bildirimden kaynaklanabilecek sonuçlardan sorumludur.Kullanıcı, Uygulama’yı indirerek 18 yaşının üzerinde olduğunu beyan ve kabul eder. 18 yaşını doldurmamış olan Kullanıcı’nın veli veya vasisinin bu sözleşmeye açık onayını almış olduğu kabul edilir.Uygulama ve İnternet sitesi içindeki her türlü bilgi, egzersiz ve içerik Kullanıcının ortalama olarak herhangi bir tıbbi rahatsızlığı olmadığı varsayılaraktavsiye niteliğinde hazırlanmıştır ve kişiye özel değildir. Kullanıcı, bu durumu bilerek Uygulamayı kullanmakla ve kullanım öncesi gerek görüyorsa doktorunun onayını almakla yükümlüdür. Şirket, Kullanıcı’nın tıbbi rahatsızlığı nedeni ile ortaya çıkacak herhangi bir sonuçtan sorumlu tutulamaz.Kullanıcıegzersizleri kendisine tavsiye edildiği şekilde uygulamakla yükümlüdür.Kullanıcı’nın sisteme girdiği bilgiler, sadece Kullanıcı’nın talebi ile değiştirilebilir.Kullanıcı bu sözleşmeye istediği anda erişme, kayıt etme ve uyuşmazlık durumunda kullanma hakkına sahiptir."
-          )
+              text:
+                  "Kullanıcının hak ve yükümlülükleri Kullanıcı, Uygulama ve İnternet Sitesi’ndeki ücretsiz içerik ve egzersizleri Uygulamayı indirip üyeliğini tamamlamasını müteakiben, ücretli içerik ve egzersizleri ise Uygulamaya abone olarak kullanma hakkına sahip olacaktırKullanıcı, kendisinden istenilen bilgileri tam ve gerçeğe uygun olarak bildireceğini beyan ve taahhüt eder.Kullanıcı, bilgilerin eksik veya gerçeğe aykırı olarak bildirilmesinden ve bu eksik veya gerçeğe aykırı bildirimden kaynaklanabilecek sonuçlardan sorumludur.Kullanıcı, Uygulama’yı indirerek 18 yaşının üzerinde olduğunu beyan ve kabul eder. 18 yaşını doldurmamış olan Kullanıcı’nın veli veya vasisinin bu sözleşmeye açık onayını almış olduğu kabul edilir.Uygulama ve İnternet sitesi içindeki her türlü bilgi, egzersiz ve içerik Kullanıcının ortalama olarak herhangi bir tıbbi rahatsızlığı olmadığı varsayılaraktavsiye niteliğinde hazırlanmıştır ve kişiye özel değildir. Kullanıcı, bu durumu bilerek Uygulamayı kullanmakla ve kullanım öncesi gerek görüyorsa doktorunun onayını almakla yükümlüdür. Şirket, Kullanıcı’nın tıbbi rahatsızlığı nedeni ile ortaya çıkacak herhangi bir sonuçtan sorumlu tutulamaz.Kullanıcıegzersizleri kendisine tavsiye edildiği şekilde uygulamakla yükümlüdür.Kullanıcı’nın sisteme girdiği bilgiler, sadece Kullanıcı’nın talebi ile değiştirilebilir.Kullanıcı bu sözleşmeye istediği anda erişme, kayıt etme ve uyuşmazlık durumunda kullanma hakkına sahiptir.")
         ]),
       ),
       actions: [notsureButton],

@@ -2,7 +2,8 @@ const String IMAGE_PATH = "assets/images";
 const String JSON_PATH = "assets/json";
 
 class ImageAssets {
-  static const String splashLogo = "$IMAGE_PATH/not so secret icon.png";
+  static const String splashLogo = "$IMAGE_PATH/whitesnowsnparrow.png";
+  static const String notsosecretLogo = "$IMAGE_PATH/not so secret icon.png";
   static const String onBoardingLogo1 = "$IMAGE_PATH/onboardingLogo1.svg";
   static const String onBoardingLogo2 = "$IMAGE_PATH/onboardingLogo2.svg";
   static const String onBoardingLogo3 = "$IMAGE_PATH/onboardingLogo3.svg";

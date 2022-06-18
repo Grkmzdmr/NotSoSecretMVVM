@@ -63,11 +63,11 @@
      "sure" : "Are You Sure You Want To Delete The Post ?",
      "surechangelanguage" : "Are You Sure You Want To Change Language ?",
      "language" : "Language",
-     "logout" : "Log Out",
+     
      "surelogout" : "Are You Sure You Want To Log Out ?",
      "comment" : "Write your comment...",
      "commentError" : "Must be less than 70 characters",
-     "failed" : "Try Again",
+     "failed" : "Failed",
      "release" : "Release For More Secret",
      "noMoreSecret" : "There is no more secret yet.",
      "countSecret" : "Secret Count",

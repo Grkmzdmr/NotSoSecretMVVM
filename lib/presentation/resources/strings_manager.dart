@@ -59,7 +59,7 @@ class AppStrings {
   static const String sure = "sure";
   static const String language = "language";
   static const String surechangelanguage = "surechangelanguage";
-  static const String logout = "logout";
+  
   static const String surelogout = "surelogout";
 
   static const String comment = "comment";

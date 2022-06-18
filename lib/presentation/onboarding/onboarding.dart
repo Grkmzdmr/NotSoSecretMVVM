@@ -68,7 +68,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         body: PageView.builder(
           controller: _pageController,
           itemCount: slideViewObject.numOfSlides,
-          onPageChanged: (index) {
+          onPageChanged: (index) async {
+            Duration(milliseconds: DurationConstant.d500);
             _viewModel.onPageChanged(index);
           },
           itemBuilder: (context, index) {
@@ -184,9 +185,8 @@ class OnBoardingPage extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-       
         Expanded(
-          flex:2,
+          flex: 2,
           child: Padding(
             padding: const EdgeInsets.all(AppPadding.p8),
             child: Text(_sliderObject.title.tr(),
@@ -203,16 +203,17 @@ class OnBoardingPage extends StatelessWidget {
                 style: Theme.of(context).textTheme.subtitle1),
           ),
         ),
-       
         Expanded(
           flex: 15,
           child: SvgPicture.asset(
             _sliderObject.image,
-            height: MediaQuery.of(context).size.height/2.5,
-            width: MediaQuery.of(context).size.width / 1/15,
+            height: MediaQuery.of(context).size.height / 2.5,
+            width: MediaQuery.of(context).size.width / 1 / 15,
           ),
         ),
-        Spacer(flex: 7,),
+        Spacer(
+          flex: 7,
+        ),
       ],
     );
   }

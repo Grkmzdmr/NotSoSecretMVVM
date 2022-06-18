@@ -38,6 +38,34 @@ class ProfileViewModel extends BaseViewModel
     _getUsername();
     getUserInfo();
   }
+  //inputs
+   @override
+  Sink get inputPersonsPost => _personspostStreamController.sink;
+  @override
+  Sink get inputPersonsUsername => _personsnameStreamController.sink;
+  @override
+  Sink get inputPostId => postsdeleteController.sink;
+   @override
+  Sink get inputPage => pageController.sink;
+  @override
+  Sink get inputUserInfo => _profileUserInfoStreamController.sink;
+
+  //outputs
+
+   @override
+  Stream<List<Post>> get outputPersonsPosts =>
+      _personspostStreamController.stream.map((posts) => posts);
+
+  @override
+  Stream<String> get outputPersonsUsername =>
+      _personsnameStreamController.stream.map((username) => username);
+
+  @override
+  Stream<UserInfo> get outputUserInfo =>
+      _profileUserInfoStreamController.stream.map((userInfo) => userInfo);
+
+
+  //functions
 
   getProfile() async {
     inputState.add(LoadingState(
@@ -66,7 +94,7 @@ class ProfileViewModel extends BaseViewModel
             .delete(ProfileUseCaseInputs(profileViewObject.secretId)))
         .fold(
             (failure) => {
-                  //left -> failure
+                  
                   inputState.add(ErrorState(StateRendererType.POPUP_ERROR_STATE,
                       AppStrings.secretcantsend.tr()))
                 }, (data) {
@@ -76,7 +104,7 @@ class ProfileViewModel extends BaseViewModel
 
       _localDataSource.clearCache();
 
-      //succes
+      
     });
   }
 
@@ -99,32 +127,9 @@ class ProfileViewModel extends BaseViewModel
   }
 
   @override
-  // TODO: implement inputPersonsPost
-  Sink get inputPersonsPost => _personspostStreamController.sink;
-
-  @override
-  // TODO: implement outputPersonsPosts
-  Stream<List<Post>> get outputPersonsPosts =>
-      _personspostStreamController.stream.map((posts) => posts);
-
-  @override
-  // TODO: implement inputPersonsUsername
-  Sink get inputPersonsUsername => _personsnameStreamController.sink;
-
-  @override
-  // TODO: implement outputPersonsUsername
-  Stream<String> get outputPersonsUsername =>
-      _personsnameStreamController.stream.map((username) => username);
-
-  @override
-  // TODO: implement inputPostId
-  Sink get inputPostId => postsdeleteController.sink;
-
-  @override
   setSecretId(int secretId) {
     inputPostId.add(secretId);
-    if (secretId != null)
-      profileViewObject = profileViewObject.copyWith(secretId: secretId);
+    profileViewObject = profileViewObject.copyWith(secretId: secretId);
   }
 
   @override
@@ -132,10 +137,7 @@ class ProfileViewModel extends BaseViewModel
     getProfile();
   }
 
-  @override
-  // TODO: implement inputPage
-  Sink get inputPage => pageController.sink;
-
+ 
   @override
   getUserInfo() async {
     (await _profileUseCase.getUserInfo()).fold((failure) {}, (userInfo) {
@@ -143,14 +145,9 @@ class ProfileViewModel extends BaseViewModel
     });
   }
 
-  @override
-  // TODO: implement outputUserInfo
-  Stream<UserInfo> get outputUserInfo =>
-      _profileUserInfoStreamController.stream.map((userInfo) => userInfo);
+  
 
-  @override
-  // TODO: implement inputUserInfo
-  Sink get inputUserInfo => _profileUserInfoStreamController.sink;
+  
 }
 
 abstract class ProfileViewModelInputs {

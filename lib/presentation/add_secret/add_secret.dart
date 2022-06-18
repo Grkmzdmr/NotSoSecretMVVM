@@ -36,6 +36,9 @@ class _AddSecretState extends State<AddSecret> {
         .listen((isPostShared) {
       SchedulerBinding.instance?.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+        resetHomeModule();
+        initHomeModule();
+        initProfileModule();
       });
     });
   }
@@ -51,7 +54,7 @@ class _AddSecretState extends State<AddSecret> {
     _viewModel.dispose();
     _textController.dispose();
     _titleController.dispose();
-    
+
     super.dispose();
   }
 
