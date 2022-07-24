@@ -36,34 +36,27 @@ class _LoginViewState extends State<LoginView> {
 
     _viewModel.isUserLoggedInSuccessfullyStreamController.stream
         .listen((token) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         _appPreferences.setIsUserLoggedIn();
         _appPreferences.setToken(token);
-        showDialog(
-            context: context,
-            builder: (context) {
-              Future.delayed(Duration(seconds: 3), () {
-                Navigator.of(context).pop(true);
-                Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
-              });
-              return AlertDialog(
-                title: Text(
-                  "Başarıyla giriş yaptınız.Ana sayfaya yönlendiriliyorsunuz...",
-                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
-                      color: ColorManager.black, fontSize: FontSize.s14),
-                ),
-              );
-            });
+        const snackBar =
+                SnackBar(content: Text("Kullanıcı başarı ile giriş yaptı."),duration: Duration(seconds: 1,milliseconds: 500),);
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          Future.delayed(Duration(seconds: 2), () {
+            
+            Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
+          });
+
 
         resetAllModule();
       });
       _viewModel.isUserNameSuccessfullyTaken.stream.listen((username) {
-        SchedulerBinding.instance?.addPostFrameCallback((_) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
           _appPreferences.setUsername(username);
         });
       });
       _viewModel.isUserIdSuccessfullyTaken.stream.listen((id) {
-        SchedulerBinding.instance?.addPostFrameCallback((_) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
           _appPreferences.setUserId(id);
         });
       });

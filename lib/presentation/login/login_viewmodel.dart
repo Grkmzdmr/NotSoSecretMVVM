@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/domain/usecase/login_usecase.dart';
 import 'package:not_so_secret/presentation/base/baseviewmodel.dart';
 import 'package:not_so_secret/presentation/common/freezed_data_classes.dart';
@@ -7,6 +9,8 @@ import 'package:not_so_secret/presentation/common/state_renderer/state_render_im
 import 'package:not_so_secret/presentation/common/state_renderer/state_renderer.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
 import 'package:easy_localization/easy_localization.dart';
+
+import '../../app/di.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInput, LoginViewModelOutputs {
@@ -22,7 +26,7 @@ class LoginViewModel extends BaseViewModel
   StreamController isUserIdSuccessfullyTaken = StreamController<int>();
 
   var loginObject = LoginObject("", "");
-
+  AppPreferences _appPreferences = instance<AppPreferences>();
   LoginUseCase _loginUseCase;
   LoginViewModel(this._loginUseCase);
 
@@ -53,6 +57,15 @@ class LoginViewModel extends BaseViewModel
 
   @override
   login() async {
+    final fcmToken = await FirebaseMessaging.instance.getToken();
+    _appPreferences.setDeviceToken(fcmToken!);
+    print(fcmToken);
+    FirebaseMessaging.instance.onTokenRefresh.listen((fcmToken) {
+      _appPreferences.setDeviceToken(fcmToken);
+      print("token değişti yeni token = " + fcmToken);
+    }).onError((err) {
+      // Error getting token.
+    });
     inputState.add(LoadingState(
         stateRendererType: StateRendererType.FULL_SCREEN_LOADING_STATE));
     (await _loginUseCase.execute(
@@ -68,7 +81,6 @@ class LoginViewModel extends BaseViewModel
       isUserLoggedInSuccessfullyStreamController
           .add(data.userData?.token.toString());
       isUserNameSuccessfullyTaken.add(data.userData?.sign.toString());
-     
     });
   }
 

@@ -12,6 +12,7 @@ const String PREFS_KEY_USERNAME = "PREFS_KEY_USERNAME";
 const String PREFS_KEY_POST = "PREFS_KEY_POST";
 const String PREFS_KEY_PAGE = "PREFS_KEY_PAGE";
 const String PREFS_KEY_USERID = "PREFS_KEY_USERID";
+const String PREFS_KEY_DEVICETOKEN = "PREFS_KEY_DEVICETOKEN";
 
 class AppPreferences {
   SharedPreferences _sharedPreferences;
@@ -49,8 +50,14 @@ class AppPreferences {
       return Turkish_LOCAL;
     } else if (currentLanguage == LanguageType.English.getValue()) {
       return English_LOCAL;
-    } else {
+    } else if (currentLanguage == LanguageType.Albanian.getValue()) {
       return Albanian_LOCAL;
+    } else if (currentLanguage == LanguageType.German.getValue()) {
+      return German_LOCAL;
+    } else if (currentLanguage == LanguageType.Norwegian.getValue()) {
+      return Norwegian_LOCAL;
+    } else {
+      return English_LOCAL;
     }
   }
 
@@ -111,10 +118,20 @@ class AppPreferences {
     return _sharedPreferences.getBool(PREFS_KEY_IS_USER_LOGGED_IN) ?? false;
   }
 
+  Future<void> setDeviceToken(String deviceToken) async {
+    _sharedPreferences.setString(PREFS_KEY_DEVICETOKEN, deviceToken);
+  }
+
+  Future<String> getDeviceToken() async {
+    return _sharedPreferences.getString(PREFS_KEY_DEVICETOKEN) ??
+        "No Device Token Saved";
+  }
+
   Future<void> logout() async {
     _sharedPreferences.remove(PREFS_KEY_IS_USER_LOGGED_IN);
     _sharedPreferences.remove(PREFS_KEY_TOKEN);
     _sharedPreferences.remove(PREFS_KEY_USERNAME);
     _sharedPreferences.remove(PREFS_KEY_POST);
+    _sharedPreferences.remove(PREFS_KEY_DEVICETOKEN);
   }
 }

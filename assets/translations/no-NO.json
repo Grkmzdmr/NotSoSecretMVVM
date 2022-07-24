@@ -1,0 +1,75 @@
+{
+    "skip" : "Hopp over",
+    "noRouteFound" : "Siden kunne ikke bli funnet.",
+    "onBoardingTitle1" : "Hallo.",
+    "onBoardingTitle2": "Om oss.",
+    "onBoardingTitle3" : "La oss begynne!",
+    "onBoardingContent1" : "Velkommen til verdenen vår. Sveip til høyre for å adaptere",
+    "onBoardingContent2" : "Del dine tanker og opplevelser anonymt, snakk med andre mennesker.",
+    "onBoardingContent3" : "Om du er et medlem kan du logge inn, eller bli et medlem om du ikke er det allerede.",
+    "inputUsername" : "Brukernavn",
+    "inputPassword" : "Passord",
+    "loginButton" : "Logg inn",
+    "registerText" : "Fortsatt ikke et medlem? Registrer nå!",
+    "usernamError" : "Brukernavn-feltet kan ikke være blankt!",
+    "passwordError" : "Passord-feltet kan ikke være blankt!",
+    "loginWelcome" : "Velkommen til NotSoSecret.",
+    "loginText" : "Logg inn og fortsett hvor du var.",
+
+    "loading" : "Laster...",
+
+    "retryagain" : "Prøv igjen.",
+    "secretcantsend" : "Hemmelighet kunne ikke bli sendt.",
+
+    "ok" : "Greit.",
+
+    "noUserFound" : "Sjekk brukernavnet og passordet ditt.",
+    "invalidUserName" : "Brukernavn må ha minst 6 tegn.",
+
+    "invalidPassword" : "Passord må ha minst 8 tegn.",
+    "haveAccount" : "Allerede et medlem? Logg inn nå!",
+
+   "registerWelcome" : "Velkommen til registreringssiden.",
+    "registerSubtext" : "Alt du må gjøre er å velge et brukernavn og et passord",
+
+    "registerButton" : "Registrer",
+    "alreadyHaveUser" : "Dette brukernavnet er allerede i bruk",
+    "home" : "NotSoSecret",
+    "notification" : "Varsler",
+    "search" : "Søk",
+    "person" : "Min profil",
+    "posts" : "Innlegg",
+
+    "changeLanguage" : "Bytt språk",
+
+    "contactUs" : "Kontakt oss",
+    "inviteFriends" : "Inviter venner",
+
+    "logOut": "Logg ut",
+    "share" : "Del",
+    "cancel" : "Avbryt",
+    "title" : "Beskriv emnet ditt kort...",
+    "text" : "Fortell oss hemmeligheten din...",
+
+    "settings" : "Innstillinger",
+    "yes" : "Ja",
+    "no" : "Nei",
+    "delete" : "Slett",
+    "sure" : "Er du sikker på at du har lyst til å slette dette innlegget?",
+    "surechangelanguage" : "Er du sikker på at du har lyst til å bytte språk?",
+     "language" : "Språk",
+     "surelogout" : "Er du sikker på at du har lyst til å logge ut?",
+     "comment" : "Skriv en kommentar...",
+     "commentError" : "Kommentarer må ha mindre enn 70 tegn",
+     "failed" : "Mislykket",
+     "release" : "Bla for å avsløre mer.",
+     "noMoreSecret" : "Ingen andre hemmeligheter å dele",
+     "countSecret" : "Totale hemmeligheter",
+     "countComment" : "Totale kommentarer",
+     "sharedSecrets" : "Mine hemmeligheter",
+     "commentAppBar" : "Kommentarer",
+     "complaint" : "Rapporter",
+     "complaintText" : "Takk for at du rapporterer. Vi har dette under kontroll!",
+     "acceptTerms" : "Jeg har lest og godtatt personvernsreglene.",
+     "terms" : "Vilkår for bruk."
+}

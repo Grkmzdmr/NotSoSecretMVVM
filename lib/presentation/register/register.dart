@@ -45,7 +45,7 @@ class _RegisterViewState extends State<RegisterView> {
 
     _viewModel.isUserRegisterInSuccessfullyStreamController.stream
         .listen((value) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         if (value) {
           const snackBar =
                 SnackBar(content: Text("Kullanıcı başarı ile kayıt oldu"),duration: Duration(seconds: 1,milliseconds: 500),);

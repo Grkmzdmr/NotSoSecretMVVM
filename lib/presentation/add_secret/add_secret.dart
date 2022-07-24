@@ -34,7 +34,7 @@ class _AddSecretState extends State<AddSecret> {
     _viewModel.setSecretLanguage("tr");
     _viewModel.isSecretSharedSuccessfullyStreamController.stream
         .listen((isPostShared) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         Navigator.of(context).pushReplacementNamed(Routes.mainRoute);
         resetHomeModule();
         initHomeModule();

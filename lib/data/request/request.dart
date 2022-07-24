@@ -3,7 +3,8 @@ class LoginRequest {
   String password;
   String imei;
   String deviceType;
-  LoginRequest(this.sign, this.password, this.deviceType, this.imei);
+  String deviceId;
+  LoginRequest(this.sign, this.password, this.deviceType, this.imei,this.deviceId);
 }
 
 class RegisterRequest {

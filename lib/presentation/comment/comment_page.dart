@@ -47,7 +47,7 @@ class _CommentTestState extends State<CommentTest> {
       _commentController.clear();
     });
     _viewModel.pageController.stream.listen((page) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         totalPage = page;
       });
     });
@@ -71,7 +71,7 @@ class _CommentTestState extends State<CommentTest> {
         automaticallyImplyLeading: false,
         title: Text(
           AppStrings.commentAppBar.tr(),
-          style: Theme.of(context).textTheme.headline2,
+          style: Theme.of(context).textTheme.headline2?.copyWith(color: ColorManager.primary),
         ),
       ),
       body: Container(

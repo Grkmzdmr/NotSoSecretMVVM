@@ -114,3 +114,10 @@ class ProfileObject {
   ProfileData data;
   ProfileObject(this.data);
 }
+
+class PushNotification {
+  String? title;
+  String? body;
+
+  PushNotification({this.body, this.title});
+}

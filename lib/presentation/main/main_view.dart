@@ -28,7 +28,6 @@ class _MainViewState extends State<MainView> {
   ];
   var _title = AppStrings.home.tr();
   var _currentIndex = 0;
- 
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +50,7 @@ class _MainViewState extends State<MainView> {
         shape: CircularNotchedRectangle(),
         notchMargin: AppSize.s6,
         child: Container(
+            color: Theme.of(context).appBarTheme.backgroundColor,
             height: AppSize.s60,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,7 +60,6 @@ class _MainViewState extends State<MainView> {
                   child: MaterialButton(
                     onPressed: () {
                       setState(() {
-                        
                         _currentIndex = 0;
                       });
                     },
@@ -83,7 +82,6 @@ class _MainViewState extends State<MainView> {
                   child: MaterialButton(
                     onPressed: () {
                       setState(() {
-                        
                         _currentIndex = 1;
                       });
                     },
@@ -104,7 +102,6 @@ class _MainViewState extends State<MainView> {
               ],
             )),
       ),
-
     );
   }
 
@@ -121,11 +118,21 @@ PreferredSizeWidget _homeAppBar(BuildContext context, String _title) {
     automaticallyImplyLeading: false,
     title: Text(
       _title,
-      style: Theme.of(context).textTheme.headline2,
+      style: Theme.of(context).appBarTheme.titleTextStyle,
+    ),
+    leading: IconButton(
+      icon: Icon(Icons.notifications),
+      onPressed: () {
+        Navigator.pushNamed(context, Routes.notificationRoute);
+      },
+      color: ColorManager.primary,
     ),
     actions: [
       IconButton(
-        icon: Icon(Icons.settings),
+        icon: Icon(
+          Icons.settings,
+          color: ColorManager.primary,
+        ),
         onPressed: () {
           Navigator.pushReplacementNamed(context, Routes.settingsRoute);
         },

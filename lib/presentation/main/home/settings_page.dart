@@ -37,7 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
         systemOverlayStyle: SystemUiOverlayStyle.light,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios),
+          icon: Icon(Icons.arrow_back_ios,color: ColorManager.primary,),
           onPressed: () {
             
             Navigator.pushReplacementNamed(context, Routes.mainRoute);
@@ -45,7 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         title: Text(
           _title,
-          style: Theme.of(context).textTheme.headline2,
+          style: Theme.of(context).textTheme.headline2?.copyWith(color: ColorManager.primary),
         ),
       ),
       body: ListView(
@@ -161,6 +161,8 @@ class _SettingsPageState extends State<SettingsPage> {
           Languages.french,
           Languages.albanian,
           Languages.turkish,
+          Languages.german,
+          Languages.norwegian
         ],
         initialValue: _value,
         itemBuilder: _buildDropdownItem,
@@ -175,6 +177,12 @@ class _SettingsPageState extends State<SettingsPage> {
           } else if (language.name == "English") {
             _value = Languages.english;
             _languageType = LanguageType.English;
+          }else if (language.name == "German") {
+            _value = Languages.german;
+            _languageType = LanguageType.German;
+          }else if (language.name == "Norwegian") {
+            _value = Languages.norwegian;
+            _languageType = LanguageType.Norwegian;
           }
         },
       ) //Text(

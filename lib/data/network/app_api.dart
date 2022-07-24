@@ -14,7 +14,8 @@ abstract class AppServiceClient {
       @Field("sign") String sign,
       @Field("password") String password,
       @Field("imei") String imei,
-      @Field("deviceType") String deviceType);
+      @Field("deviceType") String deviceType,
+      @Field("deviceId") String deviceId);
 
   @POST("/account/register")
   Future<AuthenticationResponse> register(

@@ -18,7 +18,7 @@ class AppStrings {
 
   static const String loading = "loading";
 
-  static const String retry_again = "retry_again";
+  static const String retry_again = "retryagain";
 
   static const String ok = "ok";
 

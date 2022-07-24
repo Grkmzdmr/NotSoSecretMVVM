@@ -8,7 +8,7 @@ part of 'app_api.dart';
 
 class _AppServiceClient implements AppServiceClient {
   _AppServiceClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'http://192.168.0.12:5201';
+    baseUrl ??= 'http://localhost:5201/';
   }
 
   final Dio _dio;
@@ -16,14 +16,16 @@ class _AppServiceClient implements AppServiceClient {
   String? baseUrl;
 
   @override
-  Future<AuthenticationResponse> login(sign, password, imei, deviceType) async {
+  Future<AuthenticationResponse> login(
+      sign, password, imei, deviceType, deviceId) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = {
       'sign': sign,
       'password': password,
       'imei': imei,
-      'deviceType': deviceType
+      'deviceType': deviceType,
+      'deviceId': deviceId
     };
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<AuthenticationResponse>(

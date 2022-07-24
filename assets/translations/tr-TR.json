@@ -1,82 +1,125 @@
 {
     "skip" : "Geç",
-    "noRouteFound" : "Böyle Bir Sayfa Bulunamadı",
-    "onBoardingTitle1" : "Merhaba",
-    "onBoardingTitle2": "Bizi Tanı",
-    "onBoardingTitle3" : "Haydi Başlayalım",
-    "onBoardingContent1" :
-     "Dünyamıza hoş geldiniz, nasıl kullanılacağını öğrenmek için ilerleyin.",
-    "onBoardingContent2" :
-     "Düşüncelerinizi ve deneyimlerinizi önyargısız olarak tamamen anonim olarak paylaşın, insanlarla etkileşim kurun.",
-    "onBoardingContent3" :
-     "Daha önce üye olduysanız giriş yapabilir veya sadece kullanıcı adı ve şifrenizi kullanarak yeni üye olabilirsiniz.",
+
+"noRouteFound" : "Böyle Bir Sayfa Bulunamadı",
+
+ "onBoardingTitle1" : "Merhaba",
+
+ "onBoardingTitle2": "Hakkımızda",
+
+ "onBoardingTitle3" : "Haydi Başlayalım",
+
+ "onBoardingContent1" : "Dünyamıza hoş geldiniz, nasıl kullanılacağını öğrenmek için ilerleyin.",
+
+ "onBoardingContent2" :  "Düşüncelerinizi ve deneyimlerinizi önyargısız olarak tamamen anonim olarak paylaşın, insanlarla etkileşim kurun.",
+
+ "onBoardingContent3" : "Daha önce üye olduysanız giriş yapabilir veya sadece kullanıcı adı ve şifrenizi kullanarak yeni üye olabilirsiniz.",
+
     "inputUsername" : "Kullanıcı Adı",
+
     "inputPassword" : "Şifre",
+
     "loginButton" : "Giriş Yap",
+
     "registerText" : "Üye Değil Misin? Kayıt Ol.",
+
     "usernamError" : "Kullanıcı adı boş olamaz !",
+
     "passwordError" : "Şifre boş olamaz !",
+
     "loginWelcome" : "NotSoSecret'a Hoş Geldin",
+
     "loginText" : "Giriş Yap Ve Kaldığın Yerden Devam Et.",
 
     "loading" : "Yükleniyor...",
 
     "retryagain" : "Tekrar Dene",
-    "secretcantsend" : "Secret Gönderilemedi",
+
+    "secretcantsend" : "Sır  Gönderilemedi",
 
     "ok" : "Tamam",
 
     "noUserFound" : "Kullanıcı adını ve şifreni kontrol et",
-    "invalidUserName" :
-     "Kullanıcı adın 6 haneden büyük olmalıdır",
+
+    "invalidUserName" :  "Kullanıcı adın 6 haneden büyük olmalıdır",
 
     "invalidPassword" : "Şifren 8 haneden büyük olmalıdır",
+
     "haveAccount" : "Hesabın var mı? Giriş Yap",
 
    "registerWelcome" : "Kayıt olma ekranına hoş geldin",
-    "registerSubtext" :
-     "Tek yapman gereken kullanıcı adı ve şifre seçmek.",
+
+    "registerSubtext" :  "Tek yapman gereken kullanıcı adı ve şifre seçmek.",
 
     "registerButton" : "Kayıt Ol",
+
     "alreadyHaveUser" : "Bu Kullanıcı Mevcut",
+
     "home" : "NotSoSecret",
+
     "notification" : "Bildirimler",
+
     "search" : "Ara",
+
     "person" : "Profilim",
+
     "posts" : "Posts",
 
     "changeLanguage" : "Dili Değiştir",
 
     "contactUs" : "Bizimle İletişime Geç",
+
     "inviteFriends" : "Arkadaşlarını Davet Et",
 
     "logOut": "Çıkış Yap",
+
     "share" : "Paylaş",
+
     "cancel" : "Vazgeç",
+
     "title" : "Kısaca konudan bahsedin...",
+
     "text" : "Sırrınızı yazın...",
 
     "settings" : "Ayarlar",
-    "yes" : "Evet",
-    "no" : "Hayır",
-    "delete" : "Sil",
-    "sure" : "Gönderiyi Silmek İstediğinize Emin Misiniz ?",
-    "surechangelanguage" : "Dili Değiştirmek İstediğinize Emin Misiniz ?",
-     "language" : "Dil",
-     "logout" : "Çıkış",
-     "surelogout" : "Çıkış Yapmak İstediğinize Emin Misiniz ?",
-     "comment" : "Yorumunuzu yazın...",
-     "commentError" : "70 karakterden küçük olmalı",
-     "failed" : "Yeniden deneyiniz",
-     "release" : "Daha fazlası için kaydır",
-     "noMoreSecret" : "Henüz daha fazla Secret yok.",
-     "countSecret" : "Secret Sayısı",
-     "countComment" : "Yorum Sayısı",
-     "sharedSecrets" : "Paylaştığım Secretlar",
-     "commentAppBar" : "Yorumlar",
-     "complaint" : "Şikayet Et",
-     "complaintText" : "Şikayetiniz İncelenecektir, teşekkür ederiz.",
-     "acceptTerms" : "Kullanım şartlarını okudum ve kabul ediyorum.",
-     "terms" : "Kullanım Şartları"
 
+    "yes" : "Evet",
+
+    "no" : "Hayır",
+
+    "delete" : "Sil",
+
+    "sure" : "Gönderiyi Silmek İstediğinize Emin Misiniz ?",
+
+    "surechangelanguage" : "Dili Değiştirmek İstediğinize Emin Misiniz ?",
+
+     "language" : "Dil",
+
+     "surelogout" : "Çıkış Yapmak İstediğinize Emin Misiniz ?",
+
+     "comment" : "Yorumunuzu yazın...",
+
+     "commentError" : "70 karakterden küçük olmalı",
+
+     "failed" : "Başarısız",
+
+     "release" : "Daha fazlası için kaydır",
+
+     "noMoreSecret" : "Henüz daha fazla sır  yok.",
+
+     "countSecret" : "Sır Sayısı",
+
+     "countComment" : "Yorum Sayısı",
+
+     "sharedSecrets" : "Sırlarım",
+
+     "commentAppBar" : "Yorumlar",
+
+     "complaint" : "Şikayet Et",
+
+     "complaintText" : "Şikayetiniz İncelenecektir, teşekkür ederiz.",
+
+     "acceptTerms" : "Kullanım şartlarını okudum ve kabul ediyorum.",
+
+     "terms" : "Kullanım Şartları"
 }

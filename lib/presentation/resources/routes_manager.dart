@@ -1,12 +1,12 @@
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/presentation/add_secret/add_secret.dart';
 import 'package:not_so_secret/presentation/comment/comment_page.dart';
-import 'package:not_so_secret/presentation/comment/comment_page.dart';
 import 'package:not_so_secret/presentation/login/login.dart';
 import 'package:not_so_secret/presentation/main/home/contactus_page.dart';
 
 import 'package:not_so_secret/presentation/main/home/settings_page.dart';
 import 'package:not_so_secret/presentation/main/main_view.dart';
+import 'package:not_so_secret/presentation/main/notifications_page.dart';
 import 'package:not_so_secret/presentation/onboarding/onboarding.dart';
 import 'package:not_so_secret/presentation/register/register.dart';
 import 'package:not_so_secret/presentation/resources/strings_manager.dart';
@@ -26,6 +26,7 @@ class Routes {
   static const String addSecretRoute = "/addSecret";
   static const String commentRoute = "/comment";
   static const String aboutusRoute = "/aboutUs";
+  static const String notificationRoute = "/notifications";
 }
 
 class RouteGenerator {
@@ -56,13 +57,13 @@ class RouteGenerator {
         initSendSecretModule();
 
         return MaterialPageRoute(builder: (_) => AddSecret());
-       case Routes.aboutusRoute:
-        
-
-        return MaterialPageRoute(builder: (_) => ContactUs());  
+      case Routes.aboutusRoute:
+        return MaterialPageRoute(builder: (_) => ContactUs());
       case Routes.commentRoute:
         initCommentModule();
         return MaterialPageRoute(builder: (_) => CommentTest());
+      case Routes.notificationRoute:
+        return MaterialPageRoute(builder: (_) => NotificationPage());
       default:
         return unDefinedRoute();
     }

@@ -38,12 +38,18 @@ dependencies:
   language_picker: ^0.4.1
   animate_do: ^2.1.0
   page_transition: ^2.0.4
+  shadow: ^1.0.0
   pretty_dio_logger: ^1.2.0-beta-1
   shared_preferences: ^2.0.7
   device_info: ^2.0.3
   get_it: ^7.2.0
   lottie : ^1.2.0
   internet_connection_checker: ^0.0.1+2
+ 
+  flutterfire_cli: ^0.1.1
+  
+  firebase_messaging: ^11.4.2
+  firebase_core: ^1.19.2
 
 dev_dependencies:
   flutter_test:

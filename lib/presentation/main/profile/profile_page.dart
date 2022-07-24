@@ -38,7 +38,7 @@ class _ProfilePageTestState extends State<ProfilePageTest> {
   _bind() {
     _viewModel.start();
     _viewModel.pageController.stream.listen((page) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         totalPage = page;
       });
     });

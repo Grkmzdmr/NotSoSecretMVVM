@@ -1,0 +1,125 @@
+{
+    "skip" : "Überspringen",
+
+"noRouteFound" : "Keine solche Seite gefunden",
+
+ "onBoardingTitle1" : "Hallo",
+
+ "onBoardingTitle2": "Kennen Sie uns",
+
+ "onBoardingTitle3" : "Los geht's",
+
+ "onBoardingContent1" : "Willkommen in unserer Welt, scrollen Sie, um zu erfahren, wie man sie benutzt.",
+
+ "onBoardingContent2" :  "Teilen Sie Ihre Gedanken und Erfahrungen völlig anonym und vorurteilsfrei, interagieren Sie mit Menschen.",
+
+ "onBoardingContent3" : "Wenn Sie bereits Mitglied waren, können Sie sich anmelden oder ein neues Mitglied werden, indem Sie nur Ihren Benutzernamen und Ihr Passwort verwenden.",
+
+    "inputUsername" : "Benutzername",
+
+    "inputPassword" : "Passwort",
+
+    "loginButton" : "Anmelden",
+
+    "registerText" : "Kein Mitglied? Registrieren.",
+
+    "usernamError" : "Benutzername darf nicht leer sein!",
+
+    "passwordError" : "Passwort darf nicht leer sein!",
+
+    "loginWelcome" : "Willkommen bei NotSoSecret",
+
+    "loginText" : "Melden Sie Sich An Und Machen Sie Dort Weiter, Wo Sie Aufgehört Haben.",
+
+    "loading" : "Laden...",
+
+    "retryagain" : "Erneut versuchen",
+
+    "secretcantsend" : "Geheimnis konnte nicht gesendet werden",
+
+    "ok" : "Ok",
+
+    "noUserFound" : "Benutzername und Passwort prüfen",
+
+    "invalidUserName" :  "Benutzername muss länger als 6 Ziffern sein",
+
+    "invalidPassword" : "Passwort muss länger als 8 Ziffern sein",
+
+    "haveAccount" : "Haben Sie ein Konto? Melden Sie sich an",
+
+   "registerWelcome" : "Willkommen zum Registrierungsbildschirm",
+
+    "registerSubtext" :  "Alles, was Sie tun müssen, ist einen Benutzernamen und ein Passwort zu wählen.",
+
+    "registerButton" : "Registrieren",
+
+    "alreadyHaveUser" : "Dieser Benutzer existiert",
+
+    "home" : "NotSoSecret",
+
+    "notification" : "Benachrichtigungen",
+
+    "search" : "Suche",
+
+    "person" : "Mein Profil",
+
+    "posts" : "Beiträge",
+
+    "changeLanguage" : "Sprache ändern",
+
+    "contactUs" : "Kontaktieren Sie uns",
+
+    "inviteFriends" : "Freunde einladen",
+
+    "logOut": "Abmelden",
+
+    "share" : "Teilen Teilen",
+
+    "cancel" : "stornieren",
+
+    "title" : "Erzählen Sie mir kurz etwas über das Thema...",
+
+    "text" : "Schreibe dein Geheimnis...",
+
+    "settings" : "Einstellungen",
+
+    "yes" : "Ja",
+
+    "no" : "Nein",
+
+    "delete" : "Löschen",
+
+    "sure" : "Sind Sie sicher, dass Sie den Beitrag löschen möchten?",
+
+    "surechangelanguage" : "Sind Sie sicher, dass Sie die Sprache ändern möchten?",
+
+     "language" : "Sprache",
+
+     "surelogout" : "Sind Sie sicher, dass Sie sich abmelden möchten?",
+
+     "comment" : "Schreiben Sie Ihren Kommentar...",
+
+     "commentError" : "Muss weniger als 70 Zeichen lang sein",
+
+     "failed" : "Gescheitert",
+
+     "release" : "Für mehr wischen",
+
+     "noMoreSecret" : "Noch keine Secrets mehr.",
+
+     "countSecret" : "Anzahl der Geheimnisse",
+
+     "countComment" : "Anzahl der Kommentare",
+
+     "sharedSecrets" : "Meine Geheimnisse",
+
+     "commentAppBar" : "Kommentare",
+
+     "complaint" : "Beschwerde",
+
+     "complaintText" : "Ihrer Beschwerde wird nachgegangen, danke.",
+
+     "acceptTerms" : "Ich habe die Nutzungsbedingungen gelesen und akzeptiere sie.",
+
+     "terms" : "Nutzungsbedingungen"
+}

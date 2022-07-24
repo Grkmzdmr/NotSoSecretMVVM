@@ -30,3 +30,4 @@ Future<DeviceInfo> getDeviceDetails() async {
   }
   return DeviceInfo(name, identifier, version);
 }
+

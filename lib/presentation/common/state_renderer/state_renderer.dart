@@ -24,13 +24,12 @@ enum StateRendererType {
   EMPTY_SCREEN_STATE, // EMPTY VIEW WHEN WE RECIEVE NO DATA FROM API SIDE FOR LIST SCREEN
 
 }
-
 class StateRenderer extends StatelessWidget {
-  StateRendererType stateRendererType;
+  final StateRendererType stateRendererType;
 
-  String message;
-  String title;
-  Function? retryActionFunction;
+  final String message;
+  final String title;
+  final Function? retryActionFunction;
 
   StateRenderer(
       {Key? key,

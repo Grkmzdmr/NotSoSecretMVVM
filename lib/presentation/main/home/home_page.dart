@@ -34,6 +34,7 @@ class _HomePageState extends State<HomePage> {
   HomeViewModel _viewModel = instance<HomeViewModel>();
   AppPreferences _appPreferences = instance<AppPreferences>();
   LocalDataSource _localDataSource = instance<LocalDataSource>();
+  List _colors = [Colors.red.withOpacity(0.5), Colors.blue.withOpacity(0.5), Colors.purple.withOpacity(0.5), Colors.green.withOpacity(0.5)];
 
   @override
   void initState() {
@@ -45,11 +46,10 @@ class _HomePageState extends State<HomePage> {
   _bind() {
     _viewModel.start();
     _viewModel.pageController.stream.listen((page) {
-      SchedulerBinding.instance?.addPostFrameCallback((_) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
         totalPage = page;
       });
     });
-
   }
 
   @override
@@ -76,8 +76,6 @@ class _HomePageState extends State<HomePage> {
   Widget _getContentWidgets() {
     return _getPost();
   }
-
-  
 
   Widget _getPost() {
     return StreamBuilder<List<Post>>(
@@ -140,193 +138,234 @@ class _HomePageState extends State<HomePage> {
   }
 
   CustomFooter homePageRefresherFooter() {
-    return CustomFooter(
-                    builder: (BuildContext context, LoadStatus? mode) {
-                  Widget body;
-                  if (mode == LoadStatus.idle) {
-                    body = Text(AppStrings.loading.tr());
-                  } else if (mode == LoadStatus.loading) {
-                    body = CupertinoActivityIndicator();
-                  } else if (mode == LoadStatus.failed) {
-                    body = Text(AppStrings.failed.tr());
-                  } else if (mode == LoadStatus.canLoading) {
-                    body = Text(AppStrings.release.tr());
-                  } else {
-                    body = Text(AppStrings.noMoreSecret.tr());
-                  }
-                  return Container(
-                    height: 55.0,
-                    child: Center(child: body),
-                  );
-                });
+    return CustomFooter(builder: (BuildContext context, LoadStatus? mode) {
+      Widget body;
+      if (mode == LoadStatus.idle) {
+        body = Text(AppStrings.loading.tr());
+      } else if (mode == LoadStatus.loading) {
+        body = CupertinoActivityIndicator();
+      } else if (mode == LoadStatus.failed) {
+        body = Text(AppStrings.failed.tr());
+      } else if (mode == LoadStatus.canLoading) {
+        body = Text(AppStrings.release.tr());
+      } else {
+        body = Text(AppStrings.noMoreSecret.tr());
+      }
+      return Container(
+        height: 55.0,
+        child: Center(child: body),
+      );
+    });
   }
 
   ListView homePageListView(List<Post> posts) {
     return ListView.builder(
-                    itemCount: posts.length,
-                    reverse: false,
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (context, index) {
-                      return InkWell(
-                        onLongPress: (){
-                          
-                        },
-                        onTap: () {
-                          _appPreferences.setPost(posts[index].id);
+        itemCount: posts.length,
+        reverse: false,
+        shrinkWrap: true,
+        scrollDirection: Axis.vertical,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onLongPress: () {},
+            onTap: () {
+              _appPreferences.setPost(posts[index].id);
 
-                          Navigator.pushNamed(context, "/comment",
-                              arguments: posts[index]);
-                        },
-                        child: homePageCard(context, posts, index),
-                      );
-                    });
+              Navigator.pushNamed(context, "/comment", arguments: posts[index]);
+            },
+            child: homePageCard(context, posts, index),
+          );
+        });
   }
 
   Card homePageCard(BuildContext context, List<Post> posts, int index) {
     return Card(
-                          elevation: AppSize.s4,
-                          shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(AppSize.s12),
-                              side: BorderSide(
-                                  color: ColorManager.white,
-                                  width: AppSize.s1_5)),
-                         child: homePageListTile(context, posts, index)
-                        );
+        
+        elevation: AppSize.s6,
+        shape: RoundedRectangleBorder(
+          
+          borderRadius: BorderRadius.circular(AppSize.s12),
+        ),
+        child: ClipPath(
+          clipper: ShapeBorderClipper(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppSize.s12))),
+          child: Container(
+            decoration: BoxDecoration(
+              
+              border: Border(
+                left: BorderSide(color: _colors[index % _colors.length],width: 4)
+              )
+            ),
+            child: Column(
+              children: [
+                
+                /*Container(
+                  margin: EdgeInsets.only(right: 1, left: 1, top: 2.5),
+                  width: MediaQuery.of(context).size.width - 20,
+                  height: 10,
+                  decoration: BoxDecoration(
+                      color: _colors[index % _colors.length],
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(12),
+                          topRight: Radius.circular(12))),
+                ),*/
+               /* Align(
+                  alignment: Alignment.topLeft,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 8),
+                    child: Icon(Icons.bookmark_outlined
+                    ,color: _colors[index % _colors.length],size: 40,),
+                    decoration : BoxDecoration(
+                      //color: _colors[index % _colors.length],
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(12))
+        
+        
+                    )
+                    ,
+                    width: 50,
+                    height: 40,
+                    
+                    
+                  ),
+                ),*/
+        
+                homePageListTile(context, posts, index),
+              ],
+            ),
+          ),
+        ));
   }
 
   ListTile homePageListTile(BuildContext context, List<Post> posts, int index) {
     return ListTile(
-                       
-                        
-                        horizontalTitleGap: AppSize.s6,
-                        minVerticalPadding : AppSize.s24,
-                        title: listTileTitle(context, posts, index),
-                        subtitle: listTileSubtitle(posts, index, context),
-                       );
+      horizontalTitleGap: AppSize.s6,
+      minVerticalPadding: AppSize.s24,
+      title: listTileTitle(context, posts, index),
+      subtitle: listTileSubtitle(posts, index, context),
+    );
   }
 
   Padding listTileSubtitle(List<Post> posts, int index, BuildContext context) {
     return Padding(
-                        padding: const EdgeInsets.only(top :8.0),
-                        child: Column(
-                          mainAxisAlignment : MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                 
-                 children: [
-                            Text(posts[index].content,
-                            style: Theme.of(context).textTheme.subtitle1,
-                            textAlign: TextAlign.left,
+      padding: const EdgeInsets.only(top: 8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            posts[index].content,
+            style: Theme.of(context).textTheme.subtitle1,
+            textAlign: TextAlign.left,
+          ),
+          SizedBox(height: MediaQuery.of(context).size.width / 10),
+          Padding(
+            padding: const EdgeInsets.only(top: 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 2.5,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.visibility,
+                        size: AppSize.s30,
+                        color: ColorManager.darkGrey,
+                      ),
+                      Text(
+                        posts[index].viewCount.toString(),
+                        style: Theme.of(context).textTheme.subtitle2!.copyWith(
+                              fontSize: FontSize.s15,
                             ),
-                            SizedBox(height: MediaQuery.of(context).size.width/ 10),
-
-                            Padding(
-                              padding: const EdgeInsets.only(top :0.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 2.5,
-                                    child: Row(
-                                      
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                      
-                                        Icon(Icons.visibility,size: AppSize.s30,color: ColorManager.darkGrey,),
-                                        Text(posts[index].viewCount.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s15,),),
-                                        Icon(Icons.comment,size: AppSize.s30,color: ColorManager.darkGrey),
-                                        Text(posts[index].commentCount.toString(),style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s15,))
-
-                                      
-                                    ],),
-                                  ),
-                                  SizedBox(width: MediaQuery.of(context).size.width / 13.8,
-
-                                  ),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 3.1,
-                                    child : Column(
-                                      
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children : [
-                                        
-                                        Text("@" + posts[index].sign),
-                                        Text(posts[index].date.substring(8, 10) +
-                                          '-' +
-                                          posts[index]
-                                              .date
-                                              .substring(5, 7) +
-                                          '-' +
-                                          posts[index]
-                                              .date
-                                              .substring(2, 4) 
-                                          
-                                          )
-
-
-                                      ]
-                                    )
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
+                      ),
+                      Icon(Icons.comment,
+                          size: AppSize.s30, color: ColorManager.darkGrey),
+                      Text(posts[index].commentCount.toString(),
+                          style:
+                              Theme.of(context).textTheme.subtitle2!.copyWith(
+                                    fontSize: FontSize.s15,
+                                  ))
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 13.8,
+                ),
+                Container(
+                    width: MediaQuery.of(context).size.width / 3.1,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text("@" + posts[index].sign,style: TextStyle(color: _colors[index % _colors.length]),),
+                          Text(posts[index].date.substring(8, 10) +
+                              '-' +
+                              posts[index].date.substring(5, 7) +
+                              '-' +
+                              posts[index].date.substring(2, 4),style: TextStyle(color: _colors[index % _colors.length]),)
+                        ]))
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Column listTileTitle(BuildContext context, List<Post> posts, int index) {
     return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                              mainAxisAlignment : MainAxisAlignment.end,
-                              children: [
-                               PopupMenuButton(onSelected: (value) {
-                                    if (value.toString() == "/complaint") {
-                                      showAlertDialog(context);
-                                    } 
-                                  }, itemBuilder: (BuildContext bc) {
-                                    
-                                      return [
-                                        PopupMenuItem(
-                                          child: Text(AppStrings.complaint.tr(),style: Theme.of(context).textTheme.subtitle1?.copyWith(fontSize: FontSize.s14)),
-                                          value: "/complaint",
-                                        ),
-                                      ];
-                                    
-                                  })
-                                ],
-                            ),
-                            Padding(
-                               padding: const EdgeInsets.only(right: AppMargin.m12,bottom: AppMargin.m8),
-                               child: Container(
-                                  
-                                  child :
-                                     Text(
-                                     posts[index].title,
-                                      style: Theme.of(context).textTheme.subtitle2!.copyWith(fontSize: FontSize.s17)
-                                    ),
-                                  
-                        ),)
-
-                      ],);
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            PopupMenuButton(onSelected: (value) {
+              if (value.toString() == "/complaint") {
+                showAlertDialog(context);
+              }
+            }, itemBuilder: (BuildContext bc) {
+              return [
+                PopupMenuItem(
+                  child: Text(AppStrings.complaint.tr(),
+                      style: Theme.of(context)
+                          .textTheme
+                          .subtitle1
+                          ?.copyWith(fontSize: FontSize.s14)),
+                  value: "/complaint",
+                ),
+              ];
+            })
+          ],
+        ),
+        Padding(
+          padding:
+              const EdgeInsets.only(right: AppMargin.m12, bottom: AppMargin.m8),
+          child: Container(
+            child: Text(posts[index].title,
+                style: Theme.of(context)
+                    .textTheme
+                    .subtitle2!
+                    .copyWith(fontSize: FontSize.s17)),
+          ),
+        )
+      ],
+    );
   }
- 
+
   showAlertDialog(BuildContext context) {
-    
     Widget okButton = TextButton(
         onPressed: () {
           Navigator.of(context).pop();
         },
-        child: Text(AppStrings.ok.tr(),style: Theme.of(context).textTheme.subtitle1?.copyWith(color: ColorManager.primary)));
+        child: Text(AppStrings.ok.tr(),
+            style: Theme.of(context)
+                .textTheme
+                .subtitle1
+                ?.copyWith(color: ColorManager.primary)));
 
     AlertDialog alert = AlertDialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))
-      ),
-      content: Text(AppStrings.complaintText.tr(),style: Theme.of(context).textTheme.subtitle1),
+          borderRadius: BorderRadius.all(Radius.circular(AppSize.s12))),
+      content: Text(AppStrings.complaintText.tr(),
+          style: Theme.of(context).textTheme.subtitle1),
       actions: [okButton],
     );
     showDialog(

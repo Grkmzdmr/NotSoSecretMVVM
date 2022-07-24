@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:not_so_secret/app/app_prefs.dart';
 import 'package:not_so_secret/app/di.dart';
 import 'package:not_so_secret/domain/model/model.dart';
@@ -16,7 +18,7 @@ class CommentViewModel extends BaseViewModel
     with CommentViewModelInput, CommentViewModelOutput {
   StreamController _commentStreamController = BehaviorSubject<List<Comment>>();
   StreamController commentIdStreamController = BehaviorSubject<int>();
-  
+
   StreamController commentDeleteController = BehaviorSubject<int>();
   StreamController isPostSuccessfullySendController = StreamController<bool>();
   StreamController _commentAddController = BehaviorSubject<String>();
@@ -27,9 +29,11 @@ class CommentViewModel extends BaseViewModel
   var commentDeleteObject = CommentDeleteObject(14, 20);
   int currentPage = 1;
   int postId = 1;
+  //late final FirebaseMessaging _messaging;
+  //PushNotification? _notificationInfo;
 
   AppPreferences _appPreferences = instance<AppPreferences>();
-  
+
   CommentUseCase _commentUseCase;
   CommentViewModel(this._commentUseCase);
   @override
@@ -39,7 +43,7 @@ class CommentViewModel extends BaseViewModel
     _commentAddController.close();
     commentDeleteController.close();
     _isAllInputsValidStreamController.close();
-  
+
     pageController.close();
 
     super.dispose();
@@ -61,6 +65,7 @@ class CommentViewModel extends BaseViewModel
       inputPage.add(commentObject.data.totalPage);
     });
   }
+
   //inputs
   @override
   Sink get inputCommentId => commentIdStreamController.sink;
@@ -114,8 +119,6 @@ class CommentViewModel extends BaseViewModel
     getComments();
   }
 
-  
-
   @override
   setCommentText(String text) {
     inputCommentText.add(text);
@@ -137,16 +140,10 @@ class CommentViewModel extends BaseViewModel
     });
   }
 
-  
-
-  
-
   @override
   refresh() {
     getComments();
   }
-
-  
 
   @override
   deleteComment() async {
@@ -171,9 +168,34 @@ class CommentViewModel extends BaseViewModel
         commentDeleteObject.copyWith(secretId: secretId, commentId: commentId);
   }
 
-  
-}
+  //Future _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  //  print("Handling a background message : ${message.messageId}");
+  //}
 
+  /*@override
+  requestAndRegisterNotification() async {
+    await Firebase.initializeApp();
+    _messaging = FirebaseMessaging.instance;
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+    NotificationSettings settings = await _messaging.requestPermission(
+      alert: true,
+      badge: true,
+      provisional: true,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      String? token = await _messaging.getToken();
+      FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+        PushNotification notification = PushNotification(
+            body: message.notification?.title,
+            title: message.notification?.body);
+        _notificationInfo = notification;
+      });
+    }
+  }*/
+}
 
 _isCommentValid(String comment) {
   return comment.length <= 500;
@@ -184,6 +206,7 @@ abstract class CommentViewModelInput {
   sendComment();
   deleteComment();
   refresh();
+ 
 
   setCommentText(String text);
   Sink get inputPostsComments;
@@ -199,5 +222,4 @@ abstract class CommentViewModelOutput {
   Stream<int> get outputCommentId;
 
   Stream<bool> get outputIsCommentValid;
-  
 }
